@@ -96,8 +96,23 @@ func ValidateTicket(key string) (string, error) {
 func main() {
 	flag.Parse()
 
+	// Fallback to environment variables if flags not provided
+	if jiraURL == "" {
+		jiraURL = os.Getenv("JIRA_URL")
+	}
+	if email == "" {
+		email = os.Getenv("JIRA_EMAIL")
+	}
+	if apiToken == "" {
+		apiToken = os.Getenv("JIRA_TOKEN")
+	}
+	if projectKey == "" {
+		projectKey = os.Getenv("JIRA_PROJECT")
+	}
+
 	if jiraURL == "" || email == "" || apiToken == "" || projectKey == "" {
 		fmt.Println("Provide all flags: -url, -email, -token, -project")
+		fmt.Println("Or set environment variables: JIRA_URL, JIRA_EMAIL, JIRA_TOKEN, JIRA_PROJECT")
 		os.Exit(1)
 	}
 
