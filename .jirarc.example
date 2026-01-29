@@ -1,0 +1,29 @@
+# JIRA Ticket Creator Configuration File
+# Copy this to ~/.jirarc and fill in your values
+# Format: YAML
+
+jira:
+  # Your JIRA Atlassian Cloud URL
+  url: https://your-company.atlassian.net
+
+  # Your email address
+  email: your-email@company.com
+
+  # Your JIRA API token (can use ${JIRA_TOKEN} env var)
+  token: ${JIRA_TOKEN}
+
+  # Default project key
+  project: PROJ
+
+# Default values for new tickets
+defaults:
+  # Default issue type for new tickets (Task, Story, Bug, Epic, Subtask)
+  issue_type: Task
+
+  # Default priority (Low, Medium, High, Critical)
+  priority: Medium
+
+  # Default labels to add to new tickets
+  labels:
+    - auto-created
+    - cli
