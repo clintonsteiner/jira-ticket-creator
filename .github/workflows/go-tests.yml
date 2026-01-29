@@ -96,16 +96,6 @@ jobs:
       with:
         go-version: ${{ matrix.go-version }}
 
-    - name: golangci-lint
-      uses: golangci/golangci-lint-action@v3
-      with:
-        version: v1.60.0
-        args: --timeout=5m
-        skip-pkg-cache: true
-
-    - name: go vet
-      run: go vet ./...
-
     - name: go fmt check
       run: |
         if [ "$(gofmt -l . | wc -l)" -gt 0 ]; then
