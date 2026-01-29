@@ -1,0 +1,43 @@
+- title: Home
+  url: /jira-ticket-creator/
+
+- title: Getting Started
+  url: /jira-ticket-creator/getting-started.html
+
+- title: CLI Commands
+  url: "#"
+  children:
+    - title: Create
+      url: /jira-ticket-creator/cli/create.html
+    - title: Search
+      url: /jira-ticket-creator/cli/search.html
+    - title: Query
+      url: /jira-ticket-creator/cli/query.html
+    - title: Import
+      url: /jira-ticket-creator/cli/import.html
+    - title: Gantt Charts
+      url: /jira-ticket-creator/cli/gantt.html
+
+- title: Examples
+  url: "#"
+  children:
+    - title: Common Workflows
+      url: /jira-ticket-creator/examples/workflows.html
+    - title: API Examples
+      url: /jira-ticket-creator/examples/api-examples.html
+
+- title: Advanced
+  url: "#"
+  children:
+    - title: Project Mapping
+      url: /jira-ticket-creator/advanced/project-mapping.html
+    - title: Go Client Library
+      url: /jira-ticket-creator/api/go-client.html
+
+- title: Help
+  url: "#"
+  children:
+    - title: Troubleshooting
+      url: /jira-ticket-creator/troubleshooting.html
+    - title: GitHub
+      url: https://github.com/clintonsteiner/jira-ticket-creator
