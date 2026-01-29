@@ -1,6 +1,6 @@
 module github.com/clintonsteiner/jira-ticket-creator
 
-go 1.25
+go 1.21
 
 require (
 	github.com/manifoldco/promptui v0.9.0
