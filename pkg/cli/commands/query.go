@@ -290,11 +290,11 @@ func NewQueryCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&opts.JQL, "jql", "", "JQL query string (required)")
-	cmd.Flags().StringVar(&opts.Format, "format", "table", "Output format: table, json, csv, markdown, html")
-	cmd.Flags().StringVar(&opts.Output, "output", "", "Output file path (default: stdout)")
-	cmd.Flags().IntVar(&opts.MaxResults, "max-results", 50, "Maximum results to fetch (max: 1000)")
-	cmd.Flags().StringVar(&opts.Fields, "fields", "", "Comma-separated fields to display (default: key,type,summary,status,assignee,priority)")
+	cmd.Flags().StringVar(&opts.JQL, "jql", "", "JQL query string (REQUIRED). Example: 'project = PROJ AND status = \"To Do\"'")
+	cmd.Flags().StringVar(&opts.Format, "format", "table", "Output format: table, json, csv, markdown, html (default: table)")
+	cmd.Flags().StringVar(&opts.Output, "output", "", "Output file path (optional, default: print to stdout)")
+	cmd.Flags().IntVar(&opts.MaxResults, "max-results", 50, "Maximum number of results to fetch (max: 1000, default: 50)")
+	cmd.Flags().StringVar(&opts.Fields, "fields", "", "Comma-separated fields to display. Available: key, type, summary, status, assignee, priority, project, description (default: key,type,summary,status,assignee,priority)")
 
 	cmd.MarkFlagRequired("jql")
 

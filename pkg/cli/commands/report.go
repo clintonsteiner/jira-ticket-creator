@@ -114,8 +114,8 @@ func NewReportCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&opts.Format, "format", "table", "Output format (table, json, csv, markdown, html)")
-	cmd.Flags().StringVar(&opts.Output, "output", "", "Output file (default: stdout)")
+	cmd.Flags().StringVar(&opts.Format, "format", "table", "Output format: table, json, csv, markdown, html (default: table)")
+	cmd.Flags().StringVar(&opts.Output, "output", "", "Output file path (optional, default: print to stdout)")
 
 	return cmd
 }

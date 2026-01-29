@@ -27,9 +27,9 @@ Displays ticket status, timeline, and workload distribution across team members.
 		},
 	}
 
-	cmd.Flags().StringVar(&outputFormat, "format", "ascii", "Output format: ascii, mermaid, html")
-	cmd.Flags().StringVar(&outputFile, "output", "", "Output file path (default: stdout)")
-	cmd.Flags().IntVar(&weeks, "weeks", 2, "Number of weeks to display (for ascii format)")
+	cmd.Flags().StringVar(&outputFormat, "format", "ascii", "Output format: ascii (ASCII art), mermaid (Mermaid diagram), html (HTML file)")
+	cmd.Flags().StringVar(&outputFile, "output", "", "Output file path (optional, default: print to stdout)")
+	cmd.Flags().IntVar(&weeks, "weeks", 2, "Number of weeks to display in the timeline (for ASCII format)")
 
 	return cmd
 }

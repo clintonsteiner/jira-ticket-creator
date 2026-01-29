@@ -177,10 +177,10 @@ JSON format (array of objects):
 		},
 	}
 
-	batchCreate.Flags().StringVar(&opts.InputFile, "input", "", "Input file (CSV or JSON) (required)")
-	batchCreate.Flags().StringVar(&opts.Format, "format", "csv", "Input format (csv or json)")
-	batchCreate.Flags().BoolVar(&opts.DryRun, "dry-run", false, "Validate without creating")
-	batchCreate.Flags().BoolVar(&opts.Verbose, "verbose", false, "Verbose output")
+	batchCreate.Flags().StringVar(&opts.InputFile, "input", "", "Input file path (CSV or JSON format, REQUIRED)")
+	batchCreate.Flags().StringVar(&opts.Format, "format", "csv", "Input file format: csv or json (default: csv)")
+	batchCreate.Flags().BoolVar(&opts.DryRun, "dry-run", false, "Validate tickets without creating them (useful for testing)")
+	batchCreate.Flags().BoolVar(&opts.Verbose, "verbose", false, "Show detailed output for each ticket validation")
 	batchCreate.MarkFlagRequired("input")
 
 	cmd.AddCommand(batchCreate)

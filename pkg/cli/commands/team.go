@@ -25,6 +25,7 @@ func NewTeamCommand() *cobra.Command {
 	summaryCmd := &cobra.Command{
 		Use:   "summary",
 		Short: "Show ticket summary by creator",
+		Long:  "Display tickets organized by creator showing who created what and ticket status",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			projectFilter, _ := cmd.Flags().GetString("project")
 			ticketFilter, _ := cmd.Flags().GetString("ticket")
@@ -33,15 +34,16 @@ func NewTeamCommand() *cobra.Command {
 			return executeTeamSummary(projectFilter, ticketFilter, creatorFilter, assigneeFilter)
 		},
 	}
-	summaryCmd.Flags().String("project", "", "Filter by project")
-	summaryCmd.Flags().String("ticket", "", "Filter by ticket key (can be comma-separated)")
-	summaryCmd.Flags().String("creator", "", "Filter by creator (can be comma-separated)")
-	summaryCmd.Flags().String("assignee", "", "Filter by assignee (can be comma-separated)")
+	summaryCmd.Flags().String("project", "", "Filter by project name")
+	summaryCmd.Flags().String("ticket", "", "Filter by ticket key (comma-separated, e.g., PROJ-1,PROJ-2)")
+	summaryCmd.Flags().String("creator", "", "Filter by creator email (comma-separated)")
+	summaryCmd.Flags().String("assignee", "", "Filter by assignee email (comma-separated)")
 
 	// Assignments subcommand
 	assignCmd := &cobra.Command{
 		Use:   "assignments",
-		Short: "Show workload and assignments",
+		Short: "Show workload and assignments by team member",
+		Long:  "Display tickets organized by assignee showing current workload distribution",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			projectFilter, _ := cmd.Flags().GetString("project")
 			ticketFilter, _ := cmd.Flags().GetString("ticket")
@@ -50,15 +52,16 @@ func NewTeamCommand() *cobra.Command {
 			return executeAssignments(projectFilter, ticketFilter, creatorFilter, assigneeFilter)
 		},
 	}
-	assignCmd.Flags().String("project", "", "Filter by project")
-	assignCmd.Flags().String("ticket", "", "Filter by ticket key (can be comma-separated)")
-	assignCmd.Flags().String("creator", "", "Filter by creator (can be comma-separated)")
-	assignCmd.Flags().String("assignee", "", "Filter by assignee (can be comma-separated)")
+	assignCmd.Flags().String("project", "", "Filter by project name")
+	assignCmd.Flags().String("ticket", "", "Filter by ticket key (comma-separated, e.g., PROJ-1,PROJ-2)")
+	assignCmd.Flags().String("creator", "", "Filter by creator email (comma-separated)")
+	assignCmd.Flags().String("assignee", "", "Filter by assignee email (comma-separated)")
 
 	// Timeline subcommand
 	timelineCmd := &cobra.Command{
 		Use:   "timeline",
 		Short: "Show project timeline and progress",
+		Long:  "Display ticket creation timeline and project progress over time",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			projectFilter, _ := cmd.Flags().GetString("project")
 			ticketFilter, _ := cmd.Flags().GetString("ticket")
@@ -67,10 +70,10 @@ func NewTeamCommand() *cobra.Command {
 			return executeTimeline(projectFilter, ticketFilter, creatorFilter, assigneeFilter)
 		},
 	}
-	timelineCmd.Flags().String("project", "", "Filter by project")
-	timelineCmd.Flags().String("ticket", "", "Filter by ticket key (can be comma-separated)")
-	timelineCmd.Flags().String("creator", "", "Filter by creator (can be comma-separated)")
-	timelineCmd.Flags().String("assignee", "", "Filter by assignee (can be comma-separated)")
+	timelineCmd.Flags().String("project", "", "Filter by project name")
+	timelineCmd.Flags().String("ticket", "", "Filter by ticket key (comma-separated, e.g., PROJ-1,PROJ-2)")
+	timelineCmd.Flags().String("creator", "", "Filter by creator email (comma-separated)")
+	timelineCmd.Flags().String("assignee", "", "Filter by assignee email (comma-separated)")
 
 	cmd.AddCommand(summaryCmd, assignCmd, timelineCmd)
 

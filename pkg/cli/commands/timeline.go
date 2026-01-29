@@ -27,8 +27,8 @@ func NewTimelineCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().IntVar(&weeks, "weeks", 2, "Number of weeks to display (default: 2)")
-	cmd.Flags().StringVar(&outputFormat, "format", "ascii", "Output format: ascii, html, mermaid")
+	cmd.Flags().IntVar(&weeks, "weeks", 2, "Number of weeks to display in the timeline (default: 2)")
+	cmd.Flags().StringVar(&outputFormat, "format", "ascii", "Output format: ascii (ASCII art), html (HTML file), mermaid (Mermaid diagram)")
 
 	return cmd
 }

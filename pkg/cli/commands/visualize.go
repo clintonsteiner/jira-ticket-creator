@@ -123,8 +123,8 @@ func NewVisualizeCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&opts.Format, "format", "tree", "Output format (tree, mermaid, dot)")
-	cmd.Flags().StringVar(&opts.Output, "output", "", "Output file (default: stdout)")
+	cmd.Flags().StringVar(&opts.Format, "format", "tree", "Output format: tree (ASCII tree), mermaid (Mermaid diagram), dot (Graphviz DOT format)")
+	cmd.Flags().StringVar(&opts.Output, "output", "", "Output file path (optional, default: print to stdout)")
 
 	return cmd
 }

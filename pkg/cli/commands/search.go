@@ -139,10 +139,10 @@ func NewSearchCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&opts.Key, "key", "", "Search by ticket key")
-	cmd.Flags().StringVar(&opts.Summary, "summary", "", "Search by summary (partial match)")
-	cmd.Flags().StringVar(&opts.JQL, "jql", "", "Search using JQL query")
-	cmd.Flags().StringVar(&opts.Format, "format", "table", "Output format (table, json)")
+	cmd.Flags().StringVar(&opts.Key, "key", "", "Search by exact ticket key (e.g., PROJ-123)")
+	cmd.Flags().StringVar(&opts.Summary, "summary", "", "Search by summary text (partial match supported)")
+	cmd.Flags().StringVar(&opts.JQL, "jql", "", "Advanced search using JQL (JIRA Query Language)")
+	cmd.Flags().StringVar(&opts.Format, "format", "table", "Output format: table, json")
 
 	return cmd
 }

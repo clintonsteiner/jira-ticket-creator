@@ -101,7 +101,7 @@ func NewTransitionCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&opts.Status, "to", "", "Target status (required)")
+	cmd.Flags().StringVar(&opts.Status, "to", "", "Target status to transition to (REQUIRED). Use available statuses from your workflow (e.g., 'In Progress', 'Done', 'Review')")
 
 	return cmd
 }

@@ -258,12 +258,12 @@ Examples:
 		},
 	}
 
-	cmd.Flags().StringVar(&opts.JQL, "jql", "", "JQL query for ticket selection (required)")
-	cmd.Flags().StringVar(&opts.MapProject, "map-project", "", "Logical project name to assign to all imported tickets")
-	cmd.Flags().StringSliceVar(&opts.MapRules, "map-rule", []string{}, "Inline mapping rules (repeatable, format: PREFIX->project)")
-	cmd.Flags().BoolVar(&opts.DryRun, "dry-run", false, "Show what would be imported without saving")
-	cmd.Flags().BoolVar(&opts.UpdateExisting, "update-existing", false, "Update existing local tickets")
-	cmd.Flags().StringVar(&opts.MappingPath, "mapping-path", "", "Path to project mapping file (default: ~/.jira/project-mapping.json)")
+	cmd.Flags().StringVar(&opts.JQL, "jql", "", "JQL query to select tickets to import (REQUIRED). Example: 'project = PROJ AND status != Done'")
+	cmd.Flags().StringVar(&opts.MapProject, "map-project", "", "Logical project name to assign to all imported tickets (simplifies grouping)")
+	cmd.Flags().StringSliceVar(&opts.MapRules, "map-rule", []string{}, "Inline mapping rules (repeatable). Format: PREFIX->project. Example: --map-rule PROJ->backend --map-rule FRONT->frontend")
+	cmd.Flags().BoolVar(&opts.DryRun, "dry-run", false, "Preview what would be imported without saving to disk")
+	cmd.Flags().BoolVar(&opts.UpdateExisting, "update-existing", false, "Update existing tickets if they already exist locally")
+	cmd.Flags().StringVar(&opts.MappingPath, "mapping-path", "", "Path to project mapping JSON file (default: ~/.jira/project-mapping.json)")
 
 	cmd.MarkFlagRequired("jql")
 

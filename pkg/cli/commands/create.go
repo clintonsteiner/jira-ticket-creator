@@ -198,16 +198,16 @@ func NewCreateCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&opts.Summary, "summary", "", "Ticket summary (required)")
-	cmd.Flags().StringVar(&opts.Description, "description", "", "Ticket description")
-	cmd.Flags().StringVar(&opts.Type, "type", "Task", "Issue type (must be valid for your JIRA project)")
-	cmd.Flags().StringVar(&opts.Priority, "priority", "Medium", "Priority (Lowest, Low, Medium, High, Highest)")
-	cmd.Flags().StringVar(&opts.Assignee, "assignee", "", "Assignee email address")
-	cmd.Flags().StringSliceVar(&opts.Labels, "labels", []string{}, "Labels to add (comma-separated)")
-	cmd.Flags().StringSliceVar(&opts.Components, "component", []string{}, "Components (comma-separated)")
-	cmd.Flags().StringSliceVar(&opts.BlockedBy, "blocked-by", []string{}, "Comma-separated list of ticket keys that block this one")
-	cmd.Flags().BoolVarP(&opts.Interactive, "interactive", "i", false, "Use interactive mode")
-	cmd.Flags().StringVar(&opts.Template, "template", "", "Use a template for creation")
+	cmd.Flags().StringVar(&opts.Summary, "summary", "", "Ticket summary (REQUIRED)")
+	cmd.Flags().StringVar(&opts.Description, "description", "", "Detailed description of the ticket")
+	cmd.Flags().StringVar(&opts.Type, "type", "Task", "Issue type (Task, Story, Bug, Epic, Subtask, etc. - must be valid for your JIRA project)")
+	cmd.Flags().StringVar(&opts.Priority, "priority", "Medium", "Priority level (Lowest, Low, Medium, High, Highest)")
+	cmd.Flags().StringVar(&opts.Assignee, "assignee", "", "Assignee email address (e.g., user@company.com)")
+	cmd.Flags().StringSliceVar(&opts.Labels, "labels", []string{}, "Labels to categorize the ticket (comma-separated, e.g., --labels bug,urgent)")
+	cmd.Flags().StringSliceVar(&opts.Components, "component", []string{}, "Components affected (comma-separated, e.g., --component backend,api)")
+	cmd.Flags().StringSliceVar(&opts.BlockedBy, "blocked-by", []string{}, "Ticket keys that block this one (comma-separated, e.g., --blocked-by PROJ-123,PROJ-124)")
+	cmd.Flags().BoolVarP(&opts.Interactive, "interactive", "i", false, "Interactive mode: prompts for all fields and fetches valid options from JIRA")
+	cmd.Flags().StringVar(&opts.Template, "template", "", "Use a predefined template for ticket creation")
 
 	cmd.MarkFlagRequired("summary")
 

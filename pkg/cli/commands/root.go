@@ -23,12 +23,12 @@ It supports creating, updating, searching, and reporting on tickets with feature
 	}
 
 	// Add persistent flags
-	cmd.PersistentFlags().String("url", "", "JIRA base URL (or set JIRA_URL env var)")
-	cmd.PersistentFlags().String("email", "", "JIRA email address (or set JIRA_EMAIL env var)")
-	cmd.PersistentFlags().String("token", "", "JIRA API token (or set JIRA_TOKEN env var)")
-	cmd.PersistentFlags().String("project", "", "JIRA project key (or set JIRA_PROJECT env var)")
-	cmd.PersistentFlags().String("ticket", "", "JIRA ticket key to extract project (or set JIRA_TICKET env var, e.g., PROJ-123)")
-	cmd.PersistentFlags().String("config", "", "Path to config file (default: ~/.jirarc)")
+	cmd.PersistentFlags().String("url", "", "JIRA base URL (e.g., https://company.atlassian.net). Can also set JIRA_URL env var")
+	cmd.PersistentFlags().String("email", "", "JIRA account email address (e.g., user@company.com). Can also set JIRA_EMAIL env var")
+	cmd.PersistentFlags().String("token", "", "JIRA API token for authentication. Can also set JIRA_TOKEN env var")
+	cmd.PersistentFlags().String("project", "", "JIRA project key (e.g., PROJ). Can also set JIRA_PROJECT env var")
+	cmd.PersistentFlags().String("ticket", "", "JIRA ticket key to extract project (e.g., PROJ-123). Can also set JIRA_TICKET env var")
+	cmd.PersistentFlags().String("config", "", "Path to configuration file (default: ~/.jirarc in YAML format)")
 
 	// Bind to viper
 	viper.BindPFlag("jira.url", cmd.PersistentFlags().Lookup("url"))

@@ -107,9 +107,9 @@ func NewUpdateCommand() *cobra.Command {
 
 	cmd.Flags().StringVar(&opts.Summary, "summary", "", "New ticket summary")
 	cmd.Flags().StringVar(&opts.Description, "description", "", "New ticket description")
-	cmd.Flags().StringVar(&opts.Priority, "priority", "", "New priority")
-	cmd.Flags().StringVar(&opts.Assignee, "assignee", "", "New assignee")
-	cmd.Flags().StringSliceVar(&opts.Labels, "labels", []string{}, "New labels (comma-separated)")
+	cmd.Flags().StringVar(&opts.Priority, "priority", "", "New priority level (Lowest, Low, Medium, High, Highest)")
+	cmd.Flags().StringVar(&opts.Assignee, "assignee", "", "New assignee email (e.g., user@company.com)")
+	cmd.Flags().StringSliceVar(&opts.Labels, "labels", []string{}, "New labels (comma-separated, e.g., --labels bug,review)")
 
 	return cmd
 }
