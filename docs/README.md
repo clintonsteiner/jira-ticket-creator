@@ -1,0 +1,159 @@
+# JIRA Ticket Creator Documentation
+
+This directory contains the GitHub Pages documentation for JIRA Ticket Creator.
+
+## Structure
+
+```
+docs/
+├── _config.yml                 # Jekyll configuration
+├── Gemfile                     # Ruby dependencies
+├── index.md                    # Homepage
+├── getting-started.md          # Getting started guide
+├── cli/                        # CLI command documentation
+│   ├── create.md
+│   ├── query.md
+│   ├── import.md
+│   ├── gantt.md
+│   └── ...
+├── api/                        # API reference
+│   ├── go-client.md
+│   ├── config.md
+│   └── ...
+├── advanced/                   # Advanced topics
+│   ├── project-mapping.md
+│   └── ...
+└── _site/                      # Generated site (ignored)
+```
+
+## Building Locally
+
+### Prerequisites
+
+- Ruby 3.1+
+- Bundler
+
+### Setup
+
+```bash
+cd docs
+bundle install
+```
+
+### Build
+
+```bash
+bundle exec jekyll build
+```
+
+### Serve Locally
+
+```bash
+bundle exec jekyll serve
+# Open http://localhost:4000/jira-ticket-creator
+```
+
+## Publishing
+
+The documentation is automatically built and published to GitHub Pages when you push to the `master` branch.
+
+The GitHub Actions workflow:
+1. Triggers on pushes to `master` (if docs/ or README.md changed)
+2. Builds the Jekyll site
+3. Deploys to GitHub Pages
+4. Available at: https://clintonsteiner.github.io/jira-ticket-creator
+
+## Writing Documentation
+
+### Markdown Format
+
+All pages are standard Markdown with YAML front matter:
+
+```markdown
+---
+layout: default
+title: Page Title
+parent: Parent Page Title  # Optional, for navigation hierarchy
+---
+
+# Page Title
+
+Your content here...
+```
+
+### Directory Structure
+
+Organize by feature/topic:
+- `docs/cli/` - CLI command documentation
+- `docs/api/` - API reference
+- `docs/advanced/` - Advanced topics
+- `docs/examples/` - Example scripts
+
+### Links
+
+Use relative links:
+```markdown
+[Link text](./other-page.md)
+[Link text](../api/go-client.md)
+```
+
+### Code Blocks
+
+Use syntax highlighting:
+````markdown
+```bash
+jira-ticket-creator --help
+```
+
+```go
+client := jira.NewClient(url, email, token)
+```
+
+```json
+{"key": "value"}
+```
+````
+
+## Theme
+
+The documentation uses the Cayman theme with customization in `_config.yml`.
+
+### Customizing Styles
+
+Create `assets/css/style.scss` to override theme styles:
+
+```scss
+---
+---
+@import "{{ site.theme }}";
+
+// Your custom styles here
+```
+
+## Deploying Without GitHub Actions
+
+If you need to deploy manually:
+
+```bash
+cd docs
+bundle exec jekyll build
+git add _site/
+git commit -m "Deploy documentation"
+git push
+```
+
+## Navigation
+
+The site uses Jekyll's built-in navigation based on file structure. Parent-child relationships are defined in front matter:
+
+```yaml
+---
+parent: API Reference
+---
+```
+
+## See Also
+
+- [Jekyll Documentation](https://jekyllrb.com/docs/)
+- [GitHub Pages Docs](https://docs.github.com/en/pages)
+- [Cayman Theme](https://github.com/pages-themes/cayman)

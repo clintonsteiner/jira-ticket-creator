@@ -1,0 +1,103 @@
+name: Deploy GitHub Pages Documentation
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - '.github/workflows/docs.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'docs/**'
+      - 'README.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+          working-directory: './docs'
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+
+      - name: Build with Jekyll
+        working-directory: './docs'
+        run: |
+          bundle install
+          bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './docs/_site'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+
+  validate:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Markdown
+        run: |
+          sudo apt-get install -y pandoc
+          for file in docs/**/*.md; do
+            echo "Checking $file..."
+            pandoc "$file" --from markdown --to html > /dev/null || exit 1
+          done
+          echo "All Markdown files are valid"
+
+      - name: Check for broken links
+        run: |
+          # Simple link check in markdown files
+          for file in docs/**/*.md; do
+            # Check for [text](url) format
+            grep -o '\[.*\](.*)' "$file" | while read -r link; do
+              url=$(echo "$link" | sed 's/\[.*\](\(.*\))/\1/')
+              # Skip absolute URLs and anchors
+              if [[ ! "$url" =~ ^http && ! "$url" =~ ^# ]]; then
+                # Check if file exists
+                if [[ "$url" != *"/../"* ]]; then
+                  if [[ ! -f "docs/${url}" && ! -f "docs/${url}.md" ]]; then
+                    echo "⚠️  Potential broken link: $url in $file"
+                  fi
+                fi
+              fi
+            done
+          done
+          echo "Link check complete"

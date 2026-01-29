@@ -1,0 +1,13 @@
+source 'https://rubygems.org'
+
+gem 'jekyll', '~> 4.3'
+gem 'jekyll-theme-cayman'
+gem 'jekyll-sitemap'
+gem 'jekyll-seo-tag'
+gem 'webrick', '~> 1.7'  # Fixes Ruby 3.0+ compatibility
+
+group :jekyll_plugins do
+  gem 'jekyll-feed'
+  gem 'jekyll-sitemap'
+  gem 'jekyll-seo-tag'
+end

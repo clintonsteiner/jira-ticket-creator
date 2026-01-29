@@ -1,0 +1,22 @@
+title: JIRA Ticket Creator
+description: A powerful CLI tool for managing JIRA tickets with batch operations, dependency visualization, and advanced reporting
+url: "https://clintonsteiner.github.io/jira-ticket-creator"
+baseurl: "/jira-ticket-creator"
+
+# Theme
+theme: jekyll-theme-cayman
+
+# Navigation
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Exclude from processing
+exclude:
+  - .gitignore
+  - README.md
+  - LICENSE
