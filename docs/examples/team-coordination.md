@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Multi-Team Coordination
-parent: Examples & Guides
+parent: Examples
 nav_order: 5
 has_toc: true
 ---

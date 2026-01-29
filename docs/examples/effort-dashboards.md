@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Building Effort Dashboards
-parent: Examples & Guides
+parent: Examples
 nav_order: 4
 has_toc: true
 ---

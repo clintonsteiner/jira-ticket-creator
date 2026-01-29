@@ -1,7 +1,7 @@
 ---
 layout: default
 title: API Examples
-parent: Examples & Guides
+parent: Examples
 nav_order: 2
 has_toc: true
 ---

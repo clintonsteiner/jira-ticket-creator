@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Examples & Guides
+title: Examples
 nav_order: 4
 has_children: true
 has_toc: true
 ---
 
-# Examples & Guides
+# Examples
 
 Real-world workflows and guides for managing JIRA efforts with jira-ticket-creator.
 

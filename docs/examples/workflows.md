@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Common Workflows
-parent: Examples & Guides
+parent: Examples
 nav_order: 1
 has_toc: true
 ---
