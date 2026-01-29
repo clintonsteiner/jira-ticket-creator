@@ -1,0 +1,87 @@
+"""
+Example: Using JIRA Ticket Creator from Python
+
+This example demonstrates how to use the JiraClient
+to create tickets directly from Python code.
+"""
+
+from jira_client import JiraClient
+
+
+def main():
+    # Initialize client
+    client = JiraClient(
+        url="https://company.atlassian.net",
+        email="user@company.com",
+        token="your-api-token",
+        project="PROJ"
+    )
+
+    print(f"Client initialized. Library version: {client.get_version()}")
+
+    # Example 1: Create a simple task
+    print("\n[Example 1] Creating a simple task...")
+    try:
+        ticket = client.create_ticket(
+            summary="Fix login page bug",
+            description="Login button not responding on mobile",
+            issue_type="Bug",
+            priority="High"
+        )
+        print(f"Created: {ticket['key']}")
+        print(f"URL: {ticket['url']}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+    # Example 2: Create a story with labels
+    print("\n[Example 2] Creating a story with labels...")
+    try:
+        ticket = client.create_ticket(
+            summary="Implement OAuth 2.0 authentication",
+            description="Add OAuth 2.0 support to the platform",
+            issue_type="Story",
+            priority="High",
+            labels=["auth", "security", "oauth"],
+            assignee="john@company.com"
+        )
+        print(f"Created: {ticket['key']}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+    # Example 3: Create a task with blockers
+    print("\n[Example 3] Creating a task with blockers...")
+    try:
+        ticket = client.create_ticket(
+            summary="Update API endpoints",
+            issue_type="Task",
+            priority="Medium",
+            blocked_by=["PROJ-123", "PROJ-124"]
+        )
+        print(f"Created: {ticket['key']}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+    # Example 4: Extract project from ticket key
+    print("\n[Example 4] Extracting project key from ticket...")
+    try:
+        project = client.extract_project_key("PROJ-123")
+        print(f"Project extracted: {project}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+    # Example 5: Create client with ticket key
+    print("\n[Example 5] Creating client from ticket key...")
+    try:
+        client2 = JiraClient(
+            url="https://company.atlassian.net",
+            email="user@company.com",
+            token="your-api-token",
+            ticket="PROJ-100"  # Project auto-extracted
+        )
+        print(f"Client created with project: {client2.project}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
