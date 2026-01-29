@@ -14,13 +14,33 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from jira_client import JiraClient
 
 
+class MockCLibFunction:
+    """Mock ctypes function"""
+
+    def __init__(self, func):
+        self.func = func
+        self.argtypes = None
+        self.restype = None
+
+    def __call__(self, *args, **kwargs):
+        return self.func(*args, **kwargs)
+
+
 class MockCLib:
     """Mock C library for testing"""
 
     def __init__(self):
         self.version = "1.0.0"
+        # Wrap functions to support ctypes interface
+        self.CreateTicketJSON = MockCLibFunction(self._create_ticket_json)
+        self.GetTicket = MockCLibFunction(self._get_ticket)
+        self.SearchTickets = MockCLibFunction(self._search_tickets)
+        self.UpdateTicket = MockCLibFunction(self._update_ticket)
+        self.ExtractProjectKey = MockCLibFunction(self._extract_project_key)
+        self.FreeMemory = MockCLibFunction(self._free_memory)
+        self.Version = MockCLibFunction(self._version)
 
-    def CreateTicketJSON(self, url, email, token, project, json_data):
+    def _create_ticket_json(self, url, email, token, project, json_data):
         """Mock CreateTicketJSON"""
         data = json.loads(json_data.decode())
         response = {
@@ -32,7 +52,7 @@ class MockCLib:
             response["error"] = data["error"]
         return json.dumps(response).encode()
 
-    def GetTicket(self, url, email, token, key):
+    def _get_ticket(self, url, email, token, key):
         """Mock GetTicket"""
         if key.decode() == "PROJ-123":
             response = {
@@ -40,7 +60,6 @@ class MockCLib:
                 "id": "10000",
                 "summary": "Test ticket",
                 "description": "Test description",
-                "status": "To Do",
                 "issue_type": "Task",
                 "priority": "Medium",
                 "assignee": "user@company.com",
@@ -51,7 +70,7 @@ class MockCLib:
             response = {"error": "Ticket not found"}
         return json.dumps(response).encode()
 
-    def SearchTickets(self, url, email, token, jql):
+    def _search_tickets(self, url, email, token, jql):
         """Mock SearchTickets"""
         response = {
             "total": 1,
@@ -60,7 +79,6 @@ class MockCLib:
                 {
                     "key": "PROJ-123",
                     "summary": "Test ticket",
-                    "status": "To Do",
                     "issue_type": "Task",
                     "priority": "Medium",
                     "assignee": "user@company.com",
@@ -69,21 +87,21 @@ class MockCLib:
         }
         return json.dumps(response).encode()
 
-    def UpdateTicket(self, url, email, token, key, json_data):
+    def _update_ticket(self, url, email, token, key, json_data):
         """Mock UpdateTicket"""
         response = {"key": key.decode(), "message": "Update request received"}
         return json.dumps(response).encode()
 
-    def ExtractProjectKey(self, ticket_key):
+    def _extract_project_key(self, ticket_key):
         """Mock ExtractProjectKey"""
         parts = ticket_key.decode().split("-")
         return parts[0].encode() if len(parts) > 1 else b""
 
-    def FreeMemory(self, ptr):
+    def _free_memory(self, ptr):
         """Mock FreeMemory - does nothing"""
         pass
 
-    def Version(self):
+    def _version(self):
         """Mock Version"""
         return self.version.encode()
 
@@ -108,22 +126,21 @@ class TestJiraClientInit(unittest.TestCase):
         self.assertEqual(client.url, "https://company.atlassian.net")
 
     @mock.patch("jira_client.JiraClient._load_library")
-    def test_init_with_ticket(self, mock_load):
+    @mock.patch("jira_client.JiraClient._extract_project_sync")
+    def test_init_with_ticket(self, mock_extract, mock_load):
         """Test initialization with ticket key"""
         mock_lib = MockCLib()
         mock_load.return_value = mock_lib
+        mock_extract.return_value = "PROJ"
 
-        with mock.patch.object(
-            mock_lib, "ExtractProjectKey", return_value=b"PROJ"
-        ):
-            client = JiraClient(
-                url="https://company.atlassian.net",
-                email="user@company.com",
-                token="token",
-                ticket="PROJ-100",
-            )
+        client = JiraClient(
+            url="https://company.atlassian.net",
+            email="user@company.com",
+            token="token",
+            ticket="PROJ-100",
+        )
 
-            self.assertEqual(client.project, "PROJ")
+        self.assertEqual(client.project, "PROJ")
 
     @mock.patch("jira_client.JiraClient._load_library")
     def test_init_without_project_or_ticket(self, mock_load):
@@ -224,7 +241,7 @@ class TestGetTicket(unittest.TestCase):
 
         self.assertEqual(ticket["key"], "PROJ-123")
         self.assertEqual(ticket["summary"], "Test ticket")
-        self.assertEqual(ticket["status"], "To Do")
+        self.assertEqual(ticket["issue_type"], "Task")
 
     @mock.patch("jira_client.JiraClient._load_library")
     def test_get_nonexistent_ticket(self, mock_load):
