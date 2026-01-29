@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Getting Started
+nav_order: 2
 ---
 
 # Getting Started
@@ -44,10 +45,10 @@ export JIRA_PROJECT=PROJ
 **Option 2: Config file** (~/.jirarc)
 ```yaml
 jira:
-  url: https://company.atlassian.net
-  email: your-email@company.com
-  token: your-api-token
-  project: PROJ
+ url: https://company.atlassian.net
+ email: your-email@company.com
+ token: your-api-token
+ project: PROJ
 ```
 
 Make it readable only by you:
@@ -137,13 +138,13 @@ cat ~/.jirarc
 
 ## Getting Help
 
-- See [Troubleshooting](./troubleshooting.html) for common problems
+- See [Troubleshooting](/jira-ticket-creator/troubleshooting) for common problems
 - Check command help: `jira-ticket-creator [command] --help`
 - Report issues: https://github.com/clintonsteiner/jira-ticket-creator/issues
 
 ## What's Next
 
-- [Search Examples](./cli/search.html)
-- [Import with Project Mapping](./cli/import.html)
-- [Common Workflows](./examples/workflows.html)
-- [Complete Command Reference](./cli/create.html)
+- [Search Examples](/jira-ticket-creator/cli/search)
+- [Import with Project Mapping](/jira-ticket-creator/cli/import)
+- [Common Workflows](/jira-ticket-creator/examples/workflows)
+- [Complete Command Reference](/jira-ticket-creator/cli)

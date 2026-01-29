@@ -2,6 +2,7 @@
 layout: default
 title: Create Command
 parent: CLI Commands
+nav_order: 1
 ---
 
 # Create Command
@@ -39,21 +40,21 @@ jira-ticket-creator create --summary "Fix login bug"
 ### Detailed Ticket
 ```bash
 jira-ticket-creator create \
-  --summary "Implement OAuth 2.0" \
-  --description "Add OAuth authentication to API" \
-  --type Story \
-  --priority High \
-  --assignee john@company.com \
-  --labels "auth,security" \
-  --components "API"
+ --summary "Implement OAuth 2.0" \
+ --description "Add OAuth authentication to API" \
+ --type Story \
+ --priority High \
+ --assignee john@company.com \
+ --labels "auth,security" \
+ --components "API"
 ```
 
 ### Ticket with Dependencies
 ```bash
 jira-ticket-creator create \
-  --summary "Update API docs" \
-  --priority Medium \
-  --blocked-by "PROJ-100"
+ --summary "Update API docs" \
+ --priority Medium \
+ --blocked-by "PROJ-100"
 ```
 
 ### Interactive Mode
@@ -100,10 +101,10 @@ You can provide credentials via:
 **1. Command-line flags (highest priority)**
 ```bash
 jira-ticket-creator create --summary "Task" \
-  --url https://company.atlassian.net \
-  --email user@company.com \
-  --token api-token \
-  --project PROJ
+ --url https://company.atlassian.net \
+ --email user@company.com \
+ --token api-token \
+ --project PROJ
 ```
 
 **2. Environment variables**
@@ -118,10 +119,10 @@ jira-ticket-creator create --summary "Task"
 **3. Configuration file (~/.jirarc)**
 ```yaml
 jira:
-  url: https://company.atlassian.net
-  email: user@company.com
-  token: api-token
-  project: PROJ
+ url: https://company.atlassian.net
+ email: user@company.com
+ token: api-token
+ project: PROJ
 ```
 
 ## Return Value
@@ -129,7 +130,7 @@ jira:
 The command returns the newly created ticket key:
 
 ```
-✅ Ticket created successfully!
+ Ticket created successfully!
 PROJ-123
 ```
 

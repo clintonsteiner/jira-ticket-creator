@@ -2,6 +2,7 @@
 layout: default
 title: Search Command
 parent: CLI Commands
+nav_order: 2
 ---
 
 # Search Command
@@ -36,9 +37,9 @@ jira-ticket-creator search --key PROJ-123
 
 Output:
 ```
-KEY         TYPE   SUMMARY              STATUS
----         ----   -------              ------
-PROJ-123    Story  Implement OAuth      In Progress
+KEY TYPE SUMMARY STATUS
+--- ---- ------- ------
+PROJ-123 Story Implement OAuth In Progress
 ```
 
 ### Search by Summary (Partial Match)
@@ -209,12 +210,12 @@ jira-ticket-creator search --jql "project = PROJ" --format table
 
 Output:
 ```
-KEY         TYPE   SUMMARY                      STATUS
----         ----   -------                      ------
-PROJ-100    Story  Implement OAuth              In Progress
-PROJ-101    Task   Write documentation          To Do
-PROJ-102    Bug    Fix login issue              To Do
-PROJ-103    Story  Add dark mode                Done
+KEY TYPE SUMMARY STATUS
+--- ---- ------- ------
+PROJ-100 Story Implement OAuth In Progress
+PROJ-101 Task Write documentation To Do
+PROJ-102 Bug Fix login issue To Do
+PROJ-103 Story Add dark mode Done
 ```
 
 #### JSON Format
@@ -226,16 +227,16 @@ jira-ticket-creator search --jql "project = PROJ" --format json
 Output:
 ```json
 [
-  {
-    "key": "PROJ-100",
-    "fields": {
-      "summary": "Implement OAuth",
-      "issuetype": {"name": "Story"},
-      "status": {"name": "In Progress"},
-      "priority": {"name": "High"},
-      "assignee": {"name": "john"}
-    }
-  }
+ {
+ "key": "PROJ-100",
+ "fields": {
+ "summary": "Implement OAuth",
+ "issuetype": {"name": "Story"},
+ "status": {"name": "In Progress"},
+ "priority": {"name": "High"},
+ "assignee": {"name": "john"}
+ }
+ }
 ]
 ```
 
@@ -355,19 +356,19 @@ tmux new-session -d -s jira 'watch -n 60 "jira-ticket-creator search --jql \"sta
 # dashboard.sh - Monitor key metrics
 
 while true; do
-  clear
-  echo "=== JIRA DASHBOARD ==="
-  echo "Last updated: $(date)"
-  echo ""
+ clear
+ echo "=== JIRA DASHBOARD ==="
+ echo "Last updated: $(date)"
+ echo ""
 
-  echo "My Work ($(jira-ticket-creator search --jql 'assignee = currentUser() AND status != Done' | wc -l) items)"
-  jira-ticket-creator search --jql "assignee = currentUser() AND status != Done"
+ echo "My Work ($(jira-ticket-creator search --jql 'assignee = currentUser() AND status != Done' | wc -l) items)"
+ jira-ticket-creator search --jql "assignee = currentUser() AND status != Done"
 
-  echo ""
-  echo "Critical Issues ($(jira-ticket-creator search --jql 'priority = Critical' | wc -l) items)"
-  jira-ticket-creator search --jql "priority = Critical"
+ echo ""
+ echo "Critical Issues ($(jira-ticket-creator search --jql 'priority = Critical' | wc -l) items)"
+ jira-ticket-creator search --jql "priority = Critical"
 
-  sleep 300  # Update every 5 minutes
+ sleep 300 # Update every 5 minutes
 done
 ```
 

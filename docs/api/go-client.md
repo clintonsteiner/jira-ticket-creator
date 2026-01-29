@@ -2,6 +2,7 @@
 layout: default
 title: Go Client Library
 parent: API Reference
+nav_order: 1
 ---
 
 # Go Client Library
@@ -432,7 +433,7 @@ func processTicketsConc(service *jira.IssueService, keys []string) {
 		go func(k string) {
 			defer wg.Done()
 
-			semaphore <- struct{}{}        // Acquire
+			semaphore <- struct{}{} // Acquire
 			defer func() { <-semaphore }() // Release
 
 			issue, err := service.GetIssue(k)

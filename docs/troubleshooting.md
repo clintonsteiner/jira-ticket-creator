@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Troubleshooting & FAQ
+nav_order: 7
 ---
 
 # Troubleshooting & FAQ
@@ -16,26 +17,26 @@ Solutions to common issues and frequently asked questions.
 **Solutions:**
 
 1. **Use full path:**
-   ```bash
-   /path/to/jira-ticket-creator --help
-   ```
+ ```bash
+ /path/to/jira-ticket-creator --help
+ ```
 
 2. **Add to PATH:**
-   ```bash
-   export PATH=$PATH:/path/to/directory
-   jira-ticket-creator --help
-   ```
+ ```bash
+ export PATH=$PATH:/path/to/directory
+ jira-ticket-creator --help
+ ```
 
 3. **Move to /usr/local/bin:**
-   ```bash
-   sudo mv jira-ticket-creator /usr/local/bin/
-   jira-ticket-creator --help
-   ```
+ ```bash
+ sudo mv jira-ticket-creator /usr/local/bin/
+ jira-ticket-creator --help
+ ```
 
 4. **Use Go directly:**
-   ```bash
-   go run github.com/clintonsteiner/jira-ticket-creator/cmd/jira-ticket-creator@latest --help
-   ```
+ ```bash
+ go run github.com/clintonsteiner/jira-ticket-creator/cmd/jira-ticket-creator@latest --help
+ ```
 
 ### Error: "failed to build"
 
@@ -57,32 +58,32 @@ go build -o jira-ticket-creator ./cmd/jira-ticket-creator
 **Solutions:**
 
 1. **Check environment variables:**
-   ```bash
-   echo "URL: $JIRA_URL"
-   echo "Email: $JIRA_EMAIL"
-   echo "Token: $JIRA_TOKEN"
-   echo "Project: $JIRA_PROJECT"
-   ```
+ ```bash
+ echo "URL: $JIRA_URL"
+ echo "Email: $JIRA_EMAIL"
+ echo "Token: $JIRA_TOKEN"
+ echo "Project: $JIRA_PROJECT"
+ ```
 
 2. **Set credentials:**
-   ```bash
-   export JIRA_URL=https://company.atlassian.net
-   export JIRA_EMAIL=user@company.com
-   export JIRA_TOKEN=api-token
-   export JIRA_PROJECT=PROJ
-   ```
+ ```bash
+ export JIRA_URL=https://company.atlassian.net
+ export JIRA_EMAIL=user@company.com
+ export JIRA_TOKEN=api-token
+ export JIRA_PROJECT=PROJ
+ ```
 
 3. **Create config file:**
-   ```bash
-   cat > ~/.jirarc << 'EOF'
-   jira:
-     url: https://company.atlassian.net
-     email: user@company.com
-     token: api-token
-     project: PROJ
-   EOF
-   chmod 600 ~/.jirarc
-   ```
+ ```bash
+ cat > ~/.jirarc << 'EOF'
+ jira:
+ url: https://company.atlassian.net
+ email: user@company.com
+ token: api-token
+ project: PROJ
+ EOF
+ chmod 600 ~/.jirarc
+ ```
 
 ### Error: "unauthorized" or "401"
 
@@ -91,19 +92,19 @@ go build -o jira-ticket-creator ./cmd/jira-ticket-creator
 **Solutions:**
 
 1. **Verify token is API token, not password:**
-   - Go to https://id.atlassian.com/manage-profile/security/api-tokens
-   - Create or regenerate your API token
+ - Go to https://id.atlassian.com/manage-profile/security/api-tokens
+ - Create or regenerate your API token
 
 2. **Check email address:**
-   ```bash
-   # Must match JIRA login email, not username
-   export JIRA_EMAIL=actual-email@company.com
-   ```
+ ```bash
+ # Must match JIRA login email, not username
+ export JIRA_EMAIL=actual-email@company.com
+ ```
 
 3. **Test credentials:**
-   ```bash
-   jira-ticket-creator search --key PROJ-1
-   ```
+ ```bash
+ jira-ticket-creator search --key PROJ-1
+ ```
 
 ### Error: "project PROJ not found"
 
@@ -112,17 +113,17 @@ go build -o jira-ticket-creator ./cmd/jira-ticket-creator
 **Solutions:**
 
 1. **Verify project key:**
-   - Log into JIRA
-   - Check the correct project key (in URL or project settings)
+ - Log into JIRA
+ - Check the correct project key (in URL or project settings)
 
 2. **Check permissions:**
-   - Ensure your user has access to the project
-   - Check role/permissions in project settings
+ - Ensure your user has access to the project
+ - Check role/permissions in project settings
 
 3. **Use different project:**
-   ```bash
-   jira-ticket-creator create --summary "Test" --project DIFFERENT-PROJ
-   ```
+ ```bash
+ jira-ticket-creator create --summary "Test" --project DIFFERENT-PROJ
+ ```
 
 ## Configuration Issues
 
@@ -142,22 +143,22 @@ jira-ticket-creator [command] --help
 **Solutions:**
 
 1. **Ensure correct location:**
-   ```bash
-   cat ~/.jirarc
-   ```
+ ```bash
+ cat ~/.jirarc
+ ```
 
 2. **Check format (must be YAML):**
-   ```yaml
-   jira:
-     url: https://company.atlassian.net
-     email: user@company.com
-     token: api-token
-   ```
+ ```yaml
+ jira:
+ url: https://company.atlassian.net
+ email: user@company.com
+ token: api-token
+ ```
 
 3. **Override with env vars:**
-   ```bash
-   JIRA_URL=https://... JIRA_EMAIL=... jira-ticket-creator create --summary "Test"
-   ```
+ ```bash
+ JIRA_URL=https://... JIRA_EMAIL=... jira-ticket-creator create --summary "Test"
+ ```
 
 ## Command Execution Issues
 
@@ -186,20 +187,20 @@ jira-ticket-creator search --jql "project = PROJ" | grep KEY
 **Solutions:**
 
 1. **Check JQL syntax:**
-   ```bash
-   # Test in JIRA UI first
-   jira-ticket-creator search --jql "project = PROJ"
-   ```
+ ```bash
+ # Test in JIRA UI first
+ jira-ticket-creator search --jql "project = PROJ"
+ ```
 
 2. **Verify project has tickets:**
-   ```bash
-   jira-ticket-creator search --jql "project = PROJ"
-   ```
+ ```bash
+ jira-ticket-creator search --jql "project = PROJ"
+ ```
 
 3. **Try simpler query:**
-   ```bash
-   jira-ticket-creator search --jql "project = PROJ" | head -5
-   ```
+ ```bash
+ jira-ticket-creator search --jql "project = PROJ" | head -5
+ ```
 
 ## Storage Issues
 
@@ -224,15 +225,15 @@ ls -la ~/.jira
 **Solution:**
 
 1. **Backup old file:**
-   ```bash
-   cp ~/.jira/tickets.json ~/.jira/tickets.json.bak
-   ```
+ ```bash
+ cp ~/.jira/tickets.json ~/.jira/tickets.json.bak
+ ```
 
 2. **Start fresh:**
-   ```bash
-   rm ~/.jira/tickets.json
-   jira-ticket-creator create --summary "First ticket"
-   ```
+ ```bash
+ rm ~/.jira/tickets.json
+ jira-ticket-creator create --summary "First ticket"
+ ```
 
 ### Tickets not persisting
 
@@ -266,20 +267,20 @@ head -5 ~/.jira/tickets.json
 **Solutions:**
 
 1. **Verify tickets exist:**
-   ```bash
-   ls -la ~/.jira/tickets.json
-   wc -l ~/.jira/tickets.json
-   ```
+ ```bash
+ ls -la ~/.jira/tickets.json
+ wc -l ~/.jira/tickets.json
+ ```
 
 2. **Check team summary:**
-   ```bash
-   jira-ticket-creator team summary
-   ```
+ ```bash
+ jira-ticket-creator team summary
+ ```
 
 3. **Query directly:**
-   ```bash
-   jira-ticket-creator query --jql "project = PROJ"
-   ```
+ ```bash
+ jira-ticket-creator query --jql "project = PROJ"
+ ```
 
 ## Performance Issues
 
@@ -290,22 +291,22 @@ head -5 ~/.jira/tickets.json
 **Solutions:**
 
 1. **Reduce result set:**
-   ```bash
-   jira-ticket-creator query --jql "project = PROJ AND status = 'To Do'" --max-results 50
-   ```
+ ```bash
+ jira-ticket-creator query --jql "project = PROJ AND status = 'To Do'" --max-results 50
+ ```
 
 2. **Use specific filters:**
-   ```bash
-   # Bad (broad)
-   jira-ticket-creator query --jql "summary ~ 'test'"
+ ```bash
+ # Bad (broad)
+ jira-ticket-creator query --jql "summary ~ 'test'"
 
-   # Better (specific)
-   jira-ticket-creator query --jql "project = PROJ AND summary ~ 'test'"
-   ```
+ # Better (specific)
+ jira-ticket-creator query --jql "project = PROJ AND summary ~ 'test'"
+ ```
 
 3. **Check JIRA performance:**
-   - Try the query in JIRA UI first
-   - Check if JIRA instance is slow
+ - Try the query in JIRA UI first
+ - Check if JIRA instance is slow
 
 ### Memory issues with large imports
 
@@ -314,16 +315,16 @@ head -5 ~/.jira/tickets.json
 **Solutions:**
 
 1. **Import in batches:**
-   ```bash
-   # Instead of all at once
-   jira-ticket-creator import --jql "project = PROJ AND created >= -1d"
-   jira-ticket-creator import --jql "project = PROJ AND created <= -1d" --update-existing
-   ```
+ ```bash
+ # Instead of all at once
+ jira-ticket-creator import --jql "project = PROJ AND created >= -1d"
+ jira-ticket-creator import --jql "project = PROJ AND created <= -1d" --update-existing
+ ```
 
 2. **Limit results:**
-   ```bash
-   jira-ticket-creator query --jql "project = PROJ" --max-results 500
-   ```
+ ```bash
+ jira-ticket-creator query --jql "project = PROJ" --max-results 500
+ ```
 
 ## Advanced Debugging
 
@@ -338,7 +339,7 @@ VERBOSE=1 jira-ticket-creator create --summary "Test"
 ```bash
 # Use curl to test API directly
 curl -u "email:token" \
-  "https://company.atlassian.net/rest/api/2/issue/PROJ-1"
+ "https://company.atlassian.net/rest/api/2/issue/PROJ-1"
 ```
 
 ### Validate configuration
@@ -354,17 +355,17 @@ echo "JIRA_PROJECT: $JIRA_PROJECT"
 
 # Test connection
 if curl -s -u "$JIRA_EMAIL:$JIRA_TOKEN" \
-  "$JIRA_URL/rest/api/2/myself" > /dev/null; then
-  echo "✅ Authentication successful"
+ "$JIRA_URL/rest/api/2/myself" > /dev/null; then
+ echo " Authentication successful"
 else
-  echo "❌ Authentication failed"
+ echo " Authentication failed"
 fi
 
 # Check for config file
 if [ -f ~/.jirarc ]; then
-  echo "✅ Config file found"
+ echo " Config file found"
 else
-  echo "⚠️  No config file found"
+ echo " No config file found"
 fi
 ```
 
@@ -390,10 +391,10 @@ jira-ticket-creator create --summary "From account 2"
 **A:** Use batch operations:
 ```bash
 jira-ticket-creator search --jql "status = 'To Do'" --format json | \
-  jq -r '.[] | .key' | \
-  while read KEY; do
-    jira-ticket-creator update "$KEY" --priority High
-  done
+ jq -r '.[] | .key' | \
+ while read KEY; do
+ jira-ticket-creator update "$KEY" --priority High
+ done
 ```
 
 ### Q: Can I schedule automatic imports?
@@ -422,13 +423,13 @@ git commit -m "Backup tickets"
 ```bash
 # Export from old instance
 JIRA_URL=old.atlassian.net JIRA_EMAIL=... JIRA_TOKEN=... \
-  jira-ticket-creator import --jql "project = PROJ"
+ jira-ticket-creator import --jql "project = PROJ"
 
 # Tickets now in ~/.jira/tickets.json
 
 # Import to new instance
 JIRA_URL=new.atlassian.net JIRA_EMAIL=... JIRA_TOKEN=... \
-  jira-ticket-creator create ...
+ jira-ticket-creator create ...
 ```
 
 ### Q: Can I use custom fields?
@@ -473,20 +474,20 @@ jira-ticket-creator search --key PROJ-1
 If you find a bug:
 
 1. **Reproduce it with minimal example:**
-   ```bash
-   jira-ticket-creator [command] --flag value
-   ```
+ ```bash
+ jira-ticket-creator [command] --flag value
+ ```
 
 2. **Check error message:**
-   ```bash
-   jira-ticket-creator [command] 2>&1 | cat
-   ```
+ ```bash
+ jira-ticket-creator [command] 2>&1 | cat
+ ```
 
 3. **Open GitHub issue** with:
-   - Command that failed
-   - Error message
-   - Expected behavior
-   - System info (OS, Go version)
+ - Command that failed
+ - Error message
+ - Expected behavior
+ - System info (OS, Go version)
 
 ## See Also
 

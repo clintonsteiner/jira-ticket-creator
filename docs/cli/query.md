@@ -2,6 +2,7 @@
 layout: default
 title: Query Command
 parent: CLI Commands
+nav_order: 3
 ---
 
 # Query Command
@@ -53,11 +54,11 @@ jira-ticket-creator query --jql "type = Bug AND priority = High"
 ```bash
 # Display specific fields
 jira-ticket-creator query --jql "project = PROJ" \
-  --fields "key,summary,status,assignee"
+ --fields "key,summary,status,assignee"
 
 # Minimal output
 jira-ticket-creator query --jql "project = PROJ" \
-  --fields "key,summary"
+ --fields "key,summary"
 ```
 
 ### Export to Different Formats
@@ -65,29 +66,29 @@ jira-ticket-creator query --jql "project = PROJ" \
 **JSON**
 ```bash
 jira-ticket-creator query --jql "project = PROJ" \
-  --format json \
-  --output tickets.json
+ --format json \
+ --output tickets.json
 ```
 
 **CSV**
 ```bash
 jira-ticket-creator query --jql "status = 'In Progress'" \
-  --format csv \
-  --output active.csv
+ --format csv \
+ --output active.csv
 ```
 
 **Markdown**
 ```bash
 jira-ticket-creator query --jql "priority = Critical" \
-  --format markdown \
-  --output critical.md
+ --format markdown \
+ --output critical.md
 ```
 
 **HTML**
 ```bash
 jira-ticket-creator query --jql "project = PROJ" \
-  --format html \
-  --output tickets.html
+ --format html \
+ --output tickets.html
 # Open in browser
 open tickets.html
 ```
@@ -96,9 +97,9 @@ open tickets.html
 ```bash
 # Fetch many results
 jira-ticket-creator query --jql "project = PROJ" \
-  --max-results 500 \
-  --format json \
-  --output all-tickets.json
+ --max-results 500 \
+ --format json \
+ --output all-tickets.json
 ```
 
 ### Complex Queries
@@ -144,11 +145,11 @@ Date operators:
 
 ### Table Format (default)
 ```
-KEY        TYPE   SUMMARY                              STATUS         ASSIGNEE     PRIORITY
-------     ----   --------                             ------         ---------    --------
-PROJ-101   Story  Implement OAuth                      In Progress    john@co.com  High
-PROJ-102   Bug    Fix login issue                      To Do          jane@co.com  Critical
-PROJ-103   Task   Update documentation                 Done                       Medium
+KEY TYPE SUMMARY STATUS ASSIGNEE PRIORITY
+------ ---- -------- ------ --------- --------
+PROJ-101 Story Implement OAuth In Progress john@co.com High
+PROJ-102 Bug Fix login issue To Do jane@co.com Critical
+PROJ-103 Task Update documentation Done Medium
 ```
 
 ### CSV Format
@@ -170,42 +171,42 @@ PROJ-103,Task,Update documentation,Done,,Medium
 ### JSON Format
 ```json
 [
-  {
-    "key": "PROJ-101",
-    "fields": {
-      "summary": "Implement OAuth",
-      "status": {"name": "In Progress"},
-      "assignee": {"name": "john@co.com"},
-      "priority": {"name": "High"}
-    }
-  }
+ {
+ "key": "PROJ-101",
+ "fields": {
+ "summary": "Implement OAuth",
+ "status": {"name": "In Progress"},
+ "assignee": {"name": "john@co.com"},
+ "priority": {"name": "High"}
+ }
+ }
 ]
 ```
 
 ## Tips & Tricks
 
 1. **Save queries for reuse**
-   ```bash
-   alias my-backlog='jira-ticket-creator query --jql "project = PROJ AND status = \"To Do\""'
-   my-backlog
-   ```
+ ```bash
+ alias my-backlog='jira-ticket-creator query --jql "project = PROJ AND status = \"To Do\""'
+ my-backlog
+ ```
 
 2. **Pipe to other tools**
-   ```bash
-   jira-ticket-creator query --jql "project = PROJ" --format csv | column -t -s,
-   ```
+ ```bash
+ jira-ticket-creator query --jql "project = PROJ" --format csv | column -t -s,
+ ```
 
 3. **Create dashboards**
-   ```bash
-   jira-ticket-creator query --jql "assignee = currentUser()" \
-     --format html \
-     --output my-work.html
-   ```
+ ```bash
+ jira-ticket-creator query --jql "assignee = currentUser()" \
+ --format html \
+ --output my-work.html
+ ```
 
 4. **Monitor critical items**
-   ```bash
-   watch -n 300 "jira-ticket-creator query --jql 'priority = Critical' --format table"
-   ```
+ ```bash
+ watch -n 300 "jira-ticket-creator query --jql 'priority = Critical' --format table"
+ ```
 
 ## See Also
 

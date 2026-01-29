@@ -1,7 +1,8 @@
 ---
 layout: default
 title: Project Mapping
-parent: Advanced Topics
+parent: Advanced
+nav_order: 1
 ---
 
 # Project Mapping Configuration
@@ -24,16 +25,16 @@ Default location: `~/.jira/project-mapping.json`
 
 ```json
 {
-  "mappings": {
-    "backend": {
-      "ticket_keys": ["PROJ", "API", "DB"],
-      "description": "Backend Team"
-    },
-    "frontend": {
-      "ticket_keys": ["UI", "WEB", "MOBILE"],
-      "description": "Frontend Team"
-    }
-  }
+ "mappings": {
+ "backend": {
+ "ticket_keys": ["PROJ", "API", "DB"],
+ "description": "Backend Team"
+ },
+ "frontend": {
+ "ticket_keys": ["UI", "WEB", "MOBILE"],
+ "description": "Frontend Team"
+ }
+ }
 }
 ```
 
@@ -43,12 +44,12 @@ Default location: `~/.jira/project-mapping.json`
 
 ```json
 {
-  "mappings": {
-    "main": {
-      "ticket_keys": ["PROJ"],
-      "description": "Main Project"
-    }
-  }
+ "mappings": {
+ "main": {
+ "ticket_keys": ["PROJ"],
+ "description": "Main Project"
+ }
+ }
 }
 ```
 
@@ -56,24 +57,24 @@ Default location: `~/.jira/project-mapping.json`
 
 ```json
 {
-  "mappings": {
-    "backend": {
-      "ticket_keys": ["PROJ", "API", "SERVICE"],
-      "description": "Backend Services Team"
-    },
-    "frontend": {
-      "ticket_keys": ["UI", "WEB", "APP"],
-      "description": "Frontend Team"
-    },
-    "mobile": {
-      "ticket_keys": ["MOBILE", "IOS", "ANDROID"],
-      "description": "Mobile Team"
-    },
-    "devops": {
-      "ticket_keys": ["INFRA", "CI", "DEPLOY"],
-      "description": "DevOps/Infrastructure"
-    }
-  }
+ "mappings": {
+ "backend": {
+ "ticket_keys": ["PROJ", "API", "SERVICE"],
+ "description": "Backend Services Team"
+ },
+ "frontend": {
+ "ticket_keys": ["UI", "WEB", "APP"],
+ "description": "Frontend Team"
+ },
+ "mobile": {
+ "ticket_keys": ["MOBILE", "IOS", "ANDROID"],
+ "description": "Mobile Team"
+ },
+ "devops": {
+ "ticket_keys": ["INFRA", "CI", "DEPLOY"],
+ "description": "DevOps/Infrastructure"
+ }
+ }
 }
 ```
 
@@ -81,28 +82,28 @@ Default location: `~/.jira/project-mapping.json`
 
 ```json
 {
-  "mappings": {
-    "product-a-backend": {
-      "ticket_keys": ["PRODA", "PRODAPI"],
-      "description": "Product A Backend"
-    },
-    "product-a-frontend": {
-      "ticket_keys": ["PRODUI"],
-      "description": "Product A Frontend"
-    },
-    "product-b-backend": {
-      "ticket_keys": ["PRODB", "PRODBAPI"],
-      "description": "Product B Backend"
-    },
-    "product-b-frontend": {
-      "ticket_keys": ["PRODBUI"],
-      "description": "Product B Frontend"
-    },
-    "shared-services": {
-      "ticket_keys": ["SHARED", "COMMON", "UTILS"],
-      "description": "Shared Services"
-    }
-  }
+ "mappings": {
+ "product-a-backend": {
+ "ticket_keys": ["PRODA", "PRODAPI"],
+ "description": "Product A Backend"
+ },
+ "product-a-frontend": {
+ "ticket_keys": ["PRODUI"],
+ "description": "Product A Frontend"
+ },
+ "product-b-backend": {
+ "ticket_keys": ["PRODB", "PRODBAPI"],
+ "description": "Product B Backend"
+ },
+ "product-b-frontend": {
+ "ticket_keys": ["PRODBUI"],
+ "description": "Product B Frontend"
+ },
+ "shared-services": {
+ "ticket_keys": ["SHARED", "COMMON", "UTILS"],
+ "description": "Shared Services"
+ }
+ }
 }
 ```
 
@@ -113,16 +114,16 @@ Default location: `~/.jira/project-mapping.json`
 ```bash
 cat > ~/.jira/project-mapping.json << 'EOF'
 {
-  "mappings": {
-    "backend": {
-      "ticket_keys": ["PROJ", "API"],
-      "description": "Backend Team"
-    },
-    "frontend": {
-      "ticket_keys": ["UI"],
-      "description": "Frontend Team"
-    }
-  }
+ "mappings": {
+ "backend": {
+ "ticket_keys": ["PROJ", "API"],
+ "description": "Backend Team"
+ },
+ "frontend": {
+ "ticket_keys": ["UI"],
+ "description": "Frontend Team"
+ }
+ }
 }
 EOF
 ```
@@ -153,8 +154,8 @@ For one-off imports without modifying the config file:
 
 ```bash
 jira-ticket-creator import --jql "project in (PROJ, API)" \
-  --map-rule "PROJ->backend" \
-  --map-rule "API->backend"
+ --map-rule "PROJ->backend" \
+ --map-rule "API->backend"
 ```
 
 ## Custom Mapping Path
@@ -163,7 +164,7 @@ Use a different mapping file:
 
 ```bash
 jira-ticket-creator import --jql "project = PROJ" \
-  --mapping-path ~/my-custom-mappings.json
+ --mapping-path ~/my-custom-mappings.json
 ```
 
 ## Auto-Detection
@@ -183,24 +184,24 @@ Map service names to projects:
 
 ```json
 {
-  "mappings": {
-    "auth-service": {
-      "ticket_keys": ["AUTH", "AUTHAPI"],
-      "description": "Authentication Service"
-    },
-    "payment-service": {
-      "ticket_keys": ["PAY", "PAYAPI"],
-      "description": "Payment Service"
-    },
-    "order-service": {
-      "ticket_keys": ["ORDER", "ORDERAPI"],
-      "description": "Order Service"
-    },
-    "user-service": {
-      "ticket_keys": ["USER", "USERAPI"],
-      "description": "User Service"
-    }
-  }
+ "mappings": {
+ "auth-service": {
+ "ticket_keys": ["AUTH", "AUTHAPI"],
+ "description": "Authentication Service"
+ },
+ "payment-service": {
+ "ticket_keys": ["PAY", "PAYAPI"],
+ "description": "Payment Service"
+ },
+ "order-service": {
+ "ticket_keys": ["ORDER", "ORDERAPI"],
+ "description": "Order Service"
+ },
+ "user-service": {
+ "ticket_keys": ["USER", "USERAPI"],
+ "description": "User Service"
+ }
+ }
 }
 ```
 
@@ -208,24 +209,24 @@ Map service names to projects:
 
 ```json
 {
-  "mappings": {
-    "client-a": {
-      "ticket_keys": ["CA"],
-      "description": "Client A Project"
-    },
-    "client-b": {
-      "ticket_keys": ["CB"],
-      "description": "Client B Project"
-    },
-    "client-c": {
-      "ticket_keys": ["CC"],
-      "description": "Client C Project"
-    },
-    "internal": {
-      "ticket_keys": ["INT", "INFRA"],
-      "description": "Internal/Infrastructure"
-    }
-  }
+ "mappings": {
+ "client-a": {
+ "ticket_keys": ["CA"],
+ "description": "Client A Project"
+ },
+ "client-b": {
+ "ticket_keys": ["CB"],
+ "description": "Client B Project"
+ },
+ "client-c": {
+ "ticket_keys": ["CC"],
+ "description": "Client C Project"
+ },
+ "internal": {
+ "ticket_keys": ["INT", "INFRA"],
+ "description": "Internal/Infrastructure"
+ }
+ }
 }
 ```
 
@@ -233,24 +234,24 @@ Map service names to projects:
 
 ```json
 {
-  "mappings": {
-    "api-package": {
-      "ticket_keys": ["API", "APICORE"],
-      "description": "API Package"
-    },
-    "ui-package": {
-      "ticket_keys": ["UI", "UICORE"],
-      "description": "UI Package"
-    },
-    "cli-package": {
-      "ticket_keys": ["CLI", "CLICORE"],
-      "description": "CLI Package"
-    },
-    "shared-package": {
-      "ticket_keys": ["SHARED", "UTILS"],
-      "description": "Shared Utilities"
-    }
-  }
+ "mappings": {
+ "api-package": {
+ "ticket_keys": ["API", "APICORE"],
+ "description": "API Package"
+ },
+ "ui-package": {
+ "ticket_keys": ["UI", "UICORE"],
+ "description": "UI Package"
+ },
+ "cli-package": {
+ "ticket_keys": ["CLI", "CLICORE"],
+ "description": "CLI Package"
+ },
+ "shared-package": {
+ "ticket_keys": ["SHARED", "UTILS"],
+ "description": "Shared Utilities"
+ }
+ }
 }
 ```
 
@@ -266,20 +267,20 @@ Map service names to projects:
 mkdir -p ~/.jira
 cat > ~/.jira/project-mapping.json << 'EOF'
 {
-  "mappings": {
-    "backend": {
-      "ticket_keys": ["PROJ", "API", "DB"],
-      "description": "Backend Team"
-    },
-    "frontend": {
-      "ticket_keys": ["UI", "WEB"],
-      "description": "Frontend Team"
-    }
-  }
+ "mappings": {
+ "backend": {
+ "ticket_keys": ["PROJ", "API", "DB"],
+ "description": "Backend Team"
+ },
+ "frontend": {
+ "ticket_keys": ["UI", "WEB"],
+ "description": "Frontend Team"
+ }
+ }
 }
 EOF
 
-echo "✅ Created project mapping"
+echo " Created project mapping"
 
 # Step 2: Import tickets
 echo "Importing backend tickets..."
@@ -309,11 +310,11 @@ MAPPING_FILE="$HOME/.jira/project-mapping.json"
 
 # Add new team (you can edit manually or use jq)
 jq '.mappings.devops = {
-  "ticket_keys": ["INFRA", "CI", "DEPLOY"],
-  "description": "DevOps Team"
+ "ticket_keys": ["INFRA", "CI", "DEPLOY"],
+ "description": "DevOps Team"
 }' "$MAPPING_FILE" > "$MAPPING_FILE.tmp" && mv "$MAPPING_FILE.tmp" "$MAPPING_FILE"
 
-echo "✅ Added DevOps team to mapping"
+echo " Added DevOps team to mapping"
 ```
 
 ## Troubleshooting
@@ -340,12 +341,12 @@ jira-ticket-creator query --jql "project = PROJ" --fields key
 
 ```json
 {
-  "mappings": {
-    "backend": {
-      "ticket_keys": ["PROJ", "API", "DB"],  // ← All in one array
-      "description": "Backend Team"
-    }
-  }
+ "mappings": {
+ "backend": {
+ "ticket_keys": ["PROJ", "API", "DB"], // ← All in one array
+ "description": "Backend Team"
+ }
+ }
 }
 ```
 
@@ -359,44 +360,44 @@ jira-ticket-creator query --jql "project = PROJ" --fields key
 # Update existing mapping in file
 # Then re-import
 jira-ticket-creator import --jql "project = PROJ" \
-  --map-project backend \
-  --update-existing
+ --map-project backend \
+ --update-existing
 ```
 
 ## Best Practices
 
 1. **Use consistent naming**: Use descriptive, lowercase project names
-   ```json
-   "backend" ✅
-   "Frontend" ❌ (inconsistent case)
-   "be" ❌ (too short)
-   ```
+ ```json
+ "backend"
+ "Frontend" (inconsistent case)
+ "be" (too short)
+ ```
 
 2. **Map related tickets together**: Group by team, service, or product
-   ```json
-   {
-     "backend": {
-       "ticket_keys": ["PROJ", "API", "DB"],
-       "description": "Backend Team"
-     }
-   }
-   ```
+ ```json
+ {
+ "backend": {
+ "ticket_keys": ["PROJ", "API", "DB"],
+ "description": "Backend Team"
+ }
+ }
+ ```
 
 3. **Document in description**: Explain what each project contains
-   ```json
-   "description": "Backend Team - API, database, and services"
-   ```
+ ```json
+ "description": "Backend Team - API, database, and services"
+ ```
 
 4. **Version your mapping**: Track changes in git
-   ```bash
-   git add ~/.jira/project-mapping.json
-   git commit -m "Update project mapping for new team"
-   ```
+ ```bash
+ git add ~/.jira/project-mapping.json
+ git commit -m "Update project mapping for new team"
+ ```
 
 5. **Backup before changes**: Keep old version
-   ```bash
-   cp ~/.jira/project-mapping.json ~/.jira/project-mapping.json.bak
-   ```
+ ```bash
+ cp ~/.jira/project-mapping.json ~/.jira/project-mapping.json.bak
+ ```
 
 ## Integration with Other Commands
 

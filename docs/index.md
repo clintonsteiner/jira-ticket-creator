@@ -1,6 +1,7 @@
 ---
 layout: default
-title: JIRA Ticket Creator
+title: Home
+nav_order: 1
 ---
 
 # JIRA Ticket Creator
@@ -9,10 +10,10 @@ Command-line tool for managing JIRA tickets. Create, search, import, and report 
 
 ## Quick Links
 
-- [Get Started](./getting-started.html) - Installation and first steps
-- [CLI Commands](./cli/create.html) - Create, search, import, gantt
-- [Common Workflows](./examples/workflows.html) - Real-world examples
-- [Troubleshooting](./troubleshooting.html) - Common problems and fixes
+- [Get Started](/jira-ticket-creator/getting-started) - Installation and first steps
+- [CLI Commands](/jira-ticket-creator/cli) - Create, search, import, gantt
+- [Common Workflows](/jira-ticket-creator/examples/workflows) - Real-world examples
+- [Troubleshooting](/jira-ticket-creator/troubleshooting) - Common problems and fixes
 
 ## What It Does
 
@@ -77,16 +78,18 @@ jira-ticket-creator search --key PROJ-1
 
 ## Documentation
 
-- [Getting Started](./getting-started.html)
-- [CLI Reference](./cli/create.html)
-- [Search Examples](./cli/search.html)
-- [Query and Export](./cli/query.html)
-- [Import Tickets](./cli/import.html)
-- [Gantt Charts](./cli/gantt.html)
-- [Workflows](./examples/workflows.html)
-- [API Guide](./api/go-client.html)
-- [Project Mapping](./advanced/project-mapping.html)
-- [Troubleshooting](./troubleshooting.html)
+- [Getting Started](/jira-ticket-creator/getting-started)
+- [CLI Commands](/jira-ticket-creator/cli)
+- [Create](/jira-ticket-creator/cli/create)
+- [Search](/jira-ticket-creator/cli/search)
+- [Query](/jira-ticket-creator/cli/query)
+- [Import](/jira-ticket-creator/cli/import)
+- [Gantt](/jira-ticket-creator/cli/gantt)
+- [Examples](/jira-ticket-creator/examples)
+- [API Guide](/jira-ticket-creator/api)
+- [Go Client](/jira-ticket-creator/api/go-client)
+- [Project Mapping](/jira-ticket-creator/advanced/project-mapping)
+- [Troubleshooting](/jira-ticket-creator/troubleshooting)
 
 ## Common Tasks
 

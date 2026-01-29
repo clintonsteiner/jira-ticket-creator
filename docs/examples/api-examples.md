@@ -2,6 +2,7 @@
 layout: default
 title: API Examples
 parent: Examples
+nav_order: 2
 ---
 
 # API Usage Examples
@@ -64,9 +65,9 @@ func main() {
 	service := jira.NewIssueService(client)
 
 	tickets := []struct {
-		Summary     string
+		Summary string
 		Description string
-		Type        string
+		Type string
 	}{
 		{"Task 1", "First task", "Task"},
 		{"Task 2", "Second task", "Task"},
@@ -79,7 +80,7 @@ func main() {
 			fmt.Printf("Failed to create %s: %v\n", t.Summary, err)
 			continue
 		}
-		fmt.Printf("✅ Created: %s\n", resp.Key)
+		fmt.Printf(" Created: %s\n", resp.Key)
 	}
 }
 ```
@@ -199,7 +200,7 @@ func main() {
 	fmt.Printf("Found %d high-priority in-progress stories\n", len(issues))
 
 	for _, issue := range issues {
-		fmt.Printf("  %s: %s (%s)\n",
+		fmt.Printf(" %s: %s (%s)\n",
 			issue.Key,
 			issue.Fields.Summary,
 			issue.Fields.Priority.Name,
@@ -237,7 +238,7 @@ func main() {
 		log.Fatalf("Failed to update: %v", err)
 	}
 
-	fmt.Println("✅ Updated PROJ-123")
+	fmt.Println(" Updated PROJ-123")
 }
 ```
 
@@ -277,9 +278,9 @@ func main() {
 
 			err := service.UpdateIssue(k, fields)
 			if err != nil {
-				fmt.Printf("❌ Failed to update %s: %v\n", k, err)
+				fmt.Printf(" Failed to update %s: %v\n", k, err)
 			} else {
-				fmt.Printf("✅ Updated %s\n", k)
+				fmt.Printf(" Updated %s\n", k)
 			}
 		}(key)
 	}
@@ -328,7 +329,7 @@ func main() {
 
 	fmt.Println("Ticket count by status:")
 	for status, count := range statuses {
-		fmt.Printf("  %s: %d\n", status, count)
+		fmt.Printf(" %s: %d\n", status, count)
 	}
 }
 ```
@@ -361,14 +362,14 @@ func main() {
 	// Create records from issues
 	records := []jira.TicketRecord{
 		{
-			Key:       "PROJ-123",
-			Summary:   "Sample ticket",
-			Status:    "To Do",
+			Key: "PROJ-123",
+			Summary: "Sample ticket",
+			Status: "To Do",
 			CreatedAt: time.Now(),
-			Creator:   "imported",
-			Priority:  "Medium",
+			Creator: "imported",
+			Priority: "Medium",
 			IssueType: "Task",
-			Project:   "backend",
+			Project: "backend",
 		},
 	}
 
@@ -379,7 +380,7 @@ func main() {
 			fmt.Printf("Failed to add %s: %v\n", record.Key, err)
 			continue
 		}
-		fmt.Printf("✅ Saved %s\n", record.Key)
+		fmt.Printf(" Saved %s\n", record.Key)
 	}
 }
 ```
@@ -473,7 +474,7 @@ func main() {
 		log.Fatalf("Failed to write file: %v", err)
 	}
 
-	fmt.Println("✅ Generated gantt.md and gantt.html")
+	fmt.Println(" Generated gantt.md and gantt.html")
 }
 ```
 
@@ -517,14 +518,14 @@ func main() {
 		project := mapping.FindProjectForKey(issue.Key)
 
 		record := jira.TicketRecord{
-			Key:       issue.Key,
-			Summary:   issue.Fields.Summary,
-			Status:    "Open",
+			Key: issue.Key,
+			Summary: issue.Fields.Summary,
+			Status: "Open",
 			CreatedAt: time.Now(),
-			Creator:   "imported",
-			Priority:  "Medium",
+			Creator: "imported",
+			Priority: "Medium",
 			IssueType: issue.Fields.IssueType.Name,
-			Project:   project,
+			Project: project,
 		}
 
 		if issue.Fields.Priority != nil {
@@ -547,7 +548,7 @@ func main() {
 		}
 	}
 
-	fmt.Printf("✅ Imported %d tickets\n", len(records))
+	fmt.Printf(" Imported %d tickets\n", len(records))
 }
 ```
 

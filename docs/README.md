@@ -6,24 +6,24 @@ This directory contains the GitHub Pages documentation for JIRA Ticket Creator.
 
 ```
 docs/
-├── _config.yml                 # Jekyll configuration
-├── Gemfile                     # Ruby dependencies
-├── index.md                    # Homepage
-├── getting-started.md          # Getting started guide
-├── cli/                        # CLI command documentation
-│   ├── create.md
-│   ├── query.md
-│   ├── import.md
-│   ├── gantt.md
-│   └── ...
-├── api/                        # API reference
-│   ├── go-client.md
-│   ├── config.md
-│   └── ...
-├── advanced/                   # Advanced topics
-│   ├── project-mapping.md
-│   └── ...
-└── _site/                      # Generated site (ignored)
+ _config.yml # Jekyll configuration
+ Gemfile # Ruby dependencies
+ index.md # Homepage
+ getting-started.md # Getting started guide
+ cli/ # CLI command documentation
+ create.md
+ query.md
+ import.md
+ gantt.md
+ ...
+ api/ # API reference
+ go-client.md
+ config.md
+ ...
+ advanced/ # Advanced topics
+ project-mapping.md
+ ...
+ _site/ # Generated site (ignored)
 ```
 
 ## Building Locally
@@ -73,7 +73,7 @@ All pages are standard Markdown with YAML front matter:
 ---
 layout: default
 title: Page Title
-parent: Parent Page Title  # Optional, for navigation hierarchy
+parent: Parent Page Title # Optional, for navigation hierarchy
 ---
 
 # Page Title

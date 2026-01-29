@@ -2,6 +2,7 @@
 layout: default
 title: Common Workflows
 parent: Examples
+nav_order: 1
 ---
 
 # Common Workflows
@@ -14,30 +15,30 @@ Real-world examples and scripts for common JIRA workflows.
 #!/bin/bash
 # daily-standup.sh
 
-echo "🚀 DAILY STANDUP - $(date +%A, %B %d, %Y)"
+echo " DAILY STANDUP - $(date +%A, %B %d, %Y)"
 echo "========================================"
 echo ""
 
 # Section 1: My Work
-echo "📋 MY ASSIGNMENTS"
+echo " MY ASSIGNMENTS"
 echo "---"
 jira-ticket-creator search --jql "assignee = currentUser() AND status != Done" --format table
 echo ""
 
 # Section 2: Created by me that needs attention
-echo "👀 I CREATED (IN PROGRESS)"
+echo " I CREATED (IN PROGRESS)"
 echo "---"
 jira-ticket-creator search --jql "creator = currentUser() AND status = 'In Progress'" --format table
 echo ""
 
 # Section 3: Blocked items
-echo "🚫 BLOCKED ITEMS"
+echo " BLOCKED ITEMS"
 echo "---"
 jira-ticket-creator search --jql "status = Blocked" --format table
 echo ""
 
 # Section 4: Critical items
-echo "🔴 CRITICAL PRIORITY"
+echo " CRITICAL PRIORITY"
 echo "---"
 jira-ticket-creator search --jql "priority = Critical AND status != Done" --format table
 ```
@@ -58,35 +59,35 @@ DATE=$(date +%Y-%m-%d)
 REPORT_DIR="reports/$DATE"
 mkdir -p "$REPORT_DIR"
 
-echo "🏃 SPRINT PLANNING REPORT - $DATE"
+echo " SPRINT PLANNING REPORT - $DATE"
 echo "======================================"
 
 # Ready for sprint
 echo ""
-echo "✅ READY FOR SPRINT"
+echo " READY FOR SPRINT"
 jira-ticket-creator search --jql "status = 'Ready' OR labels = 'ready-for-sprint'" \
-  --format table | tee "$REPORT_DIR/ready.txt"
+ --format table | tee "$REPORT_DIR/ready.txt"
 
 # Tech debt
 echo ""
-echo "🔧 TECH DEBT"
+echo " TECH DEBT"
 jira-ticket-creator search --jql "labels = 'tech-debt' AND status != Done" \
-  --format table | tee "$REPORT_DIR/tech-debt.txt"
+ --format table | tee "$REPORT_DIR/tech-debt.txt"
 
 # Bug backlog
 echo ""
-echo "🐛 BUG BACKLOG"
+echo " BUG BACKLOG"
 jira-ticket-creator search --jql "type = Bug AND status = 'To Do' AND priority >= High" \
-  --format table | tee "$REPORT_DIR/bugs.txt"
+ --format table | tee "$REPORT_DIR/bugs.txt"
 
 # Estimation needed
 echo ""
-echo "❓ NEEDS ESTIMATION"
+echo " NEEDS ESTIMATION"
 jira-ticket-creator search --jql "customfield_10000 is EMPTY AND status != Done" \
-  --format table | tee "$REPORT_DIR/estimation.txt"
+ --format table | tee "$REPORT_DIR/estimation.txt"
 
 echo ""
-echo "✅ Report saved to $REPORT_DIR"
+echo " Report saved to $REPORT_DIR"
 ```
 
 ## Weekly Status Report
@@ -99,37 +100,37 @@ WEEK=$(date +%Y-W%V)
 REPORT_DIR="reports/weekly/$WEEK"
 mkdir -p "$REPORT_DIR"
 
-echo "📊 WEEKLY STATUS REPORT - Week $WEEK"
+echo " WEEKLY STATUS REPORT - Week $WEEK"
 echo "========================================="
 
 # Completed this week
 echo ""
-echo "🎉 COMPLETED THIS WEEK"
+echo " COMPLETED THIS WEEK"
 jira-ticket-creator query --jql "status = Done AND updated >= -7d" \
-  --format table > "$REPORT_DIR/completed.txt"
+ --format table > "$REPORT_DIR/completed.txt"
 
 # In progress
 echo ""
 echo "⏳ IN PROGRESS"
 jira-ticket-creator query --jql "status = 'In Progress'" \
-  --format table > "$REPORT_DIR/in-progress.txt"
+ --format table > "$REPORT_DIR/in-progress.txt"
 
 # Blocked
 echo ""
-echo "🚫 BLOCKED"
+echo " BLOCKED"
 jira-ticket-creator query --jql "status = Blocked" \
-  --format table > "$REPORT_DIR/blocked.txt"
+ --format table > "$REPORT_DIR/blocked.txt"
 
 # Team summary
 echo ""
-echo "👥 TEAM SUMMARY"
+echo " TEAM SUMMARY"
 jira-ticket-creator team summary > "$REPORT_DIR/team-summary.txt"
 
 # Gantt chart
 jira-ticket-creator gantt --format html --output "$REPORT_DIR/gantt.html"
 
 echo ""
-echo "✅ Reports saved to $REPORT_DIR"
+echo " Reports saved to $REPORT_DIR"
 ls -la "$REPORT_DIR"
 ```
 
@@ -139,32 +140,32 @@ ls -la "$REPORT_DIR"
 #!/bin/bash
 # triage.sh - Organize and categorize issues
 
-echo "🔍 ISSUE TRIAGE"
+echo " ISSUE TRIAGE"
 echo "=================="
 
 # Step 1: Find unassigned high-priority
 echo ""
-echo "1️⃣  UNASSIGNED HIGH PRIORITY"
+echo "1⃣ UNASSIGNED HIGH PRIORITY"
 UNASSIGNED=$(jira-ticket-creator search --jql "assignee is EMPTY AND priority >= High" --format json)
 echo "$UNASSIGNED" | jq -r '.[] | "\(.key): \(.fields.summary)"'
 
 # Step 2: Find critical items without estimates
 echo ""
-echo "2️⃣  CRITICAL WITHOUT ESTIMATES"
+echo "2⃣ CRITICAL WITHOUT ESTIMATES"
 jira-ticket-creator search --jql "priority = Critical AND customfield_10000 is EMPTY" --format table
 
 # Step 3: Find bugs awaiting fixes
 echo ""
-echo "3️⃣  BUGS AWAITING FIXES"
+echo "3⃣ BUGS AWAITING FIXES"
 jira-ticket-creator search --jql "type = Bug AND status = 'Ready for Dev'" --format table
 
 # Step 4: Find items in review
 echo ""
-echo "4️⃣  IN REVIEW"
+echo "4⃣ IN REVIEW"
 jira-ticket-creator search --jql "status = 'In Review'" --format table
 
 echo ""
-echo "✅ Triage summary complete"
+echo " Triage summary complete"
 ```
 
 ## Backlog Management
@@ -173,7 +174,7 @@ echo "✅ Triage summary complete"
 #!/bin/bash
 # backlog-management.sh
 
-echo "📚 BACKLOG MANAGEMENT"
+echo " BACKLOG MANAGEMENT"
 echo "======================"
 
 # Current backlog size
@@ -184,21 +185,21 @@ echo "Current backlog: $BACKLOG_COUNT items"
 echo ""
 echo "BREAKDOWN BY PRIORITY:"
 for PRIORITY in Critical High Medium Low; do
-  COUNT=$(jira-ticket-creator search --jql "project = PROJ AND status = 'To Do' AND priority = $PRIORITY" | wc -l)
-  echo "  $PRIORITY: $COUNT items"
+ COUNT=$(jira-ticket-creator search --jql "project = PROJ AND status = 'To Do' AND priority = $PRIORITY" | wc -l)
+ echo " $PRIORITY: $COUNT items"
 done
 
 # High priority items
 echo ""
 echo "HIGH PRIORITY BACKLOG:"
 jira-ticket-creator search --jql "project = PROJ AND status = 'To Do' AND priority >= High" \
-  --format table
+ --format table
 
 # Oldest items
 echo ""
 echo "OLDEST ITEMS IN BACKLOG:"
 jira-ticket-creator search --jql "project = PROJ AND status = 'To Do' ORDER BY created ASC" \
-  --format table | head -10
+ --format table | head -10
 ```
 
 ## Multi-Team Project Import
@@ -210,24 +211,24 @@ jira-ticket-creator search --jql "project = PROJ AND status = 'To Do' ORDER BY c
 # Create project mapping
 cat > ~/.jira/project-mapping.json << 'EOF'
 {
-  "mappings": {
-    "backend": {
-      "ticket_keys": ["PROJ", "API", "DB"],
-      "description": "Backend Team"
-    },
-    "frontend": {
-      "ticket_keys": ["UI", "WEB", "MOBILE"],
-      "description": "Frontend Team"
-    },
-    "devops": {
-      "ticket_keys": ["INFRA", "CI", "DEPLOY"],
-      "description": "DevOps Team"
-    }
-  }
+ "mappings": {
+ "backend": {
+ "ticket_keys": ["PROJ", "API", "DB"],
+ "description": "Backend Team"
+ },
+ "frontend": {
+ "ticket_keys": ["UI", "WEB", "MOBILE"],
+ "description": "Frontend Team"
+ },
+ "devops": {
+ "ticket_keys": ["INFRA", "CI", "DEPLOY"],
+ "description": "DevOps Team"
+ }
+ }
 }
 EOF
 
-echo "📥 IMPORTING MULTI-TEAM PROJECT"
+echo " IMPORTING MULTI-TEAM PROJECT"
 echo "=================================="
 
 # Import backend tickets
@@ -264,7 +265,7 @@ jira-ticket-creator team summary --project devops
 echo ""
 echo "5. Generating Gantt chart..."
 jira-ticket-creator gantt --format html --output workload.html
-echo "✅ Gantt chart: workload.html"
+echo " Gantt chart: workload.html"
 ```
 
 ## Release Checklist
@@ -273,7 +274,7 @@ echo "✅ Gantt chart: workload.html"
 #!/bin/bash
 # release-checklist.sh - Verify release readiness
 
-echo "🚀 RELEASE CHECKLIST"
+echo " RELEASE CHECKLIST"
 echo "===================="
 
 # Check 1: All tasks done
@@ -281,13 +282,13 @@ echo ""
 echo "1. COMPLETION STATUS"
 DONE=$(jira-ticket-creator search --jql "fixVersion = '1.0.0' AND status = Done" | wc -l)
 TOTAL=$(jira-ticket-creator search --jql "fixVersion = '1.0.0'" | wc -l)
-echo "   Done: $DONE/$TOTAL"
+echo " Done: $DONE/$TOTAL"
 
 if [ "$DONE" -eq "$TOTAL" ]; then
-  echo "   ✅ All items completed"
+ echo " All items completed"
 else
-  echo "   ❌ Still $((TOTAL - DONE)) items pending"
-  jira-ticket-creator search --jql "fixVersion = '1.0.0' AND status != Done"
+ echo " Still $((TOTAL - DONE)) items pending"
+ jira-ticket-creator search --jql "fixVersion = '1.0.0' AND status != Done"
 fi
 
 # Check 2: No critical bugs
@@ -295,25 +296,25 @@ echo ""
 echo "2. CRITICAL BUGS"
 CRITICAL=$(jira-ticket-creator search --jql "fixVersion = '1.0.0' AND type = Bug AND priority = Critical" | wc -l)
 if [ "$CRITICAL" -eq 0 ]; then
-  echo "   ✅ No critical bugs"
+ echo " No critical bugs"
 else
-  echo "   ❌ Found $CRITICAL critical bugs"
+ echo " Found $CRITICAL critical bugs"
 fi
 
 # Check 3: Documentation done
 echo ""
 echo "3. DOCUMENTATION"
 DOCS=$(jira-ticket-creator search --jql "fixVersion = '1.0.0' AND labels = documentation AND status = Done" | wc -l)
-echo "   Documentation items completed: $DOCS"
+echo " Documentation items completed: $DOCS"
 
 # Check 4: Testing complete
 echo ""
 echo "4. TESTING"
 TESTING=$(jira-ticket-creator search --jql "fixVersion = '1.0.0' AND labels = testing AND status = Done" | wc -l)
-echo "   Testing items completed: $TESTING"
+echo " Testing items completed: $TESTING"
 
 echo ""
-echo "✅ Release checklist complete"
+echo " Release checklist complete"
 ```
 
 ## On-Call Monitoring
@@ -323,37 +324,37 @@ echo "✅ Release checklist complete"
 # on-call-monitor.sh - Real-time monitoring dashboard
 
 while true; do
-  clear
-  echo "🚨 ON-CALL DASHBOARD - $(date)"
-  echo "======================================"
+ clear
+ echo " ON-CALL DASHBOARD - $(date)"
+ echo "======================================"
 
-  # Critical production issues
-  echo ""
-  echo "🔴 CRITICAL PRODUCTION"
-  CRITICAL=$(jira-ticket-creator search --jql "labels = production AND priority = Critical AND status != Done")
-  if [ -z "$CRITICAL" ]; then
-    echo "   ✅ No critical issues"
-  else
-    echo "$CRITICAL"
-  fi
+ # Critical production issues
+ echo ""
+ echo " CRITICAL PRODUCTION"
+ CRITICAL=$(jira-ticket-creator search --jql "labels = production AND priority = Critical AND status != Done")
+ if [ -z "$CRITICAL" ]; then
+ echo " No critical issues"
+ else
+ echo "$CRITICAL"
+ fi
 
-  # Incidents
-  echo ""
-  echo "⚠️  INCIDENTS"
-  INCIDENTS=$(jira-ticket-creator search --jql "type = Incident AND status != Done")
-  if [ -z "$INCIDENTS" ]; then
-    echo "   ✅ No active incidents"
-  else
-    echo "$INCIDENTS"
-  fi
+ # Incidents
+ echo ""
+ echo " INCIDENTS"
+ INCIDENTS=$(jira-ticket-creator search --jql "type = Incident AND status != Done")
+ if [ -z "$INCIDENTS" ]; then
+ echo " No active incidents"
+ else
+ echo "$INCIDENTS"
+ fi
 
-  # SLA violations
-  echo ""
-  echo "⏰ SLA APPROACHING"
-  jira-ticket-creator search --jql "duedate <= 2h"
+ # SLA violations
+ echo ""
+ echo "⏰ SLA APPROACHING"
+ jira-ticket-creator search --jql "duedate <= 2h"
 
-  # Update every 5 minutes
-  sleep 300
+ # Update every 5 minutes
+ sleep 300
 done
 ```
 
@@ -363,7 +364,7 @@ done
 #!/bin/bash
 # dependency-check.sh - Check blocking relationships
 
-echo "🔗 DEPENDENCY ANALYSIS"
+echo " DEPENDENCY ANALYSIS"
 echo "======================="
 
 # Blocked items
@@ -374,8 +375,8 @@ BLOCKED_COUNT=$(echo "$BLOCKED" | wc -l)
 echo "Total blocked: $BLOCKED_COUNT"
 
 if [ "$BLOCKED_COUNT" -gt 0 ]; then
-  echo ""
-  echo "$BLOCKED"
+ echo ""
+ echo "$BLOCKED"
 fi
 
 # Visualize dependencies
@@ -389,7 +390,7 @@ echo "Exporting Mermaid diagram..."
 jira-ticket-creator visualize --format mermaid --output dependencies.md
 
 echo ""
-echo "✅ Dependency analysis complete"
+echo " Dependency analysis complete"
 ```
 
 ## Sprint Velocity Tracking
@@ -398,7 +399,7 @@ echo "✅ Dependency analysis complete"
 #!/bin/bash
 # velocity-tracking.sh
 
-echo "📈 SPRINT VELOCITY TRACKING"
+echo " SPRINT VELOCITY TRACKING"
 echo "============================"
 
 SPRINT=$(jira-ticket-creator search --jql "sprint = activeSprints()" | head -1)
@@ -407,13 +408,13 @@ SPRINT=$(jira-ticket-creator search --jql "sprint = activeSprints()" | head -1)
 echo ""
 echo "THIS SPRINT:"
 jira-ticket-creator search --jql "sprint = activeSprints() AND status = Done" \
-  --format table
+ --format table
 
 # Story points remaining
 echo ""
 echo "STILL IN PROGRESS:"
 jira-ticket-creator search --jql "sprint = activeSprints() AND status != Done" \
-  --format table
+ --format table
 
 # Burndown view
 echo ""
@@ -421,7 +422,7 @@ echo "SPRINT TIMELINE:"
 jira-ticket-creator team timeline
 
 echo ""
-echo "✅ Velocity report complete"
+echo " Velocity report complete"
 ```
 
 ## Bulk Operations
@@ -430,7 +431,7 @@ echo "✅ Velocity report complete"
 #!/bin/bash
 # bulk-update.sh - Update multiple tickets
 
-echo "🔄 BULK OPERATIONS"
+echo " BULK OPERATIONS"
 echo "===================="
 
 # Find all tickets to update
@@ -440,12 +441,12 @@ echo "Processing $(echo "$TICKETS" | jq 'length') tickets..."
 
 # Transition each
 echo "$TICKETS" | jq -r '.[] | .key' | while read -r KEY; do
-  echo "Updating $KEY..."
-  jira-ticket-creator transition "$KEY" --to "In Review"
+ echo "Updating $KEY..."
+ jira-ticket-creator transition "$KEY" --to "In Review"
 done
 
 echo ""
-echo "✅ Bulk update complete"
+echo " Bulk update complete"
 ```
 
 ## Automated Weekly Reports
@@ -467,10 +468,10 @@ jira-ticket-creator pm dashboard > "$REPORT_DIR/dashboard.txt"
 
 # Email report
 mail -s "Weekly JIRA Report - Week $WEEK" \
-  manager@company.com \
-  < "$REPORT_DIR/dashboard.txt"
+ manager@company.com \
+ < "$REPORT_DIR/dashboard.txt"
 
-echo "✅ Weekly report sent"
+echo " Weekly report sent"
 ```
 
 ## See Also

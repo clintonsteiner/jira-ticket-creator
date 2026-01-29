@@ -2,6 +2,7 @@
 layout: default
 title: Gantt Command
 parent: CLI Commands
+nav_order: 5
 ---
 
 # Gantt Command
@@ -34,23 +35,23 @@ jira-ticket-creator gantt --format ascii --weeks 2
 
 Output:
 ```
-📊 GANTT CHART - WORKLOAD BY RESOURCE
+ GANTT CHART - WORKLOAD BY RESOURCE
 =====================================
 
 Timeline: Jan 29, 2026 to Feb 12, 2026 (2 weeks)
 
-RESOURCE       | Week 1 (Jan 29) | Week 2 (Feb 05) | STATUS
+RESOURCE | Week 1 (Jan 29) | Week 2 (Feb 05) | STATUS
 ---------------|-----------------|-----------------|-------
-John Smith     | ⟳⟳⟳⟳⟳⟳⟳⟳⟳ | ✓✓✓✓✓✓✓✓✓ | 5✓ 3⟳ 0□
-Jane Doe       | ⟳⟳⟳⟳⟳⟳⟳⟳⟳ | ⟳⟳⟳⟳⟳⟳⟳⟳⟳ | 0✓ 8⟳ 2□
-Bob Wilson     | □□□□□□□□□ | ⟳⟳⟳⟳⟳⟳⟳⟳⟳ | 0✓ 4⟳ 4□
-Unassigned     | □□□□□□□□□ | □□□□□□□□□ | 0✓ 0⟳ 3□
+John Smith | | | 5 3 0
+Jane Doe | | | 0 8 2
+Bob Wilson | | | 0 4 4
+Unassigned | | | 0 0 3
 ```
 
 Status indicators:
-- ✓ = Completed
-- ⟳ = In Progress
-- □ = To Do
+- = Completed
+- = In Progress
+- = To Do
 
 ### Mermaid Gantt Chart
 
@@ -64,16 +65,16 @@ Embeds in Markdown as:
 ````markdown
 ```mermaid
 gantt
-    title Workload by Resource
-    dateFormat YYYY-MM-DD
+ title Workload by Resource
+ dateFormat YYYY-MM-DD
 
-    section John Smith
-    PROJ-101 :done, 2026-01-29, 2026-02-05
-    PROJ-102 :active, 2026-02-05, 2026-02-12
+ section John Smith
+ PROJ-101 :done, 2026-01-29, 2026-02-05
+ PROJ-102 :active, 2026-02-05, 2026-02-12
 
-    section Jane Doe
-    PROJ-103 :active, 2026-01-29, 2026-02-12
-    PROJ-104 :crit, 2026-02-05, 2026-02-19
+ section Jane Doe
+ PROJ-103 :active, 2026-01-29, 2026-02-12
+ PROJ-104 :crit, 2026-02-05, 2026-02-19
 ```
 ````
 
@@ -129,7 +130,7 @@ jira-ticket-creator gantt --format html --output capacity.html
 
 # Generate Gantt for stakeholders
 jira-ticket-creator gantt --format mermaid --output gantt.md
-cat gantt.md | pbcopy  # Copy to clipboard
+cat gantt.md | pbcopy # Copy to clipboard
 
 # Share with team
 jira-ticket-creator gantt --format html --output team-gantt.html
@@ -177,11 +178,11 @@ echo "Reports generated in $REPORT_DIR"
 
 ## Status Summary
 
-Each resource row shows a summary: `5✓ 3⟳ 2□`
+Each resource row shows a summary: `5 3 2`
 
-- `5✓` = 5 completed tickets
-- `3⟳` = 3 in-progress tickets
-- `2□` = 2 to-do tickets
+- `5` = 5 completed tickets
+- `3` = 3 in-progress tickets
+- `2` = 2 to-do tickets
 
 ### Understanding the Timeline
 
@@ -189,14 +190,14 @@ The ASCII chart shows weekly breakdown. Each column represents one week.
 
 ```
 Week 1 (Jan 29) | Week 2 (Feb 05)
-⟳⟳⟳⟳⟳⟳⟳⟳⟳ | ✓✓✓✓✓✓✓✓✓
+ |
 ```
 
 Visual meanings:
-- All progress (⟳) = Actively working
-- All complete (✓) = Completed work
-- All todo (□) = No assignments
-- Mixed (⟳✓) = Mix of completed and in-progress
+- All progress () = Actively working
+- All complete () = Completed work
+- All todo () = No assignments
+- Mixed () = Mix of completed and in-progress
 
 ## Output Formats Comparison
 
@@ -217,34 +218,34 @@ Visual meanings:
 ## Tips & Tricks
 
 1. **Weekly monitoring**
-   ```bash
-   watch -n 86400 'jira-ticket-creator gantt --format ascii'
-   ```
+ ```bash
+ watch -n 86400 'jira-ticket-creator gantt --format ascii'
+ ```
 
 2. **Automated reports**
-   ```bash
-   # Add to crontab
-   0 9 * * 1 jira-ticket-creator gantt --format html --output ~/reports/weekly.html
-   ```
+ ```bash
+ # Add to crontab
+ 0 9 * * 1 jira-ticket-creator gantt --format html --output ~/reports/weekly.html
+ ```
 
 3. **Compare periods**
-   ```bash
-   # Current week
-   jira-ticket-creator gantt --weeks 1 --output current.txt
+ ```bash
+ # Current week
+ jira-ticket-creator gantt --weeks 1 --output current.txt
 
-   # Previous week (check git history)
-   git show HEAD~1:current.txt
+ # Previous week (check git history)
+ git show HEAD~1:current.txt
 
-   # Compare
-   diff current.txt <(git show HEAD~1:current.txt)
-   ```
+ # Compare
+ diff current.txt <(git show HEAD~1:current.txt)
+ ```
 
 4. **Share with team**
-   ```bash
-   jira-ticket-creator gantt --format html --output gantt.html
-   # Upload to shared drive
-   cp gantt.html /Volumes/SharedDrive/team-gantt.html
-   ```
+ ```bash
+ jira-ticket-creator gantt --format html --output gantt.html
+ # Upload to shared drive
+ cp gantt.html /Volumes/SharedDrive/team-gantt.html
+ ```
 
 ## See Also
 
