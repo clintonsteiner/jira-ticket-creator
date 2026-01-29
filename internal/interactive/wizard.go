@@ -22,8 +22,8 @@ type TicketInput struct {
 
 // Run runs the interactive wizard
 func (w *TicketWizard) Run() (*TicketInput, error) {
-	fmt.Println("\n📝 Creating a new JIRA ticket...")
-	fmt.Println("================================\n")
+	fmt.Println("📝 Creating a new JIRA ticket...")
+	fmt.Println("================================")
 
 	input := &TicketInput{}
 

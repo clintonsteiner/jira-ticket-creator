@@ -51,6 +51,11 @@ func (r *JSONRepository) Load() ([]jira.TicketRecord, error) {
 		return nil, fmt.Errorf("failed to read file: %w", err)
 	}
 
+	// Handle empty files
+	if len(data) == 0 {
+		return []jira.TicketRecord{}, nil
+	}
+
 	var records []jira.TicketRecord
 	if err := json.Unmarshal(data, &records); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal records: %w", err)

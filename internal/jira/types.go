@@ -87,11 +87,16 @@ type LinkIssueRequest struct {
 
 // TicketRecord represents a ticket that was created, used for persistence
 type TicketRecord struct {
-	Key       string    `json:"key"`
-	Summary   string    `json:"summary"`
-	Status    string    `json:"status"`
-	BlockedBy []string  `json:"blocked_by"`
-	CreatedAt time.Time `json:"created_at"`
+	Key              string     `json:"key"`
+	Summary          string     `json:"summary"`
+	Status           string     `json:"status"`
+	BlockedBy        []string   `json:"blocked_by"`
+	CreatedAt        time.Time  `json:"created_at"`
+	Creator          string     `json:"creator"`                 // Who created this ticket
+	Assignee         string     `json:"assignee"`                // Current assignee
+	EstimatedEndDate *time.Time `json:"estimated_end,omitempty"` // When is it estimated to be done
+	Priority         string     `json:"priority"`
+	IssueType        string     `json:"issue_type"`
 }
 
 // SearchResponse is the response from a search query
