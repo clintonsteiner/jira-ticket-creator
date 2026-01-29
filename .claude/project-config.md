@@ -41,13 +41,41 @@ defaults:
   priority: Medium
 ```
 
-**Option 3: Command-line Flags (Highest priority)**
+**Option 3: Using Ticket Key (auto-extract project)**
+Instead of a project key, you can use a ticket key and the project will be automatically extracted:
+
 ```bash
+export JIRA_URL=https://your-domain.atlassian.net
+export JIRA_EMAIL=your-email@company.com
+export JIRA_TOKEN=your-api-token
+export JIRA_TICKET=PROJ-123  # Project extracted as "PROJ"
+```
+
+Or in config file:
+```yaml
+jira:
+  url: https://your-domain.atlassian.net
+  email: your-email@company.com
+  token: your-api-token
+  ticket: PROJ-123  # Project key extracted automatically
+```
+
+**Option 4: Command-line Flags (Highest priority)**
+```bash
+# Using project key
 ./jira-ticket-creator create \
   --url https://your-domain.atlassian.net \
   --email your-email@company.com \
   --token your-api-token \
   --project PROJ \
+  --summary "My ticket"
+
+# Or using ticket key
+./jira-ticket-creator create \
+  --url https://your-domain.atlassian.net \
+  --email your-email@company.com \
+  --token your-api-token \
+  --ticket PROJ-123 \
   --summary "My ticket"
 ```
 

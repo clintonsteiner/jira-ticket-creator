@@ -214,6 +214,36 @@ jira-ticket-creator pm risk         # Identify bottlenecks
 
 ## 📖 Command Reference
 
+### Project & Ticket Configuration
+
+You can specify the project using either `--project` (project key) or `--ticket` (ticket key):
+
+```bash
+# Using project key
+./jira-ticket-creator create --summary "Task" \
+  --url https://company.atlassian.net \
+  --email user@company.com \
+  --token api-token \
+  --project PROJ
+
+# Using ticket key (project auto-extracted)
+./jira-ticket-creator create --summary "Task" \
+  --url https://company.atlassian.net \
+  --email user@company.com \
+  --token api-token \
+  --ticket PROJ-123
+
+# Using environment variables
+export JIRA_URL=https://company.atlassian.net
+export JIRA_EMAIL=user@company.com
+export JIRA_TOKEN=api-token
+export JIRA_TICKET=PROJ-123
+./jira-ticket-creator create --summary "Task"
+
+# Using config file
+./jira-ticket-creator create --summary "Task"  # Uses ~/.jirarc with ticket or project
+```
+
 ### Create Tickets
 ```bash
 # Basic

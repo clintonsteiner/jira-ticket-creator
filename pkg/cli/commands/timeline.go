@@ -63,8 +63,8 @@ func executeTimelineVisualization(weeks int, format string) error {
 
 // generateASCIITimeline generates ASCII art timeline
 func generateASCIITimeline(records interface{}, weeks int) error {
-	fmt.Println(" TWO-WEEK PROJECT TIMELINE")
-	fmt.Println("=============================\n")
+	fmt.Println("TWO-WEEK PROJECT TIMELINE")
+	fmt.Println("=============================")
 
 	now := time.Now()
 	fmt.Printf("Timeline: %s to %s\n\n",
@@ -129,19 +129,19 @@ func generateASCIITimeline(records interface{}, weeks int) error {
 		fmt.Printf(" [%s] %s\n", ticket.priority, ticket.status)
 	}
 
-	fmt.Println("\n Legend:")
+	fmt.Println("\nLegend:")
 	fmt.Println("  ████ = In Progress or Done")
 	fmt.Println("  ░░░░ = Not started (To Do)")
-	fmt.Println("  Priorities: High, Critical, Medium, Low\n")
+	fmt.Println("  Priorities: High, Critical, Medium, Low")
 
 	// Progress summary
-	fmt.Println(" Progress Summary:")
+	fmt.Println("\nProgress Summary:")
 	fmt.Println("  Week 1: 2/4 tickets in progress (50%)")
 	fmt.Println("  Week 2: 4/6 tickets pending (0% complete)")
-	fmt.Println("  Critical Path: Database Migration (Week 2)\n")
+	fmt.Println("  Critical Path: Database Migration (Week 2)")
 
 	// Recommendations
-	fmt.Println(" Recommendations:")
+	fmt.Println("\nRecommendations:")
 	fmt.Println("  • Database Migration is critical and on the critical path")
 	fmt.Println("  • Consider shifting Security Audit to Week 3 if needed")
 	fmt.Println("  • Performance Testing can start after Database Migration")
@@ -189,9 +189,9 @@ func generateMermaidTimeline(records interface{}, weeks int) error {
 
 	fmt.Println("```mermaid")
 	fmt.Println(gantt)
-	fmt.Println("```\n")
+	fmt.Println("```")
 
-	fmt.Println("📌 Paste this Mermaid diagram into:")
+	fmt.Println("\nPaste this Mermaid diagram into:")
 	fmt.Println("  • GitHub README.md")
 	fmt.Println("  • GitLab wiki")
 	fmt.Println("  • Notion documents")

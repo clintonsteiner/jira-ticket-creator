@@ -58,11 +58,13 @@ func TestValidateRequired(t *testing.T) {
 					Email   string
 					Token   string
 					Project string
+					Ticket  string
 				}{
 					URL:     "https://example.atlassian.net",
 					Email:   "user@example.com",
 					Token:   "token123",
 					Project: "PROJ",
+					Ticket:  "",
 				},
 			},
 			wantErr: false,
