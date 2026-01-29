@@ -249,6 +249,5 @@ Visual meanings:
 
 ## See Also
 
-- [Team Reports](./team.md)
-- [Project Management](./pm.md)
-- [Reports](./reports.md)
+- [Import Command](import) - Import tickets for reporting
+- [Project Mapping](../advanced/project-mapping) - Organize tickets by project

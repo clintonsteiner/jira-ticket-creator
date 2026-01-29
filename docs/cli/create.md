@@ -161,7 +161,5 @@ Common errors and solutions:
 
 ## See Also
 
-- [Search Command](./search.md)
-- [Update Command](./update.md)
-- [Batch Command](./batch.md)
-- [Templates](../advanced/templates.md)
+- [Search Command](search) - Find and view tickets
+- [Import Command](import) - Import existing tickets

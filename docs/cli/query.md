@@ -210,6 +210,5 @@ PROJ-103,Task,Update documentation,Done,,Medium
 
 ## See Also
 
-- [Search Command](./search.md)
-- [Import Command](./import.md)
-- [Report Command](./reports.md)
+- [Search Command](search) - Simple JIRA queries
+- [Import Command](import) - Import tickets locally

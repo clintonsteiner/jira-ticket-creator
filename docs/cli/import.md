@@ -189,6 +189,51 @@ jira-ticket-creator import --jql "updated >= -7d" --update-existing
 jira-ticket-creator report --format html --output weekly-report.html
 ```
 
+### Map Parent Tickets with Children
+
+Map an epic or feature so all child tickets inherit the same project mapping:
+
+```bash
+# Import parent epic
+jira-ticket-creator import --jql "key = PROJ-500" --map-project feature-checkout
+
+# All subtasks and child stories now map to "feature-checkout"
+# Verify with:
+jira-ticket-creator search --jql "parent = PROJ-500"
+
+# View all work for this feature
+jira-ticket-creator gantt --format html --output feature-checkout.html
+```
+
+**Example: Product Feature Breakdown**
+
+```bash
+# Mobile Redesign Feature
+jira-ticket-creator import --jql "key = PROJ-1000" --map-project mobile-redesign
+# Children: Design, Frontend, Backend, QA all map to "mobile-redesign"
+
+# Payment Integration Feature
+jira-ticket-creator import --jql "key = PROJ-1001" --map-project payment-integration
+# Children: API, UI, Security, Testing all map to "payment-integration"
+
+# View separate work efforts
+jira-ticket-creator team summary --project mobile-redesign
+jira-ticket-creator team summary --project payment-integration
+```
+
+**Example: Sprint-Based Mapping**
+
+```bash
+# Map Q1 sprint epic
+jira-ticket-creator import --jql "key = PROJ-2000" --map-project q1-sprint
+
+# Map Q2 sprint epic
+jira-ticket-creator import --jql "key = PROJ-2001" --map-project q2-sprint
+
+# Compare workload across sprints
+jira-ticket-creator gantt --format html --output q1-q2-comparison.html
+```
+
 ## Output
 
 Successful import:
@@ -265,7 +310,5 @@ jira-ticket-creator gantt --format mermaid
 
 ## See Also
 
-- [Query Command](./query.md)
-- [Project Mapping](../advanced/project-mapping.md)
-- [Team Reports](./team.md)
-- [Reports](./reports.md)
+- [Query Command](query) - Execute JQL queries with output formatting
+- [Project Mapping](../advanced/project-mapping) - Configure project mappings

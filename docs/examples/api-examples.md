@@ -684,6 +684,5 @@ func generateKeys(count int) []string {
 
 ## See Also
 
-- [Go Client Library Reference](../api/go-client.md)
-- [Configuration API](../api/config.md)
-- [API Examples](./api-examples.md)
+- [Go Client Library](../api/go-client) - Complete API reference
+- [Common Workflows](workflows) - CLI-based examples

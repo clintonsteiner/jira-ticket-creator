@@ -383,6 +383,5 @@ done
 
 ## See Also
 
-- [Query Command](./query.md) - For flexible output formatting
-- [Batch Command](./batch.md) - For batch operations
-- [Team Reports](./team.md) - For team-based views
+- [Query Command](query) - For flexible output formatting and exports
+- [Import Command](import) - For importing JIRA tickets locally

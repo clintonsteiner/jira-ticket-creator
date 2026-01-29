@@ -116,44 +116,50 @@ client := jira.NewClient(url, email, token)
 
 ## Theme
 
-The documentation uses the Cayman theme with customization in `_config.yml`.
+The documentation uses the **Just the Docs** Jekyll theme, which provides:
+- Built-in search functionality
+- Left sidebar navigation with hierarchy
+- Mobile-responsive design
+- Proper semantic HTML
 
-### Customizing Styles
-
-Create `assets/css/style.scss` to override theme styles:
-
-```scss
----
----
-@import "{{ site.theme }}";
-
-// Your custom styles here
-```
-
-## Deploying Without GitHub Actions
-
-If you need to deploy manually:
-
-```bash
-cd docs
-bundle exec jekyll build
-git add _site/
-git commit -m "Deploy documentation"
-git push
-```
+Configuration is in `_config.yml`.
 
 ## Navigation
 
-The site uses Jekyll's built-in navigation based on file structure. Parent-child relationships are defined in front matter:
+Just the Docs uses YAML front matter to build the navigation tree:
 
 ```yaml
 ---
-parent: API Reference
+title: Page Title
+parent: Parent Page Title  # Optional, creates hierarchy
+nav_order: 2              # Optional, controls order
 ---
 ```
+
+For example:
+```yaml
+---
+title: Create Command
+parent: CLI Commands
+nav_order: 1
+---
+```
+
+Creates:
+```
+CLI Commands (parent)
+└── Create Command (child, nav_order: 1)
+```
+
+## Search
+
+Search is automatically enabled. Users can search by:
+- Page titles
+- Headings (level 2+)
+- Body text
 
 ## See Also
 
 - [Jekyll Documentation](https://jekyllrb.com/docs/)
+- [Just the Docs Theme](https://just-the-docs.github.io/just-the-docs/)
 - [GitHub Pages Docs](https://docs.github.com/en/pages)
-- [Cayman Theme](https://github.com/pages-themes/cayman)

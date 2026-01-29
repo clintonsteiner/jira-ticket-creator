@@ -476,6 +476,6 @@ echo " Weekly report sent"
 
 ## See Also
 
-- [Search Examples](../cli/search.md)
-- [Query Examples](../cli/query.md)
-- [CLI Commands](../cli/)
+- [Search Command](../cli/search) - JIRA query examples
+- [Query Command](../cli/query) - Output formatting and exports
+- [CLI Commands](../cli) - All CLI commands

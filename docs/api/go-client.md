@@ -451,6 +451,5 @@ func processTicketsConc(service *jira.IssueService, keys []string) {
 
 ## See Also
 
-- [Configuration API](./config.md)
-- [Storage API](./storage.md)
-- [Report Generators](./reports.md)
+- [API Examples](../examples/api-examples) - Go client usage patterns
+- [Project Mapping](../advanced/project-mapping) - Organizing tickets

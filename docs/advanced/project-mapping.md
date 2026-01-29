@@ -399,6 +399,118 @@ jira-ticket-creator import --jql "project = PROJ" \
  cp ~/.jira/project-mapping.json ~/.jira/project-mapping.json.bak
  ```
 
+## Parent Ticket Mapping
+
+Map parent tickets (Epics, Features) to work efforts so all child tickets automatically inherit the same project mapping.
+
+### Concept
+
+Parent tickets (Epics, Stories) can own multiple child tickets (Subtasks, Stories). When you map a parent ticket to a project, all its children are automatically mapped to the same project.
+
+```
+Epic: "Mobile App Redesign" → maps to "frontend" project
+├── Subtask: "Design wireframes"     → inherits "frontend"
+├── Subtask: "Implement components"  → inherits "frontend"
+└── Subtask: "Write tests"           → inherits "frontend"
+```
+
+### Example: Product Feature Mapping
+
+```json
+{
+  "mappings": {
+    "checkout-flow": {
+      "description": "Checkout Payment Feature",
+      "parent_tickets": ["PROJ-500"],
+      "include_children": true
+    },
+    "backend": {
+      "ticket_keys": ["PROJ", "API"],
+      "description": "Backend Team"
+    }
+  }
+}
+```
+
+### Importing with Parent Mapping
+
+When you import a parent ticket, all its children are automatically included:
+
+```bash
+# Import parent and all children
+jira-ticket-creator import --jql "key = PROJ-500" --map-project checkout-flow
+
+# Verify children were imported with same mapping
+jira-ticket-creator search --jql "parent = PROJ-500"
+# All will show project: "checkout-flow"
+```
+
+### Workflow Example: Sprint Planning
+
+Map sprint epics to your work efforts:
+
+```bash
+# Map Q1 Planning epic to planning project
+jira-ticket-creator import --jql "key = PROJ-1000" --map-project q1-planning
+
+# All stories under PROJ-1000 are now part of "q1-planning"
+jira-ticket-creator search --jql "parent = PROJ-1000"
+
+# View by work effort
+jira-ticket-creator team summary --project q1-planning
+jira-ticket-creator gantt --format html --output q1-gantt.html
+```
+
+### Workflow Example: Multi-Team Epics
+
+Organize complex features across multiple teams:
+
+```bash
+# Frontend epic
+jira-ticket-creator import --jql "key = PROJ-200" --map-project frontend-epic
+
+# Backend epic
+jira-ticket-creator import --jql "key = PROJ-201" --map-project backend-epic
+
+# DevOps epic
+jira-ticket-creator import --jql "key = PROJ-202" --map-project devops-epic
+
+# Each epic's children inherit parent mapping
+jira-ticket-creator query --jql "parent in (PROJ-200, PROJ-201, PROJ-202)" --format json
+```
+
+### Filtering by Parent-Based Projects
+
+```bash
+# View all work in frontend epic
+jira-ticket-creator search --jql "parent = PROJ-200"
+
+# Generate report for specific work effort
+jira-ticket-creator gantt --format html --output frontend-epic.html
+```
+
+### Tips
+
+1. **Use descriptive work effort names** based on business deliverables:
+   ```bash
+   --map-project "mobile-redesign"      # Good
+   --map-project "epic-1"               # Avoid
+   ```
+
+2. **Map entire features together**:
+   ```bash
+   # Create work effort for complete feature
+   jira-ticket-creator import --jql "key = PROJ-EPIC" --map-project "feature-name"
+   ```
+
+3. **Track by business outcome**:
+   ```bash
+   # Instead of mapping by team, map by delivery
+   --map-project "customer-onboarding"  # Feature name
+   --map-project "api-performance"      # Business goal
+   --map-project "q1-roadmap"           # Timeline
+   ```
+
 ## Integration with Other Commands
 
 ### Team Reports
@@ -432,6 +544,5 @@ jira-ticket-creator query --jql "project = PROJ" --format table
 
 ## See Also
 
-- [Import Command](../cli/import.md)
-- [Team Reports](../cli/team.md)
-- [Advanced Topics](../advanced/)
+- [Import Command](../cli/import) - Import tickets with mapping
+- [Query Command](../cli/query) - Find tickets by criteria

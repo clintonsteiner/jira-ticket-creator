@@ -17,7 +17,7 @@ help:
 
 install:
 	@echo "Installing Jekyll dependencies..."
-	gem install bundler
+	gem install -n /usr/local/bin bundler
 	bundle install
 
 serve:
