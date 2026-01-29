@@ -32,9 +32,23 @@ type CreateOptions struct {
 
 // ExecuteCreateCommand executes the create command
 func ExecuteCreateCommand(v *viper.Viper, opts CreateOptions) error {
+	// Load configuration with flag overrides
+	cfg, err := config.LoadConfigWithFlags(v)
+	if err != nil {
+		return fmt.Errorf("failed to load configuration: %w", err)
+	}
+
+	// Validate required configuration
+	if err := cfg.ValidateRequired(); err != nil {
+		return err
+	}
+
+	// Create JIRA client
+	client := jira.NewClient(cfg.JIRA.URL, cfg.JIRA.Email, cfg.JIRA.Token)
+
 	// Handle interactive mode
 	if opts.Interactive {
-		wizard := &interactive.TicketWizard{}
+		wizard := interactive.NewTicketWizard(client, cfg.JIRA.Project)
 		input, err := wizard.Run()
 		if err != nil {
 			cli.PrintError(err)
@@ -55,20 +69,6 @@ func ExecuteCreateCommand(v *viper.Viper, opts CreateOptions) error {
 	if opts.Summary == "" {
 		return fmt.Errorf("summary is required")
 	}
-
-	// Load configuration with flag overrides
-	cfg, err := config.LoadConfigWithFlags(v)
-	if err != nil {
-		return fmt.Errorf("failed to load configuration: %w", err)
-	}
-
-	// Validate required configuration
-	if err := cfg.ValidateRequired(); err != nil {
-		return err
-	}
-
-	// Create JIRA client and services
-	client := jira.NewClient(cfg.JIRA.URL, cfg.JIRA.Email, cfg.JIRA.Token)
 	issueService := jira.NewIssueService(client)
 	linkService := jira.NewLinkService(client)
 
@@ -200,8 +200,8 @@ func NewCreateCommand() *cobra.Command {
 
 	cmd.Flags().StringVar(&opts.Summary, "summary", "", "Ticket summary (required)")
 	cmd.Flags().StringVar(&opts.Description, "description", "", "Ticket description")
-	cmd.Flags().StringVar(&opts.Type, "type", "Task", "Issue type (Task, Story, Bug, Epic, Subtask)")
-	cmd.Flags().StringVar(&opts.Priority, "priority", "Medium", "Priority (Low, Medium, High, Critical)")
+	cmd.Flags().StringVar(&opts.Type, "type", "Task", "Issue type (must be valid for your JIRA project)")
+	cmd.Flags().StringVar(&opts.Priority, "priority", "Medium", "Priority (Lowest, Low, Medium, High, Highest)")
 	cmd.Flags().StringVar(&opts.Assignee, "assignee", "", "Assignee email address")
 	cmd.Flags().StringSliceVar(&opts.Labels, "labels", []string{}, "Labels to add (comma-separated)")
 	cmd.Flags().StringSliceVar(&opts.Components, "component", []string{}, "Components (comma-separated)")

@@ -173,3 +173,35 @@ func (c *Client) GetIssueByJQL(jql string, startAt, maxResults int) (*SearchResp
 	}
 	return &result, nil
 }
+
+// GetCreateMetadata retrieves metadata for creating issues, including available issue types
+func (c *Client) GetCreateMetadata(projectKey string) (*CreateMetadata, error) {
+	var result CreateMetadata
+	path := fmt.Sprintf("/rest/api/2/issue/createmeta?projectKeys=%s&expand=projects.issuetypes.fields",
+		url.QueryEscape(projectKey))
+	if err := c.Do("GET", path, nil, &result); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// GetIssueTypesForProject retrieves available issue types for a project
+func (c *Client) GetIssueTypesForProject(projectKey string) ([]string, error) {
+	metadata, err := c.GetCreateMetadata(projectKey)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get metadata: %w", err)
+	}
+
+	var issueTypes []string
+	for _, project := range metadata.Projects {
+		for _, issueType := range project.IssueTypes {
+			issueTypes = append(issueTypes, issueType.Name)
+		}
+	}
+
+	if len(issueTypes) == 0 {
+		return nil, fmt.Errorf("no issue types found for project %s", projectKey)
+	}
+
+	return issueTypes, nil
+}

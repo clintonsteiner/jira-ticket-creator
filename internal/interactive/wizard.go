@@ -3,10 +3,23 @@ package interactive
 import (
 	"fmt"
 	"strings"
+
+	"github.com/clintonsteiner/jira-ticket-creator/internal/jira"
 )
 
 // TicketWizard guides users through creating a ticket interactively
-type TicketWizard struct{}
+type TicketWizard struct {
+	client     *jira.Client
+	projectKey string
+}
+
+// NewTicketWizard creates a new ticket wizard
+func NewTicketWizard(client *jira.Client, projectKey string) *TicketWizard {
+	return &TicketWizard{
+		client:     client,
+		projectKey: projectKey,
+	}
+}
 
 // TicketInput holds the user's ticket input
 type TicketInput struct {
@@ -41,8 +54,12 @@ func (w *TicketWizard) Run() (*TicketInput, error) {
 	}
 	input.Description = description
 
-	// Prompt for issue type
-	types := []string{"Task", "Story", "Bug", "Epic", "Subtask"}
+	// Prompt for issue type - fetch from JIRA dynamically
+	types, err := w.client.GetIssueTypesForProject(w.projectKey)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get issue types: %w", err)
+	}
+
 	issueType, err := PromptSelect("Issue Type", types)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get issue type: %w", err)

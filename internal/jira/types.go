@@ -153,3 +153,22 @@ type TransitionRequest struct {
 type UpdateIssueRequest struct {
 	Fields IssueFields `json:"fields"`
 }
+
+// CreateMetadata is the response from the createmeta endpoint
+type CreateMetadata struct {
+	Expand   string                  `json:"expand"`
+	Projects []CreateMetadataProject `json:"projects"`
+}
+
+// CreateMetadataProject contains issue type information for a project
+type CreateMetadataProject struct {
+	Key        string                    `json:"key"`
+	IssueTypes []CreateMetadataIssueType `json:"issuetypes"`
+}
+
+// CreateMetadataIssueType contains information about an issue type
+type CreateMetadataIssueType struct {
+	Name   string                 `json:"name"`
+	ID     string                 `json:"id"`
+	Fields map[string]interface{} `json:"fields"`
+}
