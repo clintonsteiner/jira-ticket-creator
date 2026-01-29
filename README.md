@@ -30,16 +30,38 @@ A powerful, feature-rich command-line tool for managing JIRA tickets with advanc
 - Go 1.21 or later
 - JIRA Cloud account with API token
 
-### Build from Source
+### Quick Start - Clone from GitHub
 ```bash
+# Clone the repository
 git clone https://github.com/clintonsteiner/jira-ticket-creator.git
 cd jira-ticket-creator
+
+# Build the binary
 go build -o jira-ticket-creator ./cmd/jira-ticket-creator
+
+# Test it works
+./jira-ticket-creator --help
 ```
 
-### Move to PATH
+### Run Directly from GitHub (No cloning required)
+```bash
+# Run directly from GitHub repository
+go run github.com/clintonsteiner/jira-ticket-creator/cmd/jira-ticket-creator@latest create --help
+
+# Or compile and install to $GOPATH/bin
+go install github.com/clintonsteiner/jira-ticket-creator/cmd/jira-ticket-creator@latest
+```
+
+### Install Globally (Optional)
+After building, move the binary to your PATH:
 ```bash
 sudo mv jira-ticket-creator /usr/local/bin/
+
+# Or add current directory to PATH
+export PATH=$PATH:$(pwd)
+
+# Then use from anywhere
+jira-ticket-creator --help
 ```
 
 ## ⚙️ Configuration
@@ -71,6 +93,53 @@ defaults:
   priority: Medium
   labels:
     - auto-created
+```
+
+## 🚀 Getting Started
+
+### 1. Setup (Choose One Method)
+
+**Method A: Using Environment Variables (Recommended)**
+```bash
+export JIRA_URL=https://your-company.atlassian.net
+export JIRA_EMAIL=your-email@company.com
+export JIRA_TOKEN=your-api-token
+export JIRA_PROJECT=PROJ
+```
+
+**Method B: Using Config File**
+```bash
+# Create ~/.jirarc with your credentials
+cat > ~/.jirarc << EOF
+jira:
+  url: https://your-company.atlassian.net
+  email: your-email@company.com
+  token: your-api-token
+  project: PROJ
+EOF
+
+chmod 600 ~/.jirarc  # Secure the file (readable only by you)
+```
+
+### 2. Test Your Setup
+```bash
+./jira-ticket-creator search --key PROJ-1
+```
+
+### 3. Start Creating Tickets
+```bash
+# Simple ticket
+./jira-ticket-creator create --summary "My first ticket"
+
+# Detailed ticket
+./jira-ticket-creator create \
+  --summary "Add OAuth" \
+  --description "Implement OAuth 2.0" \
+  --type Story \
+  --priority High
+
+# Interactive mode (recommended for first-time users)
+./jira-ticket-creator create --interactive
 ```
 
 ## 📖 Command Reference
@@ -130,6 +199,26 @@ jira-ticket-creator team summary      # By creator
 jira-ticket-creator team assignments  # Workload
 jira-ticket-creator team timeline     # Progress
 ```
+
+### Project Timeline (2-Week Visualization)
+```bash
+# ASCII text timeline for terminal
+jira-ticket-creator timeline --format ascii --weeks 2
+
+# Mermaid Gantt chart (embed in GitHub, Notion, Markdown)
+jira-ticket-creator timeline --format mermaid --weeks 2
+
+# HTML interactive timeline (open in browser)
+jira-ticket-creator timeline --format html --weeks 2 > timeline.html
+open timeline.html
+```
+
+**Features:**
+- Shows ticket progress bars over configurable weeks
+- Displays status: In Progress (████), Not Started (░░░░), Done
+- Highlights critical path items
+- Includes progress summary and recommendations
+- HTML version with CSS styling and interactive cells
 
 ### Visualization
 ```bash
@@ -199,6 +288,61 @@ go test -cover ./...
 # Generate coverage report
 go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
+```
+
+## 🐙 GitHub Repository
+
+**Repository**: https://github.com/clintonsteiner/jira-ticket-creator
+
+### Clone & Use
+```bash
+# Clone from GitHub
+git clone https://github.com/clintonsteiner/jira-ticket-creator.git
+cd jira-ticket-creator
+
+# Build locally
+go build -o jira-ticket-creator ./cmd/jira-ticket-creator
+
+# Run without cloning
+go install github.com/clintonsteiner/jira-ticket-creator/cmd/jira-ticket-creator@latest
+```
+
+### Contribute
+- Report issues: https://github.com/clintonsteiner/jira-ticket-creator/issues
+- Submit pull requests with improvements
+- Star ⭐ the repo if you find it useful!
+
+## 🆘 Troubleshooting
+
+### Authentication Issues
+```bash
+# Test your credentials
+./jira-ticket-creator search --key PROJ-1
+
+# Common issues:
+# - JIRA_TOKEN must be API token, not your password
+# - User must have permissions on the project
+# - Verify JIRA_URL format: https://domain.atlassian.net (no trailing slash)
+```
+
+### Build Issues
+```bash
+# Update Go modules
+go mod tidy
+go mod download
+
+# Rebuild
+go build -o jira-ticket-creator ./cmd/jira-ticket-creator
+```
+
+### Command Not Found
+```bash
+# Make sure binary is in PATH
+export PATH=$PATH:$(pwd)
+./jira-ticket-creator --help
+
+# Or move to /usr/local/bin
+sudo mv jira-ticket-creator /usr/local/bin/
 ```
 
 ## 📄 License
