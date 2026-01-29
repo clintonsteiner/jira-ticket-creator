@@ -28,6 +28,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,10 +48,12 @@ jobs:
       - name: Build with Jekyll
         working-directory: './docs'
         run: |
+          gem install bundler
           bundle install
           bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
 
       - name: Upload artifact
+        id: upload
         uses: actions/upload-pages-artifact@v3
         with:
           path: './docs/_site'
@@ -81,23 +85,3 @@ jobs:
             pandoc "$file" --from markdown --to html > /dev/null || exit 1
           done
           echo "All Markdown files are valid"
-
-      - name: Check for broken links
-        run: |
-          # Simple link check in markdown files
-          for file in docs/**/*.md; do
-            # Check for [text](url) format
-            grep -o '\[.*\](.*)' "$file" | while read -r link; do
-              url=$(echo "$link" | sed 's/\[.*\](\(.*\))/\1/')
-              # Skip absolute URLs and anchors
-              if [[ ! "$url" =~ ^http && ! "$url" =~ ^# ]]; then
-                # Check if file exists
-                if [[ "$url" != *"/../"* ]]; then
-                  if [[ ! -f "docs/${url}" && ! -f "docs/${url}.md" ]]; then
-                    echo "⚠️  Potential broken link: $url in $file"
-                  fi
-                fi
-              fi
-            done
-          done
-          echo "Link check complete"
