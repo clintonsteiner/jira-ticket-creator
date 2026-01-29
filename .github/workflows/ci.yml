@@ -170,7 +170,7 @@ jobs:
         CGO_ENABLED=1 go build -buildmode=c-shared -o ${{ matrix.lib_name }} ../internal/api
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v6
       with:
         name: binaries-${{ matrix.os }}
         path: |

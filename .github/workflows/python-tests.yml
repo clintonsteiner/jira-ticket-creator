@@ -172,7 +172,7 @@ jobs:
         ls -lh dist/
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v6
       with:
         name: python-dist
         path: python/dist/
