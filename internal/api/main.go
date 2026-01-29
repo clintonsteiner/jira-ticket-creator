@@ -82,11 +82,11 @@ func CreateTicketJSON(urlC *C.char, emailC *C.char, tokenC *C.char, projectC *C.
 		fields.Assignee = &jira.User{EmailAddress: req.Assignee}
 	}
 
-	request := CreateIssueRequest{
+	request := jira.CreateIssueRequest{
 		Fields: fields,
 	}
 
-	var response CreateIssueResponse
+	var response jira.CreateIssueResponse
 	if err := client.Do("POST", "/rest/api/2/issue", request, &response); err != nil {
 		resp := CreateTicketResponse{Error: err.Error()}
 		data, _ := json.Marshal(resp)
@@ -122,35 +122,33 @@ func GetTicket(urlC *C.char, emailC *C.char, tokenC *C.char, keyC *C.char) *C.ch
 		return C.CString(string(data))
 	}
 
+	priority := ""
+	if issue.Fields.Priority != nil {
+		priority = issue.Fields.Priority.Name
+	}
+
+	assignee := ""
+	if issue.Fields.Assignee != nil {
+		assignee = issue.Fields.Assignee.Name
+		if assignee == "" {
+			assignee = issue.Fields.Assignee.EmailAddress
+		}
+	}
+
 	resp := map[string]interface{}{
 		"key":         issue.Key,
 		"id":          issue.ID,
 		"summary":     issue.Fields.Summary,
 		"description": issue.Fields.Description,
-		"status":      issue.Fields.Status.Name,
 		"issue_type":  issue.Fields.IssueType.Name,
-		"priority":    getStringPtr(issue.Fields.Priority, "Name"),
-		"assignee":    getStringPtr(issue.Fields.Assignee, "DisplayName"),
+		"priority":    priority,
+		"assignee":    assignee,
 		"labels":      issue.Fields.Labels,
 		"url":         issue.Self,
 	}
 
 	data, _ := json.Marshal(resp)
 	return C.CString(string(data))
-}
-
-// Helper to safely extract string pointers
-func getStringPtr(v interface{}, field string) string {
-	if v == nil {
-		return ""
-	}
-	if s, ok := v.(*jira.Priority); ok && field == "Name" && s != nil {
-		return s.Name
-	}
-	if u, ok := v.(*jira.User); ok && field == "DisplayName" && u != nil {
-		return u.DisplayName
-	}
-	return ""
 }
 
 //export SearchTickets
@@ -175,13 +173,25 @@ func SearchTickets(urlC *C.char, emailC *C.char, tokenC *C.char, jqlC *C.char) *
 
 	tickets := make([]map[string]interface{}, 0, len(result.Issues))
 	for _, issue := range result.Issues {
+		priority := ""
+		if issue.Fields.Priority != nil {
+			priority = issue.Fields.Priority.Name
+		}
+
+		assignee := ""
+		if issue.Fields.Assignee != nil {
+			assignee = issue.Fields.Assignee.Name
+			if assignee == "" {
+				assignee = issue.Fields.Assignee.EmailAddress
+			}
+		}
+
 		ticket := map[string]interface{}{
 			"key":        issue.Key,
 			"summary":    issue.Fields.Summary,
-			"status":     issue.Fields.Status.Name,
 			"issue_type": issue.Fields.IssueType.Name,
-			"priority":   getStringPtr(issue.Fields.Priority, "Name"),
-			"assignee":   getStringPtr(issue.Fields.Assignee, "DisplayName"),
+			"priority":   priority,
+			"assignee":   assignee,
 		}
 		tickets = append(tickets, ticket)
 	}
