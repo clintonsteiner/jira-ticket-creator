@@ -82,6 +82,46 @@ def main():
     except Exception as e:
         print(f"Error: {e}")
 
+    # Example 6: Get ticket details
+    print("\n[Example 6] Getting ticket details...")
+    try:
+        ticket = client.get_ticket("PROJ-123")
+        print(f"Ticket: {ticket['key']}")
+        print(f"Summary: {ticket['summary']}")
+        print(f"Status: {ticket['status']}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+    # Example 7: Search tickets
+    print("\n[Example 7] Searching for tickets...")
+    try:
+        results = client.search(status="In Progress")
+        print(f"Found {results['count']} tickets")
+        for ticket in results.get('tickets', []):
+            print(f"  - {ticket['key']}: {ticket['summary']}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+    # Example 8: Update ticket
+    print("\n[Example 8] Updating ticket...")
+    try:
+        response = client.update_ticket(
+            "PROJ-123",
+            priority="High",
+            description="Updated description"
+        )
+        print(f"Updated: {response['key']}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+    # Example 9: Advanced search with JQL
+    print("\n[Example 9] Advanced JQL search...")
+    try:
+        results = client.search(jql='project = PROJ AND priority = "Highest" AND status != "Done"')
+        print(f"Critical tickets: {results['count']}")
+    except Exception as e:
+        print(f"Error: {e}")
+
 
 if __name__ == "__main__":
     main()

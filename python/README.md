@@ -12,7 +12,17 @@ Direct Python integration with JIRA Ticket Creator using C bindings (CGO). No su
 
 ## Installation
 
-### Build C Library
+### From PyPI (Recommended)
+
+```bash
+pip install jira-ticket-creator
+```
+
+This includes the pre-compiled C library for your platform.
+
+### From Source (Development)
+
+#### 1. Build C Library
 
 ```bash
 # Build the C library
@@ -23,7 +33,7 @@ cd python
 CGO_ENABLED=1 go build -buildmode=c-shared -o libjira.so ../internal/api/capi.go
 ```
 
-### Install Python Package
+#### 2. Install Python Package
 
 ```bash
 # Install locally for development
@@ -32,6 +42,9 @@ make python-install
 # Or manually
 cd python
 pip install -e .
+
+# Or using modern build tools
+pip install -e ".[dev]"
 ```
 
 ## Quick Start
@@ -93,6 +106,46 @@ ticket = client.create_ticket(
 
 Returns dictionary with: `key`, `id`, `url`
 
+#### get_ticket()
+
+```python
+ticket = client.get_ticket(ticket_key: str) -> Dict[str, Any]
+```
+
+Retrieve ticket details by key.
+
+Returns dictionary with: `key`, `id`, `summary`, `description`, `status`, `issue_type`, `priority`, `assignee`, `labels`, `url`
+
+#### search()
+
+```python
+# Search using JQL
+results = client.search(jql: str = "") -> Dict[str, Any]
+
+# Search using keyword arguments
+results = client.search(
+    status="In Progress",           # Filter by status
+    key="PROJ-123",                 # Search by ticket key
+    summary="feature",              # Search by summary text
+    assignee="user@company.com",    # Filter by assignee
+    issue_type="Bug"                # Filter by issue type
+) -> Dict[str, Any]
+```
+
+Returns dictionary with: `total`, `count`, `tickets`
+
+#### update_ticket()
+
+```python
+response = client.update_ticket(
+    ticket_key: str,                # Ticket to update
+    summary: str = None,            # New summary
+    description: str = None,        # New description
+    priority: str = None,           # New priority
+    assignee: str = None            # New assignee email
+) -> Dict[str, Any]
+```
+
 #### extract_project_key()
 
 ```python
@@ -110,9 +163,17 @@ version = client.get_version()  # Returns library version
 ### Create a simple task
 
 ```python
-ticket = client.create_ticket(
-    summary="Implement new feature"
+from jira_client import JiraClient
+
+client = JiraClient(
+    url="https://company.atlassian.net",
+    email="user@company.com",
+    token="your-api-token",
+    project="PROJ"
 )
+
+ticket = client.create_ticket(summary="Implement new feature")
+print(f"Created: {ticket['key']}")
 ```
 
 ### Create a bug with high priority
@@ -133,6 +194,46 @@ ticket = client.create_ticket(
     summary="Update API endpoints",
     assignee="john@company.com",
     blocked_by=["PROJ-123", "PROJ-124"]
+)
+```
+
+### Get ticket details
+
+```python
+ticket = client.get_ticket("PROJ-123")
+print(f"Status: {ticket['status']}")
+print(f"Assignee: {ticket['assignee']}")
+print(f"Labels: {ticket['labels']}")
+```
+
+### Search tickets
+
+```python
+# Search by JQL
+results = client.search(jql='project = PROJ AND status = "In Progress"')
+print(f"Found {results['count']} tickets")
+
+# Search by keyword
+results = client.search(status="In Progress")
+for ticket in results['tickets']:
+    print(f"  - {ticket['key']}: {ticket['summary']}")
+
+# Search by multiple criteria
+results = client.search(
+    status="To Do",
+    priority="High",
+    assignee="john@company.com"
+)
+```
+
+### Update ticket
+
+```python
+response = client.update_ticket(
+    "PROJ-123",
+    priority="High",
+    description="Updated description",
+    assignee="jane@company.com"
 )
 ```
 

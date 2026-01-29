@@ -38,6 +38,10 @@ help:
 	@echo "  python-install     - Install Python package locally"
 	@echo "  python-clean       - Clean Python build artifacts"
 	@echo "  python-example     - Run Python example"
+	@echo "  python-build-dist  - Build distribution package"
+	@echo "  python-publish-check - Check distribution for issues"
+	@echo "  python-publish-test - Publish to PyPI Test repository"
+	@echo "  python-publish     - Publish to PyPI (production)"
 	@echo ""
 	@echo "Combined Targets:"
 	@echo "  all                - Build CLI + Python library"
@@ -69,13 +73,13 @@ clean:
 python-build: $(LIB_FILE)
 	@echo "Python C library built: $(LIB_FILE)"
 
-$(LIB_FILE): $(INTERNAL_API_DIR)/capi.go
+$(LIB_FILE): $(INTERNAL_API_DIR)/main.go
 	@echo "Building C library for Python ($(UNAME_S))..."
 	@mkdir -p $(PYTHON_DIR)
 	cd $(PYTHON_DIR) && CGO_ENABLED=1 $(GO) build \
 		-buildmode=c-shared \
 		-o $(notdir $@) \
-		../$(INTERNAL_API_DIR)/capi.go
+		../$(INTERNAL_API_DIR)
 	@echo "Built: $@"
 
 python-test: python-build
@@ -104,6 +108,28 @@ python-example: python-build
 		print('  client = JiraClient(url=\"...\", email=\"...\", token=\"...\", project=\"...\")'); \
 		print('  ticket = client.create_ticket(summary=\"My task\")'); \
 	"
+
+python-build-dist: python-build
+	@echo "Building Python distribution package..."
+	cd $(PYTHON_DIR) && $(PYTHON) -m pip install --upgrade build
+	cd $(PYTHON_DIR) && $(PYTHON) -m build
+	@echo "Distribution built in $(PYTHON_DIR)/dist/"
+
+python-publish-test: python-build-dist
+	@echo "Publishing to PyPI Test Repository..."
+	cd $(PYTHON_DIR) && $(PYTHON) -m pip install --upgrade twine
+	cd $(PYTHON_DIR) && $(PYTHON) -m twine upload --repository testpypi dist/*
+	@echo "Published to https://test.pypi.org/"
+
+python-publish: python-build-dist
+	@echo "Publishing to PyPI..."
+	cd $(PYTHON_DIR) && $(PYTHON) -m pip install --upgrade twine
+	cd $(PYTHON_DIR) && $(PYTHON) -m twine upload dist/*
+	@echo "Published to https://pypi.org/"
+
+python-publish-check: python-build-dist
+	@echo "Checking distribution for issues..."
+	cd $(PYTHON_DIR) && $(PYTHON) -m twine check dist/*
 
 # ============================================================================
 # COMBINED TARGETS

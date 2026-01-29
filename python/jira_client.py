@@ -9,7 +9,7 @@ import ctypes
 import json
 import os
 from pathlib import Path
-from typing import Dict, Optional, List
+from typing import Dict, Optional, List, Any
 
 
 class JiraClient:
@@ -63,18 +63,41 @@ class JiraClient:
 
     def _setup_function_signatures(self):
         """Setup ctypes function signatures"""
+        # CreateTicket function: (url, email, token, project, json) -> json_response
         self.lib.CreateTicketJSON.argtypes = [
             ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p,
             ctypes.c_char_p, ctypes.c_char_p
         ]
         self.lib.CreateTicketJSON.restype = ctypes.c_char_p
 
+        # GetTicket function: (url, email, token, key) -> json_response
+        self.lib.GetTicket.argtypes = [
+            ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p
+        ]
+        self.lib.GetTicket.restype = ctypes.c_char_p
+
+        # SearchTickets function: (url, email, token, jql) -> json_response
+        self.lib.SearchTickets.argtypes = [
+            ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p
+        ]
+        self.lib.SearchTickets.restype = ctypes.c_char_p
+
+        # UpdateTicket function: (url, email, token, key, json) -> json_response
+        self.lib.UpdateTicket.argtypes = [
+            ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p,
+            ctypes.c_char_p, ctypes.c_char_p
+        ]
+        self.lib.UpdateTicket.restype = ctypes.c_char_p
+
+        # ExtractProjectKey function: (ticket_key) -> project_key
         self.lib.ExtractProjectKey.argtypes = [ctypes.c_char_p]
         self.lib.ExtractProjectKey.restype = ctypes.c_char_p
 
+        # FreeMemory function: (ptr) -> void
         self.lib.FreeMemory.argtypes = [ctypes.c_char_p]
         self.lib.FreeMemory.restype = None
 
+        # Version function: () -> version_string
         self.lib.Version.argtypes = []
         self.lib.Version.restype = ctypes.c_char_p
 
@@ -140,6 +163,130 @@ class JiraClient:
     def extract_project_key(self, ticket_key: str) -> str:
         """Extract project key from ticket key"""
         return self._extract_project_sync(ticket_key)
+
+    def get_ticket(self, ticket_key: str) -> Dict[str, Any]:
+        """Get ticket details by key
+
+        Args:
+            ticket_key: The ticket key (e.g., 'PROJ-123')
+
+        Returns:
+            Dictionary with ticket details: key, id, summary, description, status,
+            issue_type, priority, assignee, labels, url
+        """
+        result = self.lib.GetTicket(
+            self.url.encode(),
+            self.email.encode(),
+            self.token.encode(),
+            ticket_key.encode()
+        )
+
+        response_json = result.decode()
+        self.lib.FreeMemory(result)
+        response = json.loads(response_json)
+
+        if "error" in response and response["error"]:
+            raise Exception(f"Failed to get ticket: {response['error']}")
+
+        return response
+
+    def search(self, jql: str = "", **kwargs) -> Dict[str, Any]:
+        """Search for tickets using JQL or keyword arguments
+
+        Args:
+            jql: JQL query string (e.g., 'project = PROJ AND status = "In Progress"')
+            **kwargs: Alternative keyword arguments:
+                - key: Search by ticket key
+                - summary: Search by summary text
+                - status: Filter by status
+                - assignee: Filter by assignee
+                - issue_type: Filter by issue type
+
+        Returns:
+            Dictionary with search results: total, count, tickets
+        """
+        # Build JQL if kwargs provided
+        if not jql and kwargs:
+            jql_parts = []
+            if "key" in kwargs:
+                jql_parts.append(f'key = {kwargs["key"]}')
+            if "summary" in kwargs:
+                jql_parts.append(f'summary ~ "{kwargs["summary"]}"')
+            if "status" in kwargs:
+                jql_parts.append(f'status = "{kwargs["status"]}"')
+            if "assignee" in kwargs:
+                jql_parts.append(f'assignee = "{kwargs["assignee"]}"')
+            if "issue_type" in kwargs:
+                jql_parts.append(f'type = {kwargs["issue_type"]}')
+
+            if jql_parts:
+                jql = " AND ".join(jql_parts)
+
+        if not jql:
+            jql = f"project = {self.project}"
+
+        result = self.lib.SearchTickets(
+            self.url.encode(),
+            self.email.encode(),
+            self.token.encode(),
+            jql.encode()
+        )
+
+        response_json = result.decode()
+        self.lib.FreeMemory(result)
+        response = json.loads(response_json)
+
+        if "error" in response and response["error"]:
+            raise Exception(f"Search failed: {response['error']}")
+
+        return response
+
+    def update_ticket(self, ticket_key: str, **kwargs) -> Dict[str, Any]:
+        """Update ticket fields
+
+        Args:
+            ticket_key: The ticket key to update
+            **kwargs: Fields to update:
+                - summary: New summary
+                - description: New description
+                - priority: New priority (Lowest, Low, Medium, High, Highest)
+                - assignee: New assignee email
+
+        Returns:
+            Dictionary with update response
+        """
+        request = {}
+
+        if "summary" in kwargs:
+            request["summary"] = kwargs["summary"]
+        if "description" in kwargs:
+            request["description"] = kwargs["description"]
+        if "priority" in kwargs:
+            request["priority"] = kwargs["priority"]
+        if "assignee" in kwargs:
+            request["assignee"] = kwargs["assignee"]
+
+        if not request:
+            raise ValueError("No fields specified for update")
+
+        json_str = json.dumps(request)
+
+        result = self.lib.UpdateTicket(
+            self.url.encode(),
+            self.email.encode(),
+            self.token.encode(),
+            ticket_key.encode(),
+            json_str.encode()
+        )
+
+        response_json = result.decode()
+        self.lib.FreeMemory(result)
+        response = json.loads(response_json)
+
+        if "error" in response and response["error"]:
+            raise Exception(f"Failed to update ticket: {response['error']}")
+
+        return response
 
     def get_version(self) -> str:
         """Get library version"""
