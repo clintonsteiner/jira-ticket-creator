@@ -5,18 +5,17 @@ parent: Examples
 nav_order: 3
 ---
 
-# Managing JIRA Efforts - Step-by-Step Guides
+# Managing JIRA Efforts
 
-Learn how to organize, track, and report on work efforts using jira-ticket-creator. An "effort" is any large body of work that may span multiple teams: products, features, initiatives, roadmap items, or quarterly goals.
+This guide shows how to organize, track, and report on work efforts using jira-ticket-creator. An effort is any large body of work that may span multiple teams: products, features, initiatives, roadmap items, or quarterly goals.
 
-## Table of Contents
+## What You'll Learn
 
-- [Concepts](#concepts)
-- [Setting Up an Effort](#setting-up-an-effort)
-- [Tracking Effort Progress](#tracking-effort-progress)
-- [Multi-Team Efforts](#multi-team-efforts)
-- [Effort Reporting](#effort-reporting)
-- [Real-World Scenarios](#real-world-scenarios)
+- How to organize work into efforts
+- How to track progress and spot blockers
+- How to coordinate across multiple teams
+- How to generate reports for stakeholders
+- How to apply this to real situations like quarterly goals or feature launches
 
 ## Concepts
 
@@ -131,12 +130,12 @@ EFFORT="mobile-redesign"
 EPIC="PROJ-1000"
 DATE=$(date +%Y-%m-%d)
 
-echo "=== EFFORT PROGRESS: $EFFORT ==="
+echo "EFFORT PROGRESS: $EFFORT"
 echo "Date: $DATE"
 echo ""
 
 # Status breakdown
-echo "STATUS BREAKDOWN:"
+echo "Status breakdown:"
 jira-ticket-creator search --jql "parent = $EPIC" | awk '{
   if ($3 == "To") print "  To Do: " ++to_do
   else if ($3 == "In") print "  In Progress: " ++in_progress
@@ -311,11 +310,10 @@ cat > effort-health-check.sh << 'EOF'
 EFFORT="mobile-redesign"
 EPIC="PROJ-1000"
 
-echo "╔════════════════════════════════════╗"
-echo "║   EFFORT HEALTH CHECK               ║"
-echo "║   $EFFORT"
-echo "║   $(date +%Y-%m-%d)"
-echo "╚════════════════════════════════════╝"
+echo "EFFORT HEALTH CHECK"
+echo "==================="
+echo "$EFFORT"
+echo "$(date +%Y-%m-%d)"
 echo ""
 
 # Get raw counts
@@ -335,10 +333,10 @@ EMPTY=$((10 - FILLED))
 PROGRESS_BAR=$(printf '█%.0s' $(seq 1 $FILLED))$(printf '░%.0s' $(seq 1 $EMPTY))
 
 echo "OVERALL PROGRESS: $PERCENT_DONE%"
-echo "[$PROGRESS_BAR]"
+echo "$PROGRESS_BAR"
 echo ""
 
-echo "TICKET STATUS:"
+echo "Ticket status:"
 echo "  Done:         $DONE/$TOTAL ($PERCENT_DONE%)"
 echo "  In Progress:  $IN_PROGRESS/$TOTAL ($PERCENT_IN_PROGRESS%)"
 echo "  To Do:        $TO_DO/$TOTAL"
@@ -346,24 +344,24 @@ echo "  Blocked:      $BLOCKED"
 echo ""
 
 # Risk indicators
-echo "RISKS & CONCERNS:"
+echo "Risks and concerns:"
 if [ $BLOCKED -gt 0 ]; then
-  echo "  ⚠ $BLOCKED blocked tickets"
+  echo "  $BLOCKED blocked tickets"
   jira-ticket-creator search --jql "parent = $EPIC AND status = Blocked" --format table
 fi
 
 UNASSIGNED=$(jira-ticket-creator search --jql "parent = $EPIC AND assignee is EMPTY" | wc -l)
 if [ $UNASSIGNED -gt 0 ]; then
-  echo "  ⚠ $UNASSIGNED unassigned tickets"
+  echo "  $UNASSIGNED unassigned tickets"
 fi
 
 CRITICAL=$(jira-ticket-creator search --jql "parent = $EPIC AND priority = Critical" | wc -l)
 if [ $CRITICAL -gt 0 ]; then
-  echo "  🔥 $CRITICAL critical priority tickets"
+  echo "  $CRITICAL critical priority tickets"
 fi
 
 echo ""
-echo "TEAM STATUS:"
+echo "Team status:"
 jira-ticket-creator team summary --ticket $EPIC
 EOF
 
