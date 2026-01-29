@@ -93,8 +93,8 @@ func outputTable(issues []jira.Issue) {
 
 	for _, issue := range issues {
 		status := ""
-		if issue.Fields.IssueType.Name != "" {
-			status = issue.Fields.IssueType.Name
+		if issue.Fields.Status != nil && issue.Fields.Status.Name != "" {
+			status = issue.Fields.Status.Name
 		}
 
 		fmt.Fprintf(w, "%s\t%s\t%s\t%s\n",

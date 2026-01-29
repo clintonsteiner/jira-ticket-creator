@@ -18,6 +18,7 @@ type IssueFields struct {
 	IssueType    IssueType              `json:"issuetype"`
 	Priority     *Priority              `json:"priority,omitempty"`
 	Assignee     *User                  `json:"assignee,omitempty"`
+	Status       *Status                `json:"status,omitempty"`
 	Labels       []string               `json:"labels,omitempty"`
 	Components   []Component            `json:"components,omitempty"`
 	CustomFields map[string]interface{} `json:"customfields,omitempty"`
@@ -36,6 +37,12 @@ type IssueType struct {
 
 // Priority represents a JIRA priority level
 type Priority struct {
+	Name string `json:"name"`
+	ID   string `json:"id,omitempty"`
+}
+
+// Status represents a JIRA issue status
+type Status struct {
 	Name string `json:"name"`
 	ID   string `json:"id,omitempty"`
 }
