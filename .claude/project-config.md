@@ -69,7 +69,7 @@ defaults:
 
 ### Tests (30%+ coverage)
 - `internal/config/config_test.go`
-- `internal/jira/validation_test.go` 
+- `internal/jira/validation_test.go`
 - `internal/batch/*_test.go`
 - `internal/storage/*_test.go`
 

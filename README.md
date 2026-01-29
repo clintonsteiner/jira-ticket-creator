@@ -348,4 +348,3 @@ sudo mv jira-ticket-creator /usr/local/bin/
 ## 📄 License
 
 MIT License
-

@@ -46,6 +46,7 @@ It supports creating, updating, searching, and reporting on tickets with feature
 	cmd.AddCommand(NewTemplateCommand())
 	cmd.AddCommand(NewTeamCommand())
 	cmd.AddCommand(NewTimelineCommand())
+	cmd.AddCommand(NewPMCommand())
 	cmd.AddCommand(NewCompletionCommand())
 
 	return cmd
