@@ -63,7 +63,7 @@ func executeTimelineVisualization(weeks int, format string) error {
 
 // generateASCIITimeline generates ASCII art timeline
 func generateASCIITimeline(records interface{}, weeks int) error {
-	fmt.Println("📅 TWO-WEEK PROJECT TIMELINE")
+	fmt.Println(" TWO-WEEK PROJECT TIMELINE")
 	fmt.Println("=============================\n")
 
 	now := time.Now()
@@ -110,11 +110,11 @@ func generateASCIITimeline(records interface{}, weeks int) error {
 			if ticketWeek >= ticket.startWeek && ticketWeek < ticket.startWeek+ticket.duration {
 				switch ticket.status {
 				case "In Progress":
-					fmt.Print("████████████████████████████ | ")
+					fmt.Print("[===== ACTIVE =====] | ")
 				case "To Do":
-					fmt.Print("░░░░░░░░░░░░░░░░░░░░░░░░░░░░ | ")
+					fmt.Print("[===== PENDING ====] | ")
 				case "Done":
-					fmt.Print("████████████████████████████ | ")
+					fmt.Print("[===== ACTIVE =====] | ")
 				default:
 					fmt.Print("                              | ")
 				}
@@ -129,19 +129,19 @@ func generateASCIITimeline(records interface{}, weeks int) error {
 		fmt.Printf(" [%s] %s\n", ticket.priority, ticket.status)
 	}
 
-	fmt.Println("\n📊 Legend:")
+	fmt.Println("\n Legend:")
 	fmt.Println("  ████ = In Progress or Done")
 	fmt.Println("  ░░░░ = Not started (To Do)")
 	fmt.Println("  Priorities: High, Critical, Medium, Low\n")
 
 	// Progress summary
-	fmt.Println("📈 Progress Summary:")
+	fmt.Println(" Progress Summary:")
 	fmt.Println("  Week 1: 2/4 tickets in progress (50%)")
 	fmt.Println("  Week 2: 4/6 tickets pending (0% complete)")
 	fmt.Println("  Critical Path: Database Migration (Week 2)\n")
 
 	// Recommendations
-	fmt.Println("💡 Recommendations:")
+	fmt.Println(" Recommendations:")
 	fmt.Println("  • Database Migration is critical and on the critical path")
 	fmt.Println("  • Consider shifting Security Audit to Week 3 if needed")
 	fmt.Println("  • Performance Testing can start after Database Migration")
@@ -300,7 +300,7 @@ func generateHTMLTimeline(records interface{}, weeks int) error {
 </head>
 <body>
   <div class="timeline-container">
-    <h1>📅 Two-Week Project Timeline</h1>
+    <h1> Two-Week Project Timeline</h1>
     <p style="text-align: center; color: #666;">
       <strong>%s</strong> to <strong>%s</strong>
     </p>
@@ -372,7 +372,7 @@ func generateHTMLTimeline(records interface{}, weeks int) error {
     </div>
 
     <div style="margin-top: 20px; padding: 10px; background-color: #fff3cd; border-left: 4px solid #ffc107;">
-      <h3>📊 Project Status</h3>
+      <h3> Project Status</h3>
       <ul>
         <li><strong>Overall Progress:</strong> 40%% (8/20 days planned)</li>
         <li><strong>Critical Path:</strong> Database Migration (Week 2)</li>

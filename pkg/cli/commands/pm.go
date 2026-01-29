@@ -176,7 +176,7 @@ func executePMDetails() error {
 
 // executePMCreateParent guides user through creating a parent epic
 func executePMCreateParent() error {
-	fmt.Println("\n📌 CREATE PARENT EPIC\n")
+	fmt.Println("\n CREATE PARENT EPIC\n")
 	fmt.Println("A parent epic is used to organize and track related work items.")
 	fmt.Println("\nTo create a parent epic:")
 	fmt.Println("  1. Use the standard create command with --type Epic")

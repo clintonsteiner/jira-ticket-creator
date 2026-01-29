@@ -28,7 +28,7 @@ func (r *PMReport) GenerateProjectHierarchy(records []jira.TicketRecord) string 
 	}
 
 	output := strings.Builder{}
-	output.WriteString("\n📊 PROJECT MANAGEMENT DASHBOARD\n")
+	output.WriteString("\n PROJECT MANAGEMENT DASHBOARD\n")
 	output.WriteString("================================\n\n")
 
 	// Group tickets by status
@@ -56,15 +56,15 @@ func (r *PMReport) GenerateProjectHierarchy(records []jira.TicketRecord) string 
 		percentComplete = (completed * 100) / total
 	}
 
-	output.WriteString(fmt.Sprintf("📈 Overall Progress: %d%% (%d/%d tickets)\n", percentComplete, completed, total))
+	output.WriteString(fmt.Sprintf("Overall Progress: %d%% (%d/%d tickets)\n", percentComplete, completed, total))
 	output.WriteString(generateProgressBar(percentComplete))
-	output.WriteString(fmt.Sprintf("\n  ✅ Done: %d\n", completed))
-	output.WriteString(fmt.Sprintf("  🔄 In Progress: %d\n", inProgress))
-	output.WriteString(fmt.Sprintf("  📝 To Do: %d\n", todo))
-	output.WriteString(fmt.Sprintf("  ⛔ Blocked: %d\n\n", blocked))
+	output.WriteString(fmt.Sprintf("\n  [DONE] %d\n", completed))
+	output.WriteString(fmt.Sprintf("  [IN PROGRESS] %d\n", inProgress))
+	output.WriteString(fmt.Sprintf("  [TO DO] %d\n", todo))
+	output.WriteString(fmt.Sprintf("  [BLOCKED] %d\n\n", blocked))
 
 	// Ticket hierarchy
-	output.WriteString("🎯 TICKET HIERARCHY\n")
+	output.WriteString("TICKET HIERARCHY\n")
 	output.WriteString("-------------------\n\n")
 
 	// Group by issue type (treating Epics/Stories as parents)
@@ -98,7 +98,7 @@ func (r *PMReport) GenerateProjectHierarchy(records []jira.TicketRecord) string 
 	// Display epics and their children
 	for _, ticket := range records {
 		if ticket.IssueType == "Epic" {
-			output.WriteString(fmt.Sprintf("📌 EPIC: %s - %s\n", ticket.Key, ticket.Summary))
+			output.WriteString(fmt.Sprintf("[EPIC] EPIC: %s - %s\n", ticket.Key, ticket.Summary))
 			output.WriteString(fmt.Sprintf("   Status: %s | Priority: %s | Owner: %s\n",
 				ticket.Status, ticket.Priority, ticket.Assignee))
 
@@ -120,11 +120,11 @@ func (r *PMReport) GenerateProjectHierarchy(records []jira.TicketRecord) string 
 			if len(children) > 0 {
 				output.WriteString("   ├─ Subtasks:\n")
 				for i, child := range children {
-					statusIcon := "📝"
+					statusIcon := "[TODO]"
 					if child.Status == "Done" {
-						statusIcon = "✅"
+						statusIcon = ""
 					} else if child.Status == "In Progress" {
-						statusIcon = "🔄"
+						statusIcon = "[IN_PROGRESS]"
 					}
 					isLast := i == len(children)-1
 					prefix := "   │  ├─ "
@@ -173,7 +173,7 @@ func (r *PMReport) GeneratePMDashboard(records []jira.TicketRecord) string {
 	output.WriteString("╚════════════════════════════════════════════════════════════════════╝\n\n")
 
 	total := len(records)
-	output.WriteString(fmt.Sprintf("📊 Total Tickets: %d\n\n", total))
+	output.WriteString(fmt.Sprintf(" Total Tickets: %d\n\n", total))
 
 	// Status breakdown
 	output.WriteString("Status Breakdown:\n")
@@ -189,13 +189,13 @@ func (r *PMReport) GeneratePMDashboard(records []jira.TicketRecord) string {
 	priorities := []string{"Critical", "High", "Medium", "Low", "Lowest"}
 	for _, priority := range priorities {
 		if count, ok := byPriority[priority]; ok && count > 0 {
-			icon := "🔴"
+			icon := "[CRITICAL]"
 			if priority == "High" {
-				icon = "🟠"
+				icon = "[HIGH]"
 			} else if priority == "Medium" {
-				icon = "🟡"
+				icon = "[MEDIUM]"
 			} else if priority == "Low" {
-				icon = "🟢"
+				icon = "[LOW]"
 			}
 			output.WriteString(fmt.Sprintf("  %s %s: %d\n", icon, priority, count))
 		}
@@ -212,7 +212,7 @@ func (r *PMReport) GeneratePMDashboard(records []jira.TicketRecord) string {
 	}
 
 	// Blockers and risks
-	output.WriteString("\n⚠️  Critical Items:\n")
+	output.WriteString("\n  Critical Items:\n")
 	output.WriteString("──────────────────\n")
 	if blockedCount > 0 {
 		output.WriteString(fmt.Sprintf("  Blocked tickets: %d (dependencies exist)\n", blockedCount))
@@ -231,7 +231,7 @@ func (r *PMReport) GeneratePMDashboard(records []jira.TicketRecord) string {
 // GenerateRiskReport identifies project risks
 func (r *PMReport) GenerateRiskReport(records []jira.TicketRecord) string {
 	output := strings.Builder{}
-	output.WriteString("\n🚨 PROJECT RISK ASSESSMENT\n")
+	output.WriteString("\n PROJECT RISK ASSESSMENT\n")
 	output.WriteString("==========================\n\n")
 
 	risks := []string{}
@@ -270,14 +270,14 @@ func (r *PMReport) GenerateRiskReport(records []jira.TicketRecord) string {
 	}
 
 	if len(risks) == 0 {
-		output.WriteString("✅ No major risks identified\n")
+		output.WriteString(" No major risks identified\n")
 	} else {
 		for i, risk := range risks {
 			output.WriteString(fmt.Sprintf("%d. %s\n", i+1, risk))
 		}
 	}
 
-	output.WriteString("\n📋 Recommendations:\n")
+	output.WriteString("\n Recommendations:\n")
 	if criticalBlocked > 0 {
 		output.WriteString("  • Review and unblock critical items immediately\n")
 		output.WriteString("  • Consider re-prioritizing dependencies\n")
@@ -312,7 +312,7 @@ func generateProgressBar(percent int) string {
 // GenerateTicketDetailsTable creates a detailed table of all tickets
 func (r *PMReport) GenerateTicketDetailsTable(records []jira.TicketRecord) string {
 	output := strings.Builder{}
-	output.WriteString("\n📋 DETAILED TICKET INVENTORY\n")
+	output.WriteString("\n DETAILED TICKET INVENTORY\n")
 	output.WriteString("============================\n\n")
 
 	data := [][]string{}
