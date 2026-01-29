@@ -444,9 +444,9 @@ JIRA_URL=new.atlassian.net JIRA_EMAIL=... JIRA_TOKEN=... \
 ## Getting Help
 
 ### 1. Check the Docs
-- [Getting Started](/jira-ticket-creator/getting-started)
-- [CLI Commands](/jira-ticket-creator/cli)
-- [API Reference](/jira-ticket-creator/api)
+- [Getting Started](getting-started)
+- [CLI Commands](cli)
+- [API Reference](api)
 
 ### 2. Search Issues
 - GitHub Issues: https://github.com/clintonsteiner/jira-ticket-creator/issues
@@ -492,5 +492,5 @@ If you find a bug:
 
 ## See Also
 
-- [Getting Started](/jira-ticket-creator/getting-started) - Initial setup guide
-- [CLI Commands](/jira-ticket-creator/cli) - Command reference
+- [Getting Started](getting-started) - Initial setup guide
+- [CLI Commands](cli) - Command reference

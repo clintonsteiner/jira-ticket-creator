@@ -139,13 +139,13 @@ cat ~/.jirarc
 
 ## Getting Help
 
-- See [Troubleshooting](/jira-ticket-creator/troubleshooting) for common problems
+- See [Troubleshooting](troubleshooting) for common problems
 - Check command help: `jira-ticket-creator [command] --help`
 - Report issues: https://github.com/clintonsteiner/jira-ticket-creator/issues
 
 ## What's Next
 
-- [Search Examples](/jira-ticket-creator/cli/search)
-- [Import with Project Mapping](/jira-ticket-creator/cli/import)
-- [Common Workflows](/jira-ticket-creator/examples/workflows)
-- [Complete Command Reference](/jira-ticket-creator/cli)
+- [Search Examples](cli/search)
+- [Import with Project Mapping](cli/import)
+- [Common Workflows](examples/workflows)
+- [Complete Command Reference](cli)
