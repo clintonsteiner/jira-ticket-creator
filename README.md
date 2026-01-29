@@ -286,6 +286,97 @@ jira-ticket-creator search --summary "login"
 jira-ticket-creator search --jql "project = PROJ AND status = 'To Do'"
 ```
 
+### Query (Advanced JQL Search)
+Execute JQL queries with flexible output formatting and field selection:
+
+```bash
+# Basic query with table output
+jira-ticket-creator query --jql "project = PROJ"
+
+# Specify fields to display
+jira-ticket-creator query --jql "project = PROJ" --fields "key,summary,status,priority"
+
+# Export to CSV
+jira-ticket-creator query --jql "status = 'In Progress'" --format csv --output active.csv
+
+# Export to JSON
+jira-ticket-creator query --jql "project = PROJ" --format json --output tickets.json
+
+# Export to Markdown (for documentation)
+jira-ticket-creator query --jql "type = Story" --format markdown --output stories.md
+
+# Export to HTML (for browser viewing)
+jira-ticket-creator query --jql "priority = Critical" --format html --output critical.html
+
+# Fetch more results
+jira-ticket-creator query --jql "project = PROJ" --max-results 500
+```
+
+**Flags:**
+- `--jql <query>` (required) - JQL query string
+- `--format <format>` - Output format: `table` (default), `json`, `csv`, `markdown`, `html`
+- `--output <path>` - Write results to file (default: stdout)
+- `--max-results <n>` - Maximum results to fetch (default: 50, max: 1000)
+- `--fields <list>` - Comma-separated fields to display (default: key,type,summary,status,assignee,priority)
+
+**Available Fields:** key, type, summary, status, assignee, priority, project, description
+
+### Import (Bulk Import with Project Mapping)
+Import existing JIRA tickets into local tracking with automatic project mapping:
+
+```bash
+# Basic import (assign all to one project)
+jira-ticket-creator import --jql "project = PROJ" --map-project backend
+
+# Dry run to preview
+jira-ticket-creator import --jql "project = PROJ" --map-project backend --dry-run
+
+# Map multiple prefixes to projects
+jira-ticket-creator import --jql "project in (PROJ, BACK)" \
+  --map-rule "PROJ->backend" --map-rule "BACK->backend"
+
+# Update existing imported tickets
+jira-ticket-creator import --jql "status = 'In Progress'" --update-existing
+
+# Use custom mapping file
+jira-ticket-creator import --jql "project = PROJ" \
+  --map-project backend --mapping-path ~/my-mappings.json
+```
+
+**Flags:**
+- `--jql <query>` (required) - JQL query to select tickets to import
+- `--map-project <name>` - Logical project name to assign to all tickets
+- `--map-rule <rule>` (repeatable) - Inline mapping rules (format: `PREFIX->project`)
+- `--dry-run` - Preview import without saving
+- `--update-existing` - Update already-imported tickets
+- `--mapping-path <path>` - Project mapping file location (default: ~/.jira/project-mapping.json)
+
+### Project Mapping Configuration
+Store persistent project mappings for consistent ticket organization:
+
+**Default location:** `~/.jira/project-mapping.json`
+
+```json
+{
+  "mappings": {
+    "backend": {
+      "ticket_keys": ["PROJ", "BACK", "API"],
+      "description": "Backend Team"
+    },
+    "frontend": {
+      "ticket_keys": ["UI", "FRONT", "WEB"],
+      "description": "Frontend Team"
+    },
+    "devops": {
+      "ticket_keys": ["INFRA", "DEPLOY", "OPS"],
+      "description": "DevOps Team"
+    }
+  }
+}
+```
+
+The import command will automatically use these mappings to assign projects based on ticket key prefixes. Use `--map-rule` for one-off mappings or create the config file for persistent mappings.
+
 ### Reports
 ```bash
 jira-ticket-creator report --format markdown --output report.md
@@ -298,7 +389,14 @@ jira-ticket-creator report --format csv --output report.csv
 jira-ticket-creator team summary      # By creator
 jira-ticket-creator team assignments  # Workload
 jira-ticket-creator team timeline     # Progress
+
+# Filter by project
+jira-ticket-creator team summary --project backend
+jira-ticket-creator team summary --project frontend
 ```
+
+**Team Summary Flags:**
+- `--project <name>` - Filter tickets by logical project name
 
 ### Project Timeline (2-Week Visualization)
 ```bash
@@ -497,6 +595,157 @@ export PATH=$PATH:$(pwd)
 sudo mv jira-ticket-creator /usr/local/bin/
 ```
 
+## 📚 Complete Command Reference
+
+### Global Flags (Available on all commands)
+- `--url <url>` - JIRA base URL (env: JIRA_URL)
+- `--email <email>` - JIRA email address (env: JIRA_EMAIL)
+- `--token <token>` - JIRA API token (env: JIRA_TOKEN)
+- `--project <key>` - JIRA project key (env: JIRA_PROJECT)
+- `--ticket <key>` - JIRA ticket key for auto-extracting project (env: JIRA_TICKET)
+- `--config <path>` - Path to config file (default: ~/.jirarc)
+- `--help` - Show help for command
+- `--version` - Show version information
+
+### create
+Create new JIRA tickets
+
+**Flags:**
+- `--summary <text>` (required) - Ticket summary/title
+- `--description <text>` - Detailed description
+- `--type <type>` - Issue type (Task, Story, Bug, Epic, etc.)
+- `--priority <level>` - Priority (Critical, High, Medium, Low)
+- `--assignee <email>` - Assignee email address
+- `--labels <labels>` - Comma-separated labels
+- `--components <components>` - Comma-separated components
+- `--blocked-by <keys>` - Comma-separated blocking ticket keys
+- `--interactive` - Interactive prompt mode
+- `--template <name>` - Use a template
+
+### search
+Search for JIRA tickets by key, summary, or JQL
+
+**Flags:**
+- `--key <key>` - Search by ticket key
+- `--summary <text>` - Search by summary (partial match)
+- `--jql <query>` - Raw JQL query
+- `--format <format>` - Output format (table, json)
+
+### query
+Execute JQL queries with multiple output formats
+
+**Flags:**
+- `--jql <query>` (required) - JQL query string
+- `--format <format>` - Output format: table, json, csv, markdown, html
+- `--output <path>` - Write results to file
+- `--max-results <n>` - Maximum results (default: 50, max: 1000)
+- `--fields <list>` - Comma-separated fields to display
+
+### import
+Import existing tickets from JIRA with project mapping
+
+**Flags:**
+- `--jql <query>` (required) - JQL query for tickets to import
+- `--map-project <name>` - Logical project name for all imported tickets
+- `--map-rule <rule>` (repeatable) - Inline mapping rules (PREFIX->project)
+- `--dry-run` - Preview without saving
+- `--update-existing` - Update already-imported tickets
+- `--mapping-path <path>` - Project mapping file location
+
+### update
+Update existing JIRA tickets
+
+**Flags:**
+- `--priority <level>` - New priority
+- `--assignee <email>` - New assignee
+- `--labels <labels>` - New labels
+- `--summary <text>` - New summary
+- `--description <text>` - New description
+
+### transition
+Move tickets through workflow states
+
+**Flags:**
+- `--to <state>` (required) - Target workflow state
+- `--comment <text>` - Optional comment
+
+### batch
+Create multiple tickets from CSV or JSON file
+
+**Flags:**
+- `--input <file>` (required) - Input file (CSV or JSON)
+- `--format <format>` - File format (auto-detected from extension)
+- `--dry-run` - Validate without creating
+
+### report
+Generate ticket reports in multiple formats
+
+**Flags:**
+- `--format <format>` - Output format: table, json, csv, markdown, html
+- `--output <path>` - Output file path
+- `--filter <query>` - JQL filter for report
+
+### team
+Team-based reporting
+
+**Subcommands:**
+- `team summary [--project <name>]` - Tickets by creator
+- `team assignments` - Workload assignments
+- `team timeline` - Project timeline
+
+### pm
+Project management dashboard for executives
+
+**Subcommands:**
+- `pm dashboard` - Overall progress summary
+- `pm hierarchy` - Parent-child ticket relationships
+- `pm risk` - Risk assessment and bottlenecks
+- `pm details` - Complete inventory
+- `pm create-parent` - Guidance for parent tickets
+
+### timeline
+Project timeline visualization
+
+**Flags:**
+- `--format <format>` - Output format (ascii, mermaid, html)
+- `--weeks <n>` - Number of weeks to display (default: 2)
+- `--output <path>` - Output file path
+
+### visualize
+Dependency visualization
+
+**Flags:**
+- `--format <format>` - Output format (tree, mermaid, dot)
+- `--output <path>` - Output file path
+
+### template
+Template management
+
+**Subcommands:**
+- `template list` - List available templates
+- `template create --name <name>` - Create new template
+- `template delete --name <name>` - Delete template
+
+### completion
+Generate shell completion scripts
+
+**Subcommands:**
+- `completion bash` - Bash completion
+- `completion zsh` - Zsh completion
+- `completion fish` - Fish completion
+- `completion powershell` - PowerShell completion
+
 ## 📄 License
 
 MIT License
+
+```bash
+# Import tickets by JQL search
+  ./jira-ticket-creator import --jql "project = PROJ AND updated >= -30d" --map-project backend
+
+  # Import all tickets from project
+  ./jira-ticket-creator import --project PROJ --all --map-project backend
+
+  # Import specific tickets
+  ./jira-ticket-creator import --keys "PROJ-1,PROJ-2,PROJ-3" --map-project backend
+```

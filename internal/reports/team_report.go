@@ -13,8 +13,27 @@ type TeamReport struct{}
 
 // GenerateTeamSummary generates a summary of tickets by creator
 func (tr *TeamReport) GenerateTeamSummary(records []jira.TicketRecord) string {
+	return tr.GenerateTeamSummaryWithFilter(records, "")
+}
+
+// GenerateTeamSummaryWithFilter generates a summary of tickets by creator, optionally filtered by project
+func (tr *TeamReport) GenerateTeamSummaryWithFilter(records []jira.TicketRecord, projectFilter string) string {
 	if len(records) == 0 {
 		return "No tickets found"
+	}
+
+	// Filter by project if specified
+	if projectFilter != "" {
+		filtered := make([]jira.TicketRecord, 0)
+		for _, r := range records {
+			if r.Project == projectFilter {
+				filtered = append(filtered, r)
+			}
+		}
+		records = filtered
+		if len(records) == 0 {
+			return fmt.Sprintf("No tickets found for project: %s", projectFilter)
+		}
 	}
 
 	// Group by creator
@@ -30,6 +49,9 @@ func (tr *TeamReport) GenerateTeamSummary(records []jira.TicketRecord) string {
 	// Summary stats
 	sb.WriteString(fmt.Sprintf("Total Tickets Created: %d\n", len(records)))
 	sb.WriteString(fmt.Sprintf("Number of Team Members: %d\n", len(byCreator)))
+	if projectFilter != "" {
+		sb.WriteString(fmt.Sprintf("Project Filter: %s\n", projectFilter))
+	}
 	sb.WriteString("\n")
 
 	// By creator
@@ -54,30 +76,46 @@ func (tr *TeamReport) GenerateTeamSummary(records []jira.TicketRecord) string {
 		sb.WriteString(fmt.Sprintf("   Total: %d | Completed: %d | Pending: %d | Overdue: %d\n",
 			len(tickets), completed, pending, overdue))
 
-		// List tickets
+		// Group by project within creator
+		byProject := make(map[string][]jira.TicketRecord)
+		noProject := make([]jira.TicketRecord, 0)
 		for _, t := range tickets {
-			status := "⏳"
-			if t.Status == "Done" || t.Status == "Closed" {
-				status = "✅"
-			} else if t.EstimatedEndDate != nil && t.EstimatedEndDate.Before(time.Now()) {
-				status = "⚠️ "
+			if t.Project != "" {
+				byProject[t.Project] = append(byProject[t.Project], t)
+			} else {
+				noProject = append(noProject, t)
 			}
+		}
 
-			sb.WriteString(fmt.Sprintf("   %s %s [%s] → %s\n", status, t.Key, t.Priority, t.Summary))
-
-			if t.Assignee != "" {
-				sb.WriteString(fmt.Sprintf("      Assigned to: %s\n", t.Assignee))
-			}
-
-			if t.EstimatedEndDate != nil {
-				daysLeft := int(t.EstimatedEndDate.Sub(time.Now()).Hours() / 24)
-				if daysLeft > 0 {
-					sb.WriteString(fmt.Sprintf("      Due in: %d days\n", daysLeft))
-				} else if daysLeft < 0 {
-					sb.WriteString(fmt.Sprintf("      Overdue by: %d days\n", -daysLeft))
-				} else {
-					sb.WriteString(fmt.Sprintf("      Due today\n"))
+		// List tickets by project
+		for project, projectTickets := range byProject {
+			sb.WriteString(fmt.Sprintf("   [%s] %d ticket(s)\n", project, len(projectTickets)))
+			for _, t := range projectTickets {
+				status := "⏳"
+				if t.Status == "Done" || t.Status == "Closed" {
+					status = "✅"
+				} else if t.EstimatedEndDate != nil && t.EstimatedEndDate.Before(time.Now()) {
+					status = "⚠️ "
 				}
+
+				sb.WriteString(fmt.Sprintf("      %s %s [%s] → %s\n", status, t.Key, t.Priority, t.Summary))
+
+				if t.Assignee != "" {
+					sb.WriteString(fmt.Sprintf("         Assigned to: %s\n", t.Assignee))
+				}
+			}
+		}
+
+		// List unassigned to projects
+		if len(noProject) > 0 {
+			sb.WriteString(fmt.Sprintf("   [unassigned] %d ticket(s)\n", len(noProject)))
+			for _, t := range noProject {
+				status := "⏳"
+				if t.Status == "Done" || t.Status == "Closed" {
+					status = "✅"
+				}
+
+				sb.WriteString(fmt.Sprintf("      %s %s [%s] → %s\n", status, t.Key, t.Priority, t.Summary))
 			}
 		}
 	}

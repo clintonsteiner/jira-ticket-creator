@@ -24,9 +24,11 @@ func NewTeamCommand() *cobra.Command {
 		Use:   "summary",
 		Short: "Show ticket summary by creator",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return executeTeamSummary()
+			projectFilter, _ := cmd.Flags().GetString("project")
+			return executeTeamSummary(projectFilter)
 		},
 	}
+	summaryCmd.Flags().String("project", "", "Filter by project")
 
 	// Assignments subcommand
 	assignCmd := &cobra.Command{
@@ -52,7 +54,7 @@ func NewTeamCommand() *cobra.Command {
 }
 
 // executeTeamSummary shows tickets grouped by creator
-func executeTeamSummary() error {
+func executeTeamSummary(projectFilter string) error {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return err
@@ -70,7 +72,12 @@ func executeTeamSummary() error {
 	}
 
 	teamReport := &reports.TeamReport{}
-	report := teamReport.GenerateTeamSummary(records)
+	var report string
+	if projectFilter != "" {
+		report = teamReport.GenerateTeamSummaryWithFilter(records, projectFilter)
+	} else {
+		report = teamReport.GenerateTeamSummary(records)
+	}
 
 	fmt.Println(report)
 	return nil

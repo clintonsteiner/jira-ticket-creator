@@ -97,6 +97,7 @@ type TicketRecord struct {
 	EstimatedEndDate *time.Time `json:"estimated_end,omitempty"` // When is it estimated to be done
 	Priority         string     `json:"priority"`
 	IssueType        string     `json:"issue_type"`
+	Project          string     `json:"project,omitempty"` // Logical project name for grouping
 }
 
 // SearchResponse is the response from a search query
