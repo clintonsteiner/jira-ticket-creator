@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/clintonsteiner/jira-ticket-creator/internal/jira"
-	"github.com/olekukonko/tablewriter"
 )
 
 // PMReport handles project management reporting with parent-child relationships
@@ -337,25 +336,17 @@ func (r *PMReport) GenerateTicketDetailsTable(records []jira.TicketRecord) strin
 		})
 	}
 
-	// Create table
-	table := tablewriter.NewWriter(strings.Builder{}.Writer())
-	if len(data) > 0 {
-		table.SetHeader([]string{"Key", "Summary", "Status", "Priority", "Assignee", "Blocked By"})
-		table.SetAutoWrapText(false)
-		table.SetAlignment(tablewriter.ALIGN_LEFT)
-		table.SetBorder(true)
-		for _, row := range data {
-			table.Append(row)
-		}
-		table.Render()
-	}
-
-	// Fallback to string format
+	// Create markdown table
 	output.WriteString("| Key | Summary | Status | Priority | Assignee | Blocked By |\n")
 	output.WriteString("|-----|---------|--------|----------|----------|------------|\n")
 	for _, row := range data {
+		// Truncate long summaries for table
+		summary := row[1]
+		if len(summary) > 30 {
+			summary = summary[:27] + "..."
+		}
 		output.WriteString(fmt.Sprintf("| %s | %s | %s | %s | %s | %s |\n",
-			row[0], row[1], row[2], row[3], row[4], row[5]))
+			row[0], summary, row[2], row[3], row[4], row[5]))
 	}
 
 	return output.String()

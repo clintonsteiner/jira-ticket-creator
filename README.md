@@ -142,6 +142,32 @@ chmod 600 ~/.jirarc  # Secure the file (readable only by you)
 ./jira-ticket-creator create --interactive
 ```
 
+### 4. Track Related Work with Parent Tickets (Optional)
+For projects with multiple related tickets, use parent epics to organize work:
+
+```bash
+# Step 1: Create a parent epic
+jira-ticket-creator create \
+  --summary "Q1 Platform Upgrade" \
+  --type Epic \
+  --priority High \
+  --description "Parent epic for all platform upgrade work"
+# Returns: PROJ-1
+
+# Step 2: Create child tickets that link to the parent
+jira-ticket-creator create \
+  --summary "Upgrade Database" \
+  --type Task \
+  --priority High \
+  --assignee team-member@company.com \
+  --blocked-by PROJ-1
+
+# Step 3: View the project hierarchy and progress
+jira-ticket-creator pm hierarchy    # See parent-child relationships
+jira-ticket-creator pm dashboard    # See overall progress for your boss
+jira-ticket-creator pm risk         # Identify bottlenecks
+```
+
 ## 📖 Command Reference
 
 ### Create Tickets
@@ -219,6 +245,58 @@ open timeline.html
 - Highlights critical path items
 - Includes progress summary and recommendations
 - HTML version with CSS styling and interactive cells
+
+### Project Management Dashboard (For Your Boss)
+```bash
+# Executive summary - overall progress, team workload, priorities
+jira-ticket-creator pm dashboard
+
+# Ticket hierarchy - parent epics with child tasks
+jira-ticket-creator pm hierarchy
+
+# Risk assessment - blocked items, bottlenecks, recommendations
+jira-ticket-creator pm risk
+
+# Detailed inventory - complete table of all tickets
+jira-ticket-creator pm details
+
+# Guidance for creating parent tickets
+jira-ticket-creator pm create-parent
+```
+
+**What the Dashboard Shows:**
+- 📊 Overall completion percentage and burndown
+- 🎯 Ticket count by status (Done, In Progress, To Do)
+- 🔴 Priority distribution (Critical, High, Medium, Low)
+- 👥 Team workload allocation
+- ⛔ Blocked items and dependencies
+- 🚨 Risk assessment with recommendations
+- 📌 Epic/Story hierarchy with subtasks
+- 🔗 Blocking relationships and critical path
+
+**Example Output:**
+```
+╔════════════════════════════════════════════════════════════════════╗
+║              PROJECT MANAGEMENT EXECUTIVE SUMMARY                  ║
+╚════════════════════════════════════════════════════════════════════╝
+
+📊 Total Tickets: 7
+📈 Overall Progress: 14% (1/7 tickets)
+
+Status Breakdown:
+  Done: 1 (14%)
+  In Progress: 2 (28%)
+  To Do: 4 (57%)
+
+Team Workload Distribution:
+  bob@company.com: 2 tickets
+  charlie@company.com: 2 tickets
+  [Unassigned]: 1 tickets
+
+⚠️  Critical Items:
+  Blocked tickets: 5 (dependencies exist)
+  High-priority blocked items: 4
+```
 
 ### Visualization
 ```bash
