@@ -11,14 +11,14 @@ Real-world workflows and guides for managing JIRA efforts with jira-ticket-creat
 
 ## Start Here
 
-1. [Managing JIRA Efforts](effort-management) - Organize and track work efforts, features, initiatives, and quarterly goals
-2. [Building Effort Dashboards](effort-dashboards) - Create automated dashboards for monitoring progress and risks
-3. [Multi-Team Coordination](team-coordination) - Manage dependencies and handoffs across teams
+1. [Managing JIRA Efforts](examples/effort-management) - Organize and track work efforts, features, initiatives, and quarterly goals
+2. [Building Effort Dashboards](examples/effort-dashboards) - Create automated dashboards for monitoring progress and risks
+3. [Multi-Team Coordination](examples/team-coordination) - Manage dependencies and handoffs across teams
 
 ## Reference
 
-- [Common Workflows](workflows) - Scripts for daily standups, sprint planning, issue triage
-- [API Examples](api-examples) - Using the Go client library
+- [Common Workflows](examples/workflows) - Scripts for daily standups, sprint planning, issue triage
+- [API Examples](examples/api-examples) - Using the Go client library
 
 ## What is an Effort?
 
