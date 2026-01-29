@@ -413,6 +413,33 @@ jira-ticket-creator team timeline --assignee "jane@company.com" --project fronte
 - `--creator <name>` - Filter by creator, comma-separated for multiple users
 - `--assignee <name>` - Filter by assignee, comma-separated for multiple users
 
+### Gantt Chart (Workload by Resource)
+Generate Gantt charts showing workload distribution across team members:
+
+```bash
+# ASCII Gantt chart (terminal)
+jira-ticket-creator gantt --format ascii --weeks 2
+
+# Mermaid Gantt chart (for GitHub, Notion, Markdown)
+jira-ticket-creator gantt --format mermaid --output gantt.md
+
+# HTML interactive Gantt chart (for browser)
+jira-ticket-creator gantt --format html --output gantt.html
+open gantt.html
+```
+
+**Flags:**
+- `--format <format>` - Output format: ascii (default), mermaid, html
+- `--output <path>` - Output file path (default: stdout)
+- `--weeks <n>` - Number of weeks to display for ascii format (default: 2)
+
+The Gantt chart displays:
+- ✓ Completed tickets
+- ⟳ In-progress tickets
+- □ To-do tickets
+- Organized by assigned resource (or Unassigned)
+- Status summary for each team member
+
 ### Project Timeline (2-Week Visualization)
 ```bash
 # ASCII text timeline for terminal
@@ -725,6 +752,19 @@ Project timeline visualization
 - `--format <format>` - Output format (ascii, mermaid, html)
 - `--weeks <n>` - Number of weeks to display (default: 2)
 - `--output <path>` - Output file path
+
+### gantt
+Gantt chart showing workload by resource
+
+**Flags:**
+- `--format <format>` - Output format (ascii, mermaid, html; default: ascii)
+- `--weeks <n>` - Number of weeks to display for ascii format (default: 2)
+- `--output <path>` - Output file path
+
+Displays tickets organized by assigned resource with status indicators:
+- ✓ = Completed tickets
+- ⟳ = In-progress tickets
+- □ = To-do tickets
 
 ### visualize
 Dependency visualization
