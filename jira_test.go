@@ -59,4 +59,3 @@ func TestLinkIssue_Failure(t *testing.T) {
 		t.Fatal("Expected error but got nil")
 	}
 }
-

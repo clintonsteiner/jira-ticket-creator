@@ -53,8 +53,8 @@ func CreateIssue(jiraURL, email, apiToken, projectKey, summary, description, iss
 // Link two issues
 func LinkIssue(jiraURL, email, apiToken, blocker, blocked string) error {
 	link := map[string]interface{}{
-		"type":        map[string]string{"name": "Blocks"},
-		"inwardIssue": map[string]string{"key": blocked},
+		"type":         map[string]string{"name": "Blocks"},
+		"inwardIssue":  map[string]string{"key": blocked},
 		"outwardIssue": map[string]string{"key": blocker},
 	}
 	data, _ := json.Marshal(link)
@@ -73,4 +73,3 @@ func LinkIssue(jiraURL, email, apiToken, blocker, blocked string) error {
 	}
 	return fmt.Errorf("failed to link issues, status: %v", resp.Status)
 }
-

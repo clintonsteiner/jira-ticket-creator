@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Trigger on semantic version tags like v1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21
+
+      - name: Install dependencies
+        run: go mod tidy
+
+      - name: Build
+        run: go build -v -o jira-ticket-creator
+
+      - name: Run tests
+        run: go test -v ./...
+
+      - name: Create release artifact
+        uses: softprops/action-gh-release@v1
+        with:
+          name: jira-ticket-creator
+          files: jira-ticket-creator
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

@@ -202,4 +202,3 @@ func main() {
 		fmt.Printf("All created tickets logged to %s\n", reportFile)
 	}
 }
-
