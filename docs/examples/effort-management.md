@@ -3,6 +3,7 @@ layout: default
 title: Managing JIRA Efforts
 parent: Examples
 nav_order: 3
+has_toc: true
 ---
 
 # Managing JIRA Efforts

@@ -3,6 +3,7 @@ layout: default
 title: Go Client Library
 parent: API Reference
 nav_order: 1
+has_toc: true
 ---
 
 # Go Client Library

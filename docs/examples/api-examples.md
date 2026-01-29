@@ -3,6 +3,7 @@ layout: default
 title: API Examples
 parent: Examples
 nav_order: 2
+has_toc: true
 ---
 
 # API Usage Examples

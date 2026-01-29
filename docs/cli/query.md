@@ -3,6 +3,7 @@ layout: default
 title: Query Command
 parent: CLI Commands
 nav_order: 3
+has_toc: true
 ---
 
 # Query Command

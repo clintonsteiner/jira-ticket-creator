@@ -3,6 +3,7 @@ layout: default
 title: Create Command
 parent: CLI Commands
 nav_order: 1
+has_toc: true
 ---
 
 # Create Command

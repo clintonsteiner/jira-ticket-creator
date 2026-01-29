@@ -3,6 +3,7 @@ layout: default
 title: Project Mapping
 parent: Advanced
 nav_order: 1
+has_toc: true
 ---
 
 # Project Mapping Configuration

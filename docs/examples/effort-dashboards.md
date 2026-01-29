@@ -3,6 +3,7 @@ layout: default
 title: Building Effort Dashboards
 parent: Examples
 nav_order: 4
+has_toc: true
 ---
 
 # Building Effort Dashboards

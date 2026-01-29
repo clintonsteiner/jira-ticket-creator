@@ -3,6 +3,7 @@ layout: default
 title: Search Command
 parent: CLI Commands
 nav_order: 2
+has_toc: true
 ---
 
 # Search Command

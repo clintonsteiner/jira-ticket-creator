@@ -2,6 +2,7 @@
 layout: default
 title: Troubleshooting & FAQ
 nav_order: 7
+has_toc: true
 ---
 
 # Troubleshooting & FAQ

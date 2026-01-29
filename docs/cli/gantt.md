@@ -3,6 +3,7 @@ layout: default
 title: Gantt Command
 parent: CLI Commands
 nav_order: 5
+has_toc: true
 ---
 
 # Gantt Command
