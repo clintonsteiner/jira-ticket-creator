@@ -12,6 +12,12 @@ search:
   button: true
   heading_level: 2
 
+# Table of contents settings
+heading_anchors: true
+
+# Navigation settings
+nav_order: 1
+
 # Navigation
 plugins:
   - jekyll-sitemap
