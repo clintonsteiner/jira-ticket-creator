@@ -393,10 +393,25 @@ jira-ticket-creator team timeline     # Progress
 # Filter by project
 jira-ticket-creator team summary --project backend
 jira-ticket-creator team summary --project frontend
+
+# Filter by specific tickets
+jira-ticket-creator team summary --ticket "PROJ-123,PROJ-456"
+jira-ticket-creator team assignments --ticket "PROJ-123"
+
+# Filter by creator/assignee
+jira-ticket-creator team summary --creator "John Smith"
+jira-ticket-creator team assignments --assignee "jane@company.com"
+
+# Combine multiple filters
+jira-ticket-creator team summary --project backend --creator "John Smith"
+jira-ticket-creator team timeline --assignee "jane@company.com" --project frontend
 ```
 
-**Team Summary Flags:**
+**Team Report Flags (available on all subcommands):**
 - `--project <name>` - Filter tickets by logical project name
+- `--ticket <keys>` - Filter by ticket key(s), comma-separated (e.g., "PROJ-1,PROJ-2")
+- `--creator <name>` - Filter by creator, comma-separated for multiple users
+- `--assignee <name>` - Filter by assignee, comma-separated for multiple users
 
 ### Project Timeline (2-Week Visualization)
 ```bash
