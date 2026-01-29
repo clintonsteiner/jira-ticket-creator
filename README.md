@@ -73,6 +73,8 @@ jira-ticket-creator --help
 4. Default values
 
 ### Environment Variables
+
+**Option A: Using Project Key (explicit project)**
 ```bash
 export JIRA_URL=https://your-company.atlassian.net
 export JIRA_EMAIL=your-email@company.com
@@ -80,7 +82,17 @@ export JIRA_TOKEN=your-api-token
 export JIRA_PROJECT=PROJ
 ```
 
+**Option B: Using Ticket Key (auto-extract project)**
+```bash
+export JIRA_URL=https://your-company.atlassian.net
+export JIRA_EMAIL=your-email@company.com
+export JIRA_TOKEN=your-api-token
+export JIRA_TICKET=PROJ-123  # Project key extracted automatically
+```
+
 ### Configuration File (~/.jirarc)
+
+**Method 1: With explicit project key**
 ```yaml
 jira:
   url: https://your-company.atlassian.net
@@ -95,6 +107,19 @@ defaults:
     - auto-created
 ```
 
+**Method 2: With ticket key (project auto-extracted)**
+```yaml
+jira:
+  url: https://your-company.atlassian.net
+  email: your-email@company.com
+  token: ${JIRA_TOKEN}
+  ticket: PROJ-123  # Project key (PROJ) extracted automatically
+
+defaults:
+  issue_type: Task
+  priority: Medium
+```
+
 ## 🚀 Getting Started
 
 ### 1. Setup (Choose One Method)
@@ -107,7 +132,7 @@ export JIRA_TOKEN=your-api-token
 export JIRA_PROJECT=PROJ
 ```
 
-**Method B: Using Config File**
+**Method B: Using Config File with Project Key**
 ```bash
 # Create ~/.jirarc with your credentials
 cat > ~/.jirarc << EOF
@@ -120,6 +145,25 @@ EOF
 
 chmod 600 ~/.jirarc  # Secure the file (readable only by you)
 ```
+
+**Method C: Using Ticket Key (Auto-Extract Project)**
+Instead of specifying a project key, you can specify a ticket key and the project key will be automatically extracted:
+
+```bash
+# Environment variable
+export JIRA_TICKET=PROJ-123
+
+# Or in config file
+cat > ~/.jirarc << EOF
+jira:
+  url: https://your-company.atlassian.net
+  email: your-email@company.com
+  token: your-api-token
+  ticket: PROJ-123  # Project extracted as "PROJ"
+EOF
+```
+
+This is useful when you want to work with a specific ticket rather than a default project.
 
 ### 2. Test Your Setup
 ```bash

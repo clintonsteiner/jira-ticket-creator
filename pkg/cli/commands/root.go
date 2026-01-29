@@ -27,6 +27,7 @@ It supports creating, updating, searching, and reporting on tickets with feature
 	cmd.PersistentFlags().String("email", "", "JIRA email address (or set JIRA_EMAIL env var)")
 	cmd.PersistentFlags().String("token", "", "JIRA API token (or set JIRA_TOKEN env var)")
 	cmd.PersistentFlags().String("project", "", "JIRA project key (or set JIRA_PROJECT env var)")
+	cmd.PersistentFlags().String("ticket", "", "JIRA ticket key to extract project (or set JIRA_TICKET env var, e.g., PROJ-123)")
 	cmd.PersistentFlags().String("config", "", "Path to config file (default: ~/.jirarc)")
 
 	// Bind to viper
@@ -34,6 +35,7 @@ It supports creating, updating, searching, and reporting on tickets with feature
 	viper.BindPFlag("jira.email", cmd.PersistentFlags().Lookup("email"))
 	viper.BindPFlag("jira.token", cmd.PersistentFlags().Lookup("token"))
 	viper.BindPFlag("jira.project", cmd.PersistentFlags().Lookup("project"))
+	viper.BindPFlag("jira.ticket", cmd.PersistentFlags().Lookup("ticket"))
 
 	// Add subcommands
 	cmd.AddCommand(NewCreateCommand())

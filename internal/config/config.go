@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/spf13/viper"
 )
@@ -15,6 +16,7 @@ type Config struct {
 		Email   string
 		Token   string
 		Project string
+		Ticket  string // Optional: can specify ticket key instead of project
 	}
 	Defaults Defaults
 }
@@ -32,6 +34,7 @@ func LoadConfig() (*Config, error) {
 	v.BindEnv("jira.email", "JIRA_EMAIL")
 	v.BindEnv("jira.token", "JIRA_TOKEN")
 	v.BindEnv("jira.project", "JIRA_PROJECT")
+	v.BindEnv("jira.ticket", "JIRA_TICKET")
 
 	// Set config file paths
 	v.SetConfigName(".jirarc")
@@ -71,6 +74,7 @@ func LoadConfigWithFlags(v *viper.Viper) (*Config, error) {
 	v.BindEnv("jira.email", "JIRA_EMAIL")
 	v.BindEnv("jira.token", "JIRA_TOKEN")
 	v.BindEnv("jira.project", "JIRA_PROJECT")
+	v.BindEnv("jira.ticket", "JIRA_TICKET")
 
 	// Set config file paths
 	v.SetConfigName(".jirarc")
@@ -110,10 +114,39 @@ func (c *Config) ValidateRequired() error {
 	if c.JIRA.Token == "" {
 		return fmt.Errorf("JIRA token is required (set via --token flag, JIRA_TOKEN env var, or ~/.jirarc config file)")
 	}
-	if c.JIRA.Project == "" {
-		return fmt.Errorf("JIRA project is required (set via --project flag, JIRA_PROJECT env var, or ~/.jirarc config file)")
+	if c.JIRA.Project == "" && c.JIRA.Ticket == "" {
+		return fmt.Errorf("JIRA project or ticket is required (set via --project/--ticket flag, JIRA_PROJECT/JIRA_TICKET env var, or ~/.jirarc config file)")
 	}
 	return nil
+}
+
+// GetProject returns the project key, extracting from ticket key if necessary
+// Priority: explicit project > ticket key (extracts project) > error
+func (c *Config) GetProject() (string, error) {
+	if c.JIRA.Project != "" {
+		return c.JIRA.Project, nil
+	}
+
+	if c.JIRA.Ticket != "" {
+		// Import the keys module to extract project from ticket
+		projectKey, err := extractProjectFromTicket(c.JIRA.Ticket)
+		if err != nil {
+			return "", fmt.Errorf("failed to extract project from ticket key: %w", err)
+		}
+		return projectKey, nil
+	}
+
+	return "", fmt.Errorf("no project or ticket key configured")
+}
+
+// Helper function to extract project from ticket key
+// This avoids circular imports by being defined here
+func extractProjectFromTicket(ticketKey string) (string, error) {
+	parts := strings.Split(strings.TrimSpace(ticketKey), "-")
+	if len(parts) < 2 {
+		return "", fmt.Errorf("invalid ticket key format: '%s' (expected PROJECT-123)", ticketKey)
+	}
+	return parts[0], nil
 }
 
 // GetConfigPath returns the path to the config file, creating it if it doesn't exist
