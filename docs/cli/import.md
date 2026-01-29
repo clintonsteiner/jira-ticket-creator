@@ -38,38 +38,41 @@ jira-ticket-creator import --jql "status = 'In Progress'" --map-project backend
 ```
 
 ### Dry Run Preview
+
 ```bash
 # See what would be imported without saving
 jira-ticket-creator import --jql "project = PROJ" \
- --map-project backend \
- --dry-run
+  --map-project backend \
+  --dry-run
 ```
 
 Output example:
 ```
- Found 15 issue(s) to import
+Found 15 issue(s) to import
 
- Import Summary:
- Total: 15
- backend: 15
+Import Summary:
+Total: 15
+backend: 15
 
- Dry run completed (no changes saved)
+Dry run completed (no changes saved)
 ```
 
 ### Multiple Project Mapping
+
 ```bash
 # Map different prefixes to projects
 jira-ticket-creator import --jql "project in (PROJ, API, DB)" \
- --map-rule "PROJ->backend" \
- --map-rule "API->backend" \
- --map-rule "DB->devops"
+  --map-rule "PROJ->backend" \
+  --map-rule "API->backend" \
+  --map-rule "DB->devops"
 ```
 
 ### Update Existing Tickets
+
 ```bash
 # Refresh imported tickets with latest data
 jira-ticket-creator import --jql "status = 'In Progress'" \
- --update-existing
+  --update-existing
 ```
 
 ## Project Mapping
@@ -80,20 +83,20 @@ Create `~/.jira/project-mapping.json`:
 
 ```json
 {
- "mappings": {
- "backend": {
- "ticket_keys": ["PROJ", "API", "DB"],
- "description": "Backend Team"
- },
- "frontend": {
- "ticket_keys": ["UI", "WEB", "MOBILE"],
- "description": "Frontend Team"
- },
- "devops": {
- "ticket_keys": ["INFRA", "CI", "DEPLOY"],
- "description": "DevOps Team"
- }
- }
+  "mappings": {
+    "backend": {
+      "ticket_keys": ["PROJ", "API", "DB"],
+      "description": "Backend Team"
+    },
+    "frontend": {
+      "ticket_keys": ["UI", "WEB", "MOBILE"],
+      "description": "Frontend Team"
+    },
+    "devops": {
+      "ticket_keys": ["INFRA", "CI", "DEPLOY"],
+      "description": "DevOps Team"
+    }
+  }
 }
 ```
 
@@ -110,8 +113,8 @@ For one-off imports, use inline rules:
 
 ```bash
 jira-ticket-creator import --jql "project = PROJ" \
- --map-rule "PROJ->backend" \
- --map-rule "PROJ->api-team"
+  --map-rule "PROJ->backend" \
+  --map-rule "PROJ->api-team"
 ```
 
 ### No Mapping
@@ -130,12 +133,12 @@ jira-ticket-creator import --jql "project = PROJ" --map-project backend
 # Step 1: Create mapping file
 cat > ~/.jira/project-mapping.json << EOF
 {
- "mappings": {
- "team-a": {
- "ticket_keys": ["PROJ"],
- "description": "Team A"
- }
- }
+  "mappings": {
+    "team-a": {
+      "ticket_keys": ["PROJ"],
+      "description": "Team A"
+    }
+  }
 }
 EOF
 
@@ -154,16 +157,16 @@ jira-ticket-creator gantt --format html --output team-workload.html
 # Create comprehensive mapping
 cat > ~/.jira/project-mapping.json << EOF
 {
- "mappings": {
- "backend": {
- "ticket_keys": ["PROJ", "API", "DB"],
- "description": "Backend Team"
- },
- "frontend": {
- "ticket_keys": ["UI", "WEB"],
- "description": "Frontend Team"
- }
- }
+  "mappings": {
+    "backend": {
+      "ticket_keys": ["PROJ", "API", "DB"],
+      "description": "Backend Team"
+    },
+    "frontend": {
+      "ticket_keys": ["UI", "WEB"],
+      "description": "Frontend Team"
+    }
+  }
 }
 EOF
 
@@ -239,16 +242,16 @@ jira-ticket-creator gantt --format html --output q1-q2-comparison.html
 Successful import:
 
 ```
- Found 25 issue(s) to import
+Found 25 issue(s) to import
 
- Import Summary:
- Total: 25
- backend: 15
- frontend: 10
+Import Summary:
+Total: 25
+backend: 15
+frontend: 10
 
- Import completed
- Added/Updated: 20
- Skipped (existing): 5
+Import completed
+Added/Updated: 20
+Skipped (existing): 5
 ```
 
 ## Integration with Other Commands

@@ -21,8 +21,11 @@ plugins:
 markdown: kramdown
 highlighter: rouge
 
-# Color scheme (optional)
-color_scheme: light
+# Color scheme - supports light, dark, or nil for auto-detect
+color_scheme: dark
+
+# Enable color scheme toggle
+enable_color_scheme_toggle: true
 
 # Aux links
 aux_links:
