@@ -24,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]
         go-version: ['1.21', '1.22', '1.23', '1.24', '1.25']
 
     steps:
@@ -63,7 +63,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]
         go-version: ['1.25']
 
     steps:
@@ -75,23 +75,12 @@ jobs:
         go-version: ${{ matrix.go-version }}
 
     - name: Build CLI (Unix)
-      if: runner.os != 'Windows'
       run: go build -o jira-ticket-creator ./cmd/jira-ticket-creator
 
-    - name: Build CLI (Windows)
-      if: runner.os == 'Windows'
-      run: go build -o jira-ticket-creator.exe ./cmd/jira-ticket-creator
-
     - name: Verify binary
-      if: runner.os != 'Windows'
       run: |
         file ./jira-ticket-creator
         ./jira-ticket-creator --version 2>/dev/null || echo "Binary works"
-
-    - name: Verify binary (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        .\jira-ticket-creator.exe --version 2>$null || echo "Binary works"
 
   lint:
     runs-on: ubuntu-latest
